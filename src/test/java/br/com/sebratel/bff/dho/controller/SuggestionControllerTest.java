@@ -37,7 +37,7 @@ class SuggestionControllerTest {
 
     @Test
     void getAll_ShouldReturnList() throws Exception {
-        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0);
+        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0L, 0L);
         when(suggestionService.findAll()).thenReturn(List.of(response));
 
         mockMvc.perform(get("/suggestions"))
@@ -48,7 +48,7 @@ class SuggestionControllerTest {
 
     @Test
     void getById_ShouldReturnSuggestion() throws Exception {
-        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0);
+        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0L, 0L);
         when(suggestionService.findById(1L)).thenReturn(response);
 
         mockMvc.perform(get("/suggestions/1"))
@@ -60,7 +60,7 @@ class SuggestionControllerTest {
     @Test
     void create_WithValidData_ShouldReturnCreated() throws Exception {
         SuggestionRequestDTO request = new SuggestionRequestDTO("Title", "Desc", "email@test.com");
-        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0);
+        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0L, 0L);
         when(suggestionService.create(any(SuggestionRequestDTO.class))).thenReturn(response);
 
         mockMvc.perform(post("/suggestions")
@@ -83,7 +83,7 @@ class SuggestionControllerTest {
     @Test
     void update_WithValidData_ShouldReturnOk() throws Exception {
         SuggestionRequestDTO request = new SuggestionRequestDTO("Updated Title", "Updated Desc", "email@test.com");
-        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Updated Title", "Updated Desc", "email@test.com", 0);
+        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Updated Title", "Updated Desc", "email@test.com", 0L, 0L);
         when(suggestionService.update(eq(1L), any(SuggestionRequestDTO.class))).thenReturn(response);
 
         mockMvc.perform(put("/suggestions/1")

@@ -10,14 +10,21 @@ public record SuggestionResponseDTO(
     String title,
     String description,
     String email,
-    Integer totalVotes
+    Long positiveVotes,
+    Long negativeVotes
 ) {
     public static SuggestionResponseDTO fromEntity(Suggestion entity) {
-        int sumVotes = 0;
+        long positiveVotes = 0;
+        long negativeVotes = 0;
+        
         if (entity.getVotes() != null) {
-            sumVotes = entity.getVotes().stream()
-                    .mapToInt(SuggestionVote::getVote)
-                    .sum();
+            positiveVotes = entity.getVotes().stream()
+                    .filter(v -> v.getVote() != null && v.getVote() > 0)
+                    .count();
+            
+            negativeVotes = entity.getVotes().stream()
+                    .filter(v -> v.getVote() != null && v.getVote() < 0)
+                    .count();
         }
 
         return new SuggestionResponseDTO(
@@ -25,7 +32,8 @@ public record SuggestionResponseDTO(
             entity.getTitle(),
             entity.getDescription(),
             entity.getEmail(),
-            sumVotes
+            positiveVotes,
+            negativeVotes
         );
     }
 }
