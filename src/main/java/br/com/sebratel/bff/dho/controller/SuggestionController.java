@@ -2,6 +2,7 @@ package br.com.sebratel.bff.dho.controller;
 
 import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
+import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
 import br.com.sebratel.bff.dho.service.SuggestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,11 @@ public class SuggestionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         suggestionService.delete(id);
+    }
+
+    @PostMapping("/{id}/vote")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void vote(@PathVariable Long id, @RequestBody @Valid VoteRequestDTO dto) {
+        suggestionService.vote(id, dto);
     }
 }

@@ -1,0 +1,182 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< br.com.sebratel.bff:dho-api >---------------------
+[INFO] Building dho-api 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dho-api ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dho-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dho-api ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dho-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ dho-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running br.com.sebratel.bff.dho.service.SuggestionServiceTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/home/israelbarcelos/.m2/repository/net/bytebuddy/byte-buddy-agent/1.15.11/byte-buddy-agent-1.15.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+[ERROR] Tests run: 8, Failures: 0, Errors: 8, Skipped: 0, Time elapsed: 0.929 s <<< FAILURE! -- in br.com.sebratel.bff.dho.service.SuggestionServiceTest
+[ERROR] br.com.sebratel.bff.dho.service.SuggestionServiceTest.findAll_ShouldReturnList -- Time elapsed: 0.865 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.service.SuggestionServiceTest.setUp(SuggestionServiceTest.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.service.SuggestionServiceTest.findById_WhenIdExists_ShouldReturnSuggestion -- Time elapsed: 0.009 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.service.SuggestionServiceTest.setUp(SuggestionServiceTest.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.service.SuggestionServiceTest.create_ShouldReturnSavedSuggestion -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.service.SuggestionServiceTest.setUp(SuggestionServiceTest.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.service.SuggestionServiceTest.findById_WhenIdDoesNotExist_ShouldThrowException -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.service.SuggestionServiceTest.setUp(SuggestionServiceTest.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.service.SuggestionServiceTest.delete_WhenIdExists_ShouldDelete -- Time elapsed: 0.006 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.service.SuggestionServiceTest.setUp(SuggestionServiceTest.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.service.SuggestionServiceTest.delete_WhenIdDoesNotExist_ShouldThrowException -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.service.SuggestionServiceTest.setUp(SuggestionServiceTest.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.service.SuggestionServiceTest.update_WhenIdExists_ShouldReturnUpdatedSuggestion -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.service.SuggestionServiceTest.setUp(SuggestionServiceTest.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.service.SuggestionServiceTest.update_WhenIdDoesNotExist_ShouldThrowException -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.service.SuggestionServiceTest.setUp(SuggestionServiceTest.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[INFO] Running br.com.sebratel.bff.dho.controller.SuggestionControllerTest
+16:08:59.859 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [br.com.sebratel.bff.dho.controller.SuggestionControllerTest]: SuggestionControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+16:08:59.966 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration br.com.sebratel.bff.dho.DhoApiApplication for test class br.com.sebratel.bff.dho.controller.SuggestionControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.3)
+
+2026-05-06T16:09:00.234-03:00  INFO 69982 --- [           main] b.c.s.b.d.c.SuggestionControllerTest     : Starting SuggestionControllerTest using Java 21.0.10 with PID 69982 (started by israelbarcelos in /home/israelbarcelos/.cline/worktrees/a6401/dho-api)
+2026-05-06T16:09:00.235-03:00  INFO 69982 --- [           main] b.c.s.b.d.c.SuggestionControllerTest     : No active profile set, falling back to 1 default profile: "default"
+2026-05-06T16:09:01.243-03:00  INFO 69982 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-05-06T16:09:01.243-03:00  INFO 69982 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-05-06T16:09:01.245-03:00  INFO 69982 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-05-06T16:09:01.268-03:00  INFO 69982 --- [           main] b.c.s.b.d.c.SuggestionControllerTest     : Started SuggestionControllerTest in 1.265 seconds (process running for 2.871)
+[ERROR] Tests run: 6, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 1.653 s <<< FAILURE! -- in br.com.sebratel.bff.dho.controller.SuggestionControllerTest
+[ERROR] br.com.sebratel.bff.dho.controller.SuggestionControllerTest.update_WithValidData_ShouldReturnOk -- Time elapsed: 0.024 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.controller.SuggestionControllerTest.update_WithValidData_ShouldReturnOk(SuggestionControllerTest.java:85)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.controller.SuggestionControllerTest.getById_ShouldReturnSuggestion -- Time elapsed: 0.009 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionResponseDTO.<init>(java.lang.Long, java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.controller.SuggestionControllerTest.getById_ShouldReturnSuggestion(SuggestionControllerTest.java:51)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.controller.SuggestionControllerTest.getAll_ShouldReturnList -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionResponseDTO.<init>(java.lang.Long, java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.controller.SuggestionControllerTest.getAll_ShouldReturnList(SuggestionControllerTest.java:40)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.controller.SuggestionControllerTest.create_WithInvalidData_ShouldReturnBadRequest -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.controller.SuggestionControllerTest.create_WithInvalidData_ShouldReturnBadRequest(SuggestionControllerTest.java:75)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] br.com.sebratel.bff.dho.controller.SuggestionControllerTest.create_WithValidData_ShouldReturnCreated -- Time elapsed: 0.003 s <<< ERROR!
+java.lang.NoSuchMethodError: 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+	at br.com.sebratel.bff.dho.controller.SuggestionControllerTest.create_WithValidData_ShouldReturnCreated(SuggestionControllerTest.java:62)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   SuggestionControllerTest.create_WithInvalidData_ShouldReturnBadRequest:75 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionControllerTest.create_WithValidData_ShouldReturnCreated:62 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionControllerTest.getAll_ShouldReturnList:40 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionResponseDTO.<init>(java.lang.Long, java.lang.String, java.lang.String)'
+[ERROR]   SuggestionControllerTest.getById_ShouldReturnSuggestion:51 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionResponseDTO.<init>(java.lang.Long, java.lang.String, java.lang.String)'
+[ERROR]   SuggestionControllerTest.update_WithValidData_ShouldReturnOk:85 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionServiceTest.setUp:42 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionServiceTest.setUp:42 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionServiceTest.setUp:42 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionServiceTest.setUp:42 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionServiceTest.setUp:42 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionServiceTest.setUp:42 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionServiceTest.setUp:42 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[ERROR]   SuggestionServiceTest.setUp:42 NoSuchMethod 'void br.com.sebratel.bff.dho.dto.SuggestionRequestDTO.<init>(java.lang.String, java.lang.String)'
+[INFO] 
+[ERROR] Tests run: 14, Failures: 0, Errors: 13, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.270 s
+[INFO] Finished at: 2026-05-06T16:09:01-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.2:test (default-test) on project dho-api: 
+[ERROR] 
+[ERROR] See /home/israelbarcelos/.cline/worktrees/a6401/dho-api/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

@@ -4,33 +4,31 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
-@Table(name = "suggestions")
+@Table(name = "suggestions_votes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Suggestion {
+public class SuggestionVote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
-    private String description;
-
     private String email;
 
-    @OneToMany(mappedBy = "suggestion")
-    private List<SuggestionVote> votes;
+    private Integer vote;
+
+    @ManyToOne
+    @JoinColumn(name = "suggestion_id")
+    private Suggestion suggestion;
 }

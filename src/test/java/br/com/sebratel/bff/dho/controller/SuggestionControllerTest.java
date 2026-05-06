@@ -2,13 +2,13 @@ package br.com.sebratel.bff.dho.controller;
 
 import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
+import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
 import br.com.sebratel.bff.dho.service.SuggestionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +37,7 @@ class SuggestionControllerTest {
 
     @Test
     void getAll_ShouldReturnList() throws Exception {
-        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc");
+        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0);
         when(suggestionService.findAll()).thenReturn(List.of(response));
 
         mockMvc.perform(get("/suggestions"))
@@ -48,7 +48,7 @@ class SuggestionControllerTest {
 
     @Test
     void getById_ShouldReturnSuggestion() throws Exception {
-        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc");
+        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0);
         when(suggestionService.findById(1L)).thenReturn(response);
 
         mockMvc.perform(get("/suggestions/1"))
@@ -59,8 +59,8 @@ class SuggestionControllerTest {
 
     @Test
     void create_WithValidData_ShouldReturnCreated() throws Exception {
-        SuggestionRequestDTO request = new SuggestionRequestDTO("Title", "Desc");
-        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc");
+        SuggestionRequestDTO request = new SuggestionRequestDTO("Title", "Desc", "email@test.com");
+        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0);
         when(suggestionService.create(any(SuggestionRequestDTO.class))).thenReturn(response);
 
         mockMvc.perform(post("/suggestions")
@@ -72,7 +72,7 @@ class SuggestionControllerTest {
 
     @Test
     void create_WithInvalidData_ShouldReturnBadRequest() throws Exception {
-        SuggestionRequestDTO request = new SuggestionRequestDTO("", "");
+        SuggestionRequestDTO request = new SuggestionRequestDTO("", "", "invalido");
 
         mockMvc.perform(post("/suggestions")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,8 +82,8 @@ class SuggestionControllerTest {
 
     @Test
     void update_WithValidData_ShouldReturnOk() throws Exception {
-        SuggestionRequestDTO request = new SuggestionRequestDTO("Updated Title", "Updated Desc");
-        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Updated Title", "Updated Desc");
+        SuggestionRequestDTO request = new SuggestionRequestDTO("Updated Title", "Updated Desc", "email@test.com");
+        SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Updated Title", "Updated Desc", "email@test.com", 0);
         when(suggestionService.update(eq(1L), any(SuggestionRequestDTO.class))).thenReturn(response);
 
         mockMvc.perform(put("/suggestions/1")
@@ -99,5 +99,16 @@ class SuggestionControllerTest {
 
         mockMvc.perform(delete("/suggestions/1"))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void vote_WithValidData_ShouldReturnCreated() throws Exception {
+        VoteRequestDTO request = new VoteRequestDTO("voter@test.com", 1);
+        doNothing().when(suggestionService).vote(eq(1L), any(VoteRequestDTO.class));
+
+        mockMvc.perform(post("/suggestions/1/vote")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
     }
 }

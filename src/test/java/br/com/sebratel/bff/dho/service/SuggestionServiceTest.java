@@ -2,8 +2,10 @@ package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.entity.Suggestion;
 import br.com.sebratel.bff.dho.domain.repository.SuggestionRepository;
+import br.com.sebratel.bff.dho.domain.repository.SuggestionVoteRepository;
 import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
+import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +28,9 @@ class SuggestionServiceTest {
     @Mock
     private SuggestionRepository suggestionRepository;
 
+    @Mock
+    private SuggestionVoteRepository suggestionVoteRepository;
+
     @InjectMocks
     private SuggestionService suggestionService;
 
@@ -37,9 +43,11 @@ class SuggestionServiceTest {
                 .id(1L)
                 .title("Test Title")
                 .description("Test Description")
+                .email("test@sebratel.com.br")
+                .votes(new ArrayList<>())
                 .build();
 
-        suggestionRequestDTO = new SuggestionRequestDTO("Test Title", "Test Description");
+        suggestionRequestDTO = new SuggestionRequestDTO("Test Title", "Test Description", "test@sebratel.com.br");
     }
 
     @Test
@@ -124,5 +132,15 @@ class SuggestionServiceTest {
         assertThrows(ResponseStatusException.class, () -> suggestionService.delete(1L));
         verify(suggestionRepository, times(1)).existsById(1L);
         verify(suggestionRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void vote_ShouldSaveVote() {
+        VoteRequestDTO voteDTO = new VoteRequestDTO("voter@sebratel.com.br", 1);
+        when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
+
+        suggestionService.vote(1L, voteDTO);
+
+        verify(suggestionVoteRepository, times(1)).save(any());
     }
 }

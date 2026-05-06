@@ -1,9 +1,12 @@
 package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.entity.Suggestion;
+import br.com.sebratel.bff.dho.domain.entity.SuggestionVote;
 import br.com.sebratel.bff.dho.domain.repository.SuggestionRepository;
+import br.com.sebratel.bff.dho.domain.repository.SuggestionVoteRepository;
 import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
+import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.List;
 public class SuggestionService {
 
     private final SuggestionRepository suggestionRepository;
+    private final SuggestionVoteRepository suggestionVoteRepository;
 
     public List<SuggestionResponseDTO> findAll() {
         return suggestionRepository.findAll()
@@ -34,6 +38,7 @@ public class SuggestionService {
         Suggestion suggestion = Suggestion.builder()
                 .title(dto.title())
                 .description(dto.description())
+                .email(dto.email())
                 .build();
         
         return SuggestionResponseDTO.fromEntity(suggestionRepository.save(suggestion));
@@ -45,6 +50,7 @@ public class SuggestionService {
         
         suggestion.setTitle(dto.title());
         suggestion.setDescription(dto.description());
+        suggestion.setEmail(dto.email());
         
         return SuggestionResponseDTO.fromEntity(suggestionRepository.save(suggestion));
     }
@@ -54,5 +60,18 @@ public class SuggestionService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sugestão não encontrada");
         }
         suggestionRepository.deleteById(id);
+    }
+
+    public void vote(Long id, VoteRequestDTO dto) {
+        Suggestion suggestion = suggestionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sugestão não encontrada"));
+
+        SuggestionVote vote = SuggestionVote.builder()
+                .suggestion(suggestion)
+                .email(dto.email())
+                .vote(dto.vote())
+                .build();
+
+        suggestionVoteRepository.save(vote);
     }
 }
