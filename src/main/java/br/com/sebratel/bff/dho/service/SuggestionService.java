@@ -7,6 +7,7 @@ import br.com.sebratel.bff.dho.domain.repository.SuggestionVoteRepository;
 import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
 import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
+import br.com.sebratel.bff.dho.util.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class SuggestionService {
 
     private final SuggestionRepository suggestionRepository;
     private final SuggestionVoteRepository suggestionVoteRepository;
+    private final EncryptionUtil encryptionUtil;
 
     public List<SuggestionResponseDTO> findAll() {
         return suggestionRepository.findAll()
@@ -38,7 +40,7 @@ public class SuggestionService {
         Suggestion suggestion = Suggestion.builder()
                 .title(dto.title())
                 .description(dto.description())
-                .email(dto.email())
+                .email(encryptionUtil.encrypt(dto.email()))
                 .build();
         
         return SuggestionResponseDTO.fromEntity(suggestionRepository.save(suggestion));
@@ -50,7 +52,7 @@ public class SuggestionService {
         
         suggestion.setTitle(dto.title());
         suggestion.setDescription(dto.description());
-        suggestion.setEmail(dto.email());
+        suggestion.setEmail(encryptionUtil.encrypt(dto.email()));
         
         return SuggestionResponseDTO.fromEntity(suggestionRepository.save(suggestion));
     }
@@ -68,7 +70,7 @@ public class SuggestionService {
 
         SuggestionVote vote = SuggestionVote.builder()
                 .suggestion(suggestion)
-                .email(dto.email())
+                .email(encryptionUtil.encrypt(dto.email()))
                 .vote(dto.vote())
                 .build();
 

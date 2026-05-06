@@ -6,6 +6,7 @@ import br.com.sebratel.bff.dho.domain.repository.SuggestionVoteRepository;
 import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
 import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
+import br.com.sebratel.bff.dho.util.EncryptionUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,9 @@ class SuggestionServiceTest {
     @Mock
     private SuggestionVoteRepository suggestionVoteRepository;
 
+    @Mock
+    private EncryptionUtil encryptionUtil;
+
     @InjectMocks
     private SuggestionService suggestionService;
 
@@ -43,11 +47,13 @@ class SuggestionServiceTest {
                 .id(1L)
                 .title("Test Title")
                 .description("Test Description")
-                .email("test@sebratel.com.br")
+                .email("encrypted-email")
                 .votes(new ArrayList<>())
                 .build();
 
         suggestionRequestDTO = new SuggestionRequestDTO("Test Title", "Test Description", "test@sebratel.com.br");
+        
+        lenient().when(encryptionUtil.encrypt(anyString())).thenReturn("encrypted-email");
     }
 
     @Test
@@ -89,6 +95,7 @@ class SuggestionServiceTest {
 
         assertNotNull(result);
         assertEquals(suggestion.getTitle(), result.title());
+        verify(encryptionUtil, times(1)).encrypt("test@sebratel.com.br");
         verify(suggestionRepository, times(1)).save(any(Suggestion.class));
     }
 
@@ -101,6 +108,7 @@ class SuggestionServiceTest {
 
         assertNotNull(result);
         assertEquals(suggestion.getTitle(), result.title());
+        verify(encryptionUtil, times(1)).encrypt("test@sebratel.com.br");
         verify(suggestionRepository, times(1)).findById(1L);
         verify(suggestionRepository, times(1)).save(any(Suggestion.class));
     }
@@ -141,6 +149,7 @@ class SuggestionServiceTest {
 
         suggestionService.vote(1L, voteDTO);
 
+        verify(encryptionUtil, times(1)).encrypt("voter@sebratel.com.br");
         verify(suggestionVoteRepository, times(1)).save(any());
     }
 }
