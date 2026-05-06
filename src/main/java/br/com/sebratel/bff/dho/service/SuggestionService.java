@@ -71,7 +71,7 @@ public class SuggestionService {
         SuggestionVote vote = SuggestionVote.builder()
                 .suggestion(suggestion)
                 .email(encryptionUtil.encrypt(dto.email()))
-                .vote(dto.vote())
+                .vote(dto.vote() > 0 ? "POSITIVO" : "NEGATIVO")
                 .build();
 
         suggestionVoteRepository.save(vote);

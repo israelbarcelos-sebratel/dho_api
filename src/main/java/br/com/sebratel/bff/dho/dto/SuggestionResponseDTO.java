@@ -19,11 +19,11 @@ public record SuggestionResponseDTO(
         
         if (entity.getVotes() != null) {
             positiveVotes = entity.getVotes().stream()
-                    .filter(v -> v.getVote() != null && v.getVote() > 0)
+                    .filter(v -> "POSITIVO".equals(v.getVote()))
                     .count();
             
             negativeVotes = entity.getVotes().stream()
-                    .filter(v -> v.getVote() != null && v.getVote() < 0)
+                    .filter(v -> "NEGATIVO".equals(v.getVote()))
                     .count();
         }
 

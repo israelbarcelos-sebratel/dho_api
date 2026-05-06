@@ -26,7 +26,7 @@ public class SuggestionVote {
 
     private String email;
 
-    private Integer vote;
+    private String vote;
 
     @ManyToOne
     @JoinColumn(name = "suggestion_id")
