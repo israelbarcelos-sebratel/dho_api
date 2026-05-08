@@ -44,6 +44,13 @@ public class OpportunityController {
         return ResponseEntity.ok(opportunityService.refuse(id, approvalDTO));
     }
 
+    @PostMapping("/{id}/finalize")
+    public ResponseEntity<OpportunityResponseDTO> finalizeOpportunity(
+            @PathVariable Integer id,
+            @RequestBody @Valid OpportunityApprovalDTO approvalDTO) {
+        return ResponseEntity.ok(opportunityService.finalize(id, approvalDTO));
+    }
+
     @GetMapping("/{id}/candidates")
     public ResponseEntity<List<CandidateResponseDTO>> getCandidatesByOpportunity(@PathVariable Integer id) {
         return ResponseEntity.ok(opportunityService.findCandidatesByOpportunityId(id));

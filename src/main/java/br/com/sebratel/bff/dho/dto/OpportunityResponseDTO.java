@@ -29,4 +29,5 @@ public class OpportunityResponseDTO {
     private String responsibleRecruiterName;
     private String observations;
     private String refusalJustification;
+    private String finalizationJustification;
 }

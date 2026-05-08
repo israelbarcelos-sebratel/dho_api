@@ -100,4 +100,41 @@ public class OpportunityServiceTest {
         assertTrue(result.isEmpty());
         verify(recruitmentProcessRepository).findByOpportunityId(1);
     }
+
+    @Test
+    void shouldFinalizeOpportunityWithValidJustification() {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+
+        DhoOpportunityStatus finalizedStatus = new DhoOpportunityStatus();
+        finalizedStatus.setName("Finalizada");
+
+        String justification = "A".repeat(200);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(statusRepository.findByName("Finalizada")).thenReturn(Optional.of(finalizedStatus));
+        when(opportunityRepository.save(any(Opportunity.class))).thenReturn(opportunity);
+
+        OpportunityResponseDTO result = opportunityService.finalize(1, dto);
+
+        assertNotNull(result);
+        assertEquals("Finalizada", result.getOpportunityStatusName());
+        assertEquals(justification, result.getFinalizationJustification());
+        verify(opportunityRepository).save(opportunity);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFinalizingWithShortJustification() {
+        String justification = "Short justification";
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            opportunityService.finalize(1, dto);
+        });
+
+        assertEquals("A justificativa de finalização deve ter no mínimo 200 caracteres", exception.getMessage());
+        verify(opportunityRepository, never()).save(any());
+    }
+
 }

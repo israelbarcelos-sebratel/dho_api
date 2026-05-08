@@ -66,6 +66,31 @@ public class OpportunityControllerTest {
                 .andExpect(status().isBadRequest());
     }
     @Test
+    void shouldFinalizeOpportunityWithValidJustification() throws Exception {
+        String justification = "A".repeat(200);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        when(opportunityService.finalize(eq(1), any(OpportunityApprovalDTO.class)))
+                .thenReturn(new OpportunityResponseDTO());
+
+        mockMvc.perform(post("/opportunities/1/finalize")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenFinalizingWithShortJustification() throws Exception {
+        String justification = "Short justification";
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        mockMvc.perform(post("/opportunities/1/finalize")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void shouldListCandidatesByOpportunity() throws Exception {
         when(opportunityService.findCandidatesByOpportunityId(1)).thenReturn(List.of());
 

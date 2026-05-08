@@ -106,6 +106,23 @@ public class OpportunityService {
         return convertToDTO(opportunityRepository.save(opportunity));
     }
 
+    @Transactional
+    public OpportunityResponseDTO finalize(Integer id, OpportunityApprovalDTO dto) {
+        if (dto.justification() == null || dto.justification().length() < 200) {
+            throw new RuntimeException("A justificativa de finalização deve ter no mínimo 200 caracteres");
+        }
+
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        DhoOpportunityStatus finalizedStatus = statusRepository.findByName("Finalizada")
+                .orElseThrow(() -> new RuntimeException("Status 'Finalizada' não encontrado"));
+
+        opportunity.setOpportunityStatus(finalizedStatus);
+        opportunity.setFinalizationJustification(dto.justification());
+        return convertToDTO(opportunityRepository.save(opportunity));
+    }
+
 
     private OpportunityResponseDTO convertToDTO(Opportunity opportunity) {
         return OpportunityResponseDTO.builder()
@@ -126,6 +143,7 @@ public class OpportunityService {
                 .responsibleRecruiterName(opportunity.getResponsibleRecruiter() != null ? opportunity.getResponsibleRecruiter().getName() : null)
                 .observations(opportunity.getObservations())
                 .refusalJustification(opportunity.getRefusalJustification())
+                .finalizationJustification(opportunity.getFinalizationJustification())
                 .build();
     }
 }
