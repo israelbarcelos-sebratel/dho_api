@@ -7,6 +7,10 @@ import br.com.sebratel.bff.dho.domain.repository.DhoProcessStatusRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,4 +73,18 @@ public class RecruitmentProcessService {
         process.setInterviewReport(report);
         recruitmentProcessRepository.save(process);
     }
+
+    public List<RecruitmentProcessHistoryDTO> getFinalizedProcesses() {
+        List<String> finalizedStatuses = List.of("Contratado", "Recusado", "Desistência");
+        return recruitmentProcessRepository.findByProcessStatusNameIn(finalizedStatuses).stream()
+                .map(process -> RecruitmentProcessHistoryDTO.builder()
+                        .id(process.getId())
+                        .candidateName(process.getCandidate() != null ? process.getCandidate().getName() : null)
+                        .positionName(process.getOpportunity() != null && process.getOpportunity().getPosition() != null ? process.getOpportunity().getPosition().getName() : null)
+                        .statusName(process.getProcessStatus() != null ? process.getProcessStatus().getName() : null)
+                        .admissionDate(process.getCandidate() != null ? process.getCandidate().getAdmissionDate() : null)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 }

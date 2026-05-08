@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,4 +74,11 @@ public class RecruitmentProcessControllerTest {
         mockMvc.perform(post("/recruitment-processes/1/hire"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getHistory_ShouldReturnOk() throws Exception {
+        mockMvc.perform(get("/recruitment-processes/history"))
+                .andExpect(status().isOk());
+    }
+
 }

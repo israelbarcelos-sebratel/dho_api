@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface RecruitmentProcessRepository extends JpaRepository<RecruitmentProcess, Integer> {
     List<RecruitmentProcess> findByOpportunityId(Integer opportunityId);
+    List<RecruitmentProcess> findByProcessStatusNameIn(List<String> statusNames);
 }
