@@ -98,4 +98,27 @@ public class RecruitmentProcessServiceTest {
         assertEquals(longReport, process.getInterviewReport());
         verify(recruitmentProcessRepository).save(process);
     }
+
+    @Test
+    void getProcessesByRecruiter_ShouldReturnProcesses() {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(10);
+        DhoPosition position = new DhoPosition();
+        position.setName("Developer");
+        opportunity.setPosition(position);
+        
+        process.setOpportunity(opportunity);
+        process.setProcessStatus(status);
+
+        when(recruitmentProcessRepository.findByOpportunityResponsibleRecruiterId(1))
+                .thenReturn(List.of(process));
+
+        List<RecruitmentProcessResponseDTO> result = recruitmentProcessService.getProcessesByRecruiter(1);
+
+        assertEquals(1, result.size());
+        assertEquals("John Doe", result.get(0).getCandidateName());
+        assertEquals("Developer", result.get(0).getPositionName());
+        assertEquals(10, result.get(0).getOpportunityId());
+    }
+
 }

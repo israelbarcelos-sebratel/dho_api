@@ -81,4 +81,12 @@ public class RecruitmentProcessControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void getMyProcesses_ShouldReturnOk() throws Exception {
+        mockMvc.perform(get("/recruitment-processes/mine")
+                        .param("recruiterId", "1"))
+                .andExpect(status().isOk());
+    }
+
+
 }

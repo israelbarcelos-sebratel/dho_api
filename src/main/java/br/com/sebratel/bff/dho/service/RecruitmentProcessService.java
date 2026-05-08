@@ -8,6 +8,7 @@ import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,6 +84,19 @@ public class RecruitmentProcessService {
                         .positionName(process.getOpportunity() != null && process.getOpportunity().getPosition() != null ? process.getOpportunity().getPosition().getName() : null)
                         .statusName(process.getProcessStatus() != null ? process.getProcessStatus().getName() : null)
                         .admissionDate(process.getCandidate() != null ? process.getCandidate().getAdmissionDate() : null)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public List<RecruitmentProcessResponseDTO> getProcessesByRecruiter(Integer recruiterId) {
+        return recruitmentProcessRepository.findByOpportunityResponsibleRecruiterId(recruiterId).stream()
+                .map(process -> RecruitmentProcessResponseDTO.builder()
+                        .id(process.getId())
+                        .candidateName(process.getCandidate() != null ? process.getCandidate().getName() : null)
+                        .positionName(process.getOpportunity() != null && process.getOpportunity().getPosition() != null ? process.getOpportunity().getPosition().getName() : null)
+                        .processStatusName(process.getProcessStatus() != null ? process.getProcessStatus().getName() : null)
+                        .processStageName(process.getProcessStage() != null ? process.getProcessStage().getName() : null)
+                        .opportunityId(process.getOpportunity() != null ? process.getOpportunity().getId() : null)
                         .build())
                 .collect(Collectors.toList());
     }
