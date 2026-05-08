@@ -1,5 +1,7 @@
 package br.com.sebratel.bff.dho.controller;
 
+import java.util.List;
+
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import br.com.sebratel.bff.dho.service.OpportunityService;
@@ -63,4 +65,12 @@ public class OpportunityControllerTest {
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest());
     }
+    @Test
+    void shouldListCandidatesByOpportunity() throws Exception {
+        when(opportunityService.findCandidatesByOpportunityId(1)).thenReturn(List.of());
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/opportunities/1/candidates"))
+                .andExpect(status().isOk());
+    }
+
 }

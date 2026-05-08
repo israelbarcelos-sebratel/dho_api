@@ -5,6 +5,10 @@ import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
+import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
+import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
+import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
+
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
@@ -22,6 +26,19 @@ public class OpportunityService {
 
     private final OpportunityRepository opportunityRepository;
     private final DhoOpportunityStatusRepository statusRepository;
+    private final RecruitmentProcessRepository recruitmentProcessRepository;
+
+    public List<CandidateResponseDTO> findCandidatesByOpportunityId(Integer id) {
+        return recruitmentProcessRepository.findByOpportunityId(id).stream()
+                .map(rp -> CandidateResponseDTO.builder()
+                        .id(rp.getCandidate().getId())
+                        .name(rp.getCandidate().getName())
+                        .processStage(rp.getProcessStage() != null ? rp.getProcessStage().getName() : null)
+                        .processStatus(rp.getProcessStatus() != null ? rp.getProcessStatus().getName() : null)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 
 
     public List<OpportunityResponseDTO> findAll() {

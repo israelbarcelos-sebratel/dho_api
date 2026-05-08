@@ -4,6 +4,7 @@ import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoOpportunityStatus;
 import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
+import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +28,9 @@ public class OpportunityServiceTest {
 
     @Mock
     private DhoOpportunityStatusRepository statusRepository;
+
+    @Mock
+    private RecruitmentProcessRepository recruitmentProcessRepository;
 
     @InjectMocks
     private OpportunityService opportunityService;
@@ -83,5 +88,16 @@ public class OpportunityServiceTest {
 
         assertEquals("A justificativa de recusa deve ter no mínimo 200 caracteres", exception.getMessage());
         verify(opportunityRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldFindCandidatesByOpportunityId() {
+        when(recruitmentProcessRepository.findByOpportunityId(1)).thenReturn(List.of());
+
+        var result = opportunityService.findCandidatesByOpportunityId(1);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(recruitmentProcessRepository).findByOpportunityId(1);
     }
 }

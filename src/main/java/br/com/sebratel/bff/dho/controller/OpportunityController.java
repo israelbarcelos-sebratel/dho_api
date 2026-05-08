@@ -1,6 +1,8 @@
 package br.com.sebratel.bff.dho.controller;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 
+import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
+
 
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
@@ -41,4 +43,10 @@ public class OpportunityController {
             @RequestBody @Valid OpportunityApprovalDTO approvalDTO) {
         return ResponseEntity.ok(opportunityService.refuse(id, approvalDTO));
     }
+
+    @GetMapping("/{id}/candidates")
+    public ResponseEntity<List<CandidateResponseDTO>> getCandidatesByOpportunity(@PathVariable Integer id) {
+        return ResponseEntity.ok(opportunityService.findCandidatesByOpportunityId(id));
+    }
+
 }
