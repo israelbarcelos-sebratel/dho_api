@@ -1,12 +1,13 @@
 package br.com.sebratel.bff.dho.controller;
 
+import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import br.com.sebratel.bff.dho.service.OpportunityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +21,10 @@ public class OpportunityController {
     @GetMapping
     public ResponseEntity<List<OpportunityResponseDTO>> getAllOpportunities() {
         return ResponseEntity.ok(opportunityService.findAll());
+    }
+
+    @PostMapping
+    public ResponseEntity<OpportunityResponseDTO> createOpportunity(@RequestBody @Valid OpportunityRequestDTO opportunityRequestDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(opportunityService.create(opportunityRequestDTO));
     }
 }
