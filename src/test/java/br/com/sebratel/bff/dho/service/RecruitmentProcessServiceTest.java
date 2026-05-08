@@ -2,6 +2,7 @@ package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
+import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoPosition;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStatus;
@@ -9,8 +10,10 @@ import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoRole;
 import br.com.sebratel.bff.dho.domain.repository.DhoProcessStatusRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
+import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +43,9 @@ public class RecruitmentProcessServiceTest {
 
     @Mock
     private DhoRoleRepository roleRepository;
+
+    @Mock
+    private RecruitmentProcessLogRepository logRepository;
 
     @InjectMocks
     private RecruitmentProcessService recruitmentProcessService;
@@ -135,5 +141,19 @@ public class RecruitmentProcessServiceTest {
         assertEquals("John Doe", result.get(0).getCandidateName());
         assertEquals("Developer", result.get(0).getPositionName());
         assertEquals(10, result.get(0).getOpportunityId());
+    }
+
+    @Test
+    void getLogs_ShouldReturnLogs() {
+        RecruitmentProcessLog log = new RecruitmentProcessLog();
+        log.setId(1);
+        log.setActionName("APPROVE");
+
+        when(logRepository.findByRecruitmentProcessId(1)).thenReturn(List.of(log));
+
+        List<RecruitmentProcessLogDTO> result = recruitmentProcessService.getLogs(1);
+
+        assertEquals(1, result.size());
+        assertEquals("APPROVE", result.get(0).actionName());
     }
 }

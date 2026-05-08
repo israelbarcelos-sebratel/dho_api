@@ -3,6 +3,8 @@ package br.com.sebratel.bff.dho.controller;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
+
 import java.util.List;
 
 import br.com.sebratel.bff.dho.service.RecruitmentProcessService;
@@ -51,5 +53,10 @@ public class RecruitmentProcessController {
     public ResponseEntity<List<RecruitmentProcessResponseDTO>> getMyProcesses(@RequestParam Integer recruiterId) {
         return ResponseEntity.ok(recruitmentProcessService.getProcessesByRecruiter(recruiterId));
     }
+    @GetMapping("/{id}/logs")
+    public ResponseEntity<List<RecruitmentProcessLogDTO>> getLogs(@PathVariable Integer id) {
+        return ResponseEntity.ok(recruitmentProcessService.getLogs(id));
+    }
+
 
 }

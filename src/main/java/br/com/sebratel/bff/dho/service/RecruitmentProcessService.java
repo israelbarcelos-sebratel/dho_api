@@ -9,7 +9,9 @@ import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
+import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,8 @@ public class RecruitmentProcessService {
     private final DhoProcessStatusRepository processStatusRepository;
     private final PeopleRepository peopleRepository;
     private final DhoRoleRepository roleRepository;
+    private final RecruitmentProcessLogRepository logRepository;
+
 
     @Transactional
     public void approve(Integer id) {
@@ -111,5 +115,19 @@ public class RecruitmentProcessService {
                         .build())
                 .collect(Collectors.toList());
     }
+    public List<RecruitmentProcessLogDTO> getLogs(Integer id) {
+        return logRepository.findByRecruitmentProcessId(id).stream()
+                .map(log -> RecruitmentProcessLogDTO.builder()
+                        .id(log.getId())
+                        .actionName(log.getActionName())
+                        .startTime(log.getStartTime())
+                        .endTime(log.getEndTime())
+                        .durationMs(log.getDurationMs())
+                        .status(log.getStatus())
+                        .errorMessage(log.getErrorMessage())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 
 }
