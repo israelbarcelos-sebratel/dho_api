@@ -4,6 +4,6 @@
 Permitir que colaboradores enviem sugestões de melhoria...
 
 ## 2. Requisitos de Negócio & Regras (Backlog)
-- [ ] **RQ18:** Tela/Modal para criar uma nova sugestão.
-- [ ] **RQ19:** Feed de sugestões.
-- [ ] **RQ20:** Sistema de votação.
+- [x] **RQ18:** Criar uma nova sugestão.
+- [x] **RQ19:** Listagem de sugestões.
+- [x] **RQ20:** Sistema de votação.
