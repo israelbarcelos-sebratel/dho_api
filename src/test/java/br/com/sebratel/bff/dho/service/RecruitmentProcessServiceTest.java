@@ -2,11 +2,16 @@ package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
+import br.com.sebratel.bff.dho.domain.entity.Opportunity;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoPosition;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStatus;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoRole;
 import br.com.sebratel.bff.dho.domain.repository.DhoProcessStatusRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +37,9 @@ public class RecruitmentProcessServiceTest {
 
     @Mock
     private PeopleRepository peopleRepository;
+
+    @Mock
+    private DhoRoleRepository roleRepository;
 
     @InjectMocks
     private RecruitmentProcessService recruitmentProcessService;
@@ -101,6 +110,12 @@ public class RecruitmentProcessServiceTest {
 
     @Test
     void getProcessesByRecruiter_ShouldReturnProcesses() {
+        People recruiter = new People();
+        recruiter.setId(1);
+        DhoRole role = new DhoRole();
+        role.setName("Recrutador");
+        recruiter.setRole(role);
+
         Opportunity opportunity = new Opportunity();
         opportunity.setId(10);
         DhoPosition position = new DhoPosition();
@@ -110,6 +125,7 @@ public class RecruitmentProcessServiceTest {
         process.setOpportunity(opportunity);
         process.setProcessStatus(status);
 
+        when(peopleRepository.findById(1)).thenReturn(Optional.of(recruiter));
         when(recruitmentProcessRepository.findByOpportunityResponsibleRecruiterId(1))
                 .thenReturn(List.of(process));
 
@@ -120,5 +136,4 @@ public class RecruitmentProcessServiceTest {
         assertEquals("Developer", result.get(0).getPositionName());
         assertEquals(10, result.get(0).getOpportunityId());
     }
-
 }
