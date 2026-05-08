@@ -1,4 +1,6 @@
 package br.com.sebratel.bff.dho.controller;
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+
 
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
@@ -26,5 +28,17 @@ public class OpportunityController {
     @PostMapping
     public ResponseEntity<OpportunityResponseDTO> createOpportunity(@RequestBody @Valid OpportunityRequestDTO opportunityRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(opportunityService.create(opportunityRequestDTO));
+    }
+
+    @PostMapping("/{id}/approve")
+    public ResponseEntity<OpportunityResponseDTO> approveOpportunity(@PathVariable Integer id) {
+        return ResponseEntity.ok(opportunityService.approve(id));
+    }
+
+    @PostMapping("/{id}/refuse")
+    public ResponseEntity<OpportunityResponseDTO> refuseOpportunity(
+            @PathVariable Integer id,
+            @RequestBody @Valid OpportunityApprovalDTO approvalDTO) {
+        return ResponseEntity.ok(opportunityService.refuse(id, approvalDTO));
     }
 }

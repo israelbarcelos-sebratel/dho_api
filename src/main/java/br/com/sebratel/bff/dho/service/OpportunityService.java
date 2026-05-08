@@ -4,6 +4,9 @@ import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
 public class OpportunityService {
 
     private final OpportunityRepository opportunityRepository;
+    private final DhoOpportunityStatusRepository statusRepository;
+
 
     public List<OpportunityResponseDTO> findAll() {
         return opportunityRepository.findAll().stream()
@@ -53,8 +58,37 @@ public class OpportunityService {
                 .build();
 
         Opportunity saved = opportunityRepository.save(opportunity);
-        return findById(saved.getId());
+        return convertToDTO(saved);
     }
+    @Transactional
+    public OpportunityResponseDTO approve(Integer id) {
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        DhoOpportunityStatus approvedStatus = statusRepository.findByName("Aprovada")
+                .orElseThrow(() -> new RuntimeException("Status 'Aprovada' não encontrado"));
+
+        opportunity.setOpportunityStatus(approvedStatus);
+        return convertToDTO(opportunityRepository.save(opportunity));
+    }
+
+    @Transactional
+    public OpportunityResponseDTO refuse(Integer id, OpportunityApprovalDTO dto) {
+        if (dto.justification() == null || dto.justification().length() < 200) {
+            throw new RuntimeException("A justificativa de recusa deve ter no mínimo 200 caracteres");
+        }
+
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        DhoOpportunityStatus refusedStatus = statusRepository.findByName("Recusada")
+                .orElseThrow(() -> new RuntimeException("Status 'Recusada' não encontrado"));
+
+        opportunity.setOpportunityStatus(refusedStatus);
+        opportunity.setRefusalJustification(dto.justification());
+        return convertToDTO(opportunityRepository.save(opportunity));
+    }
+
 
     private OpportunityResponseDTO convertToDTO(Opportunity opportunity) {
         return OpportunityResponseDTO.builder()
@@ -74,6 +108,7 @@ public class OpportunityService {
                 .acceptDate(opportunity.getAcceptDate())
                 .responsibleRecruiterName(opportunity.getResponsibleRecruiter() != null ? opportunity.getResponsibleRecruiter().getName() : null)
                 .observations(opportunity.getObservations())
+                .refusalJustification(opportunity.getRefusalJustification())
                 .build();
     }
 }
