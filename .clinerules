@@ -1,0 +1,5 @@
+# Kanban Workflow Rules
+
+- **Branching Strategy:** NEVER work directly on the `main` branch. All development and task-related changes must be performed on the `staging` branch.
+- **Requirements Analysis:** ALWAYS read the specification files in the `specs/` directory before starting any coding task to ensure alignment with business requirements (RQs).
+- **Commiting:** After completing a task, ensure changes are committed to the `staging` branch.
