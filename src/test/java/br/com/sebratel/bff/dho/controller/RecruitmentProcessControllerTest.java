@@ -65,4 +65,12 @@ public class RecruitmentProcessControllerTest {
         mockMvc.perform(post("/recruitment-processes/1/withdraw"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void hire_ShouldReturnOk() throws Exception {
+        doNothing().when(recruitmentProcessService).hire(1);
+
+        mockMvc.perform(post("/recruitment-processes/1/hire"))
+                .andExpect(status().isOk());
+    }
 }

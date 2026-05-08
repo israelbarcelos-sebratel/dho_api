@@ -29,4 +29,4 @@ O gestor deve poder iniciar o pedido de uma nova vaga para o DHO, o DHO deve val
 - [ ] **RQ14:** Decisão em entrevista.
 - [ ] **RQ15:** Tela de acompanhamento de processos pós-aprovação.
 - [ ] **RQ16:** Upload de documentos em massa.
-- [ ] **RQ17:** Finalizar contratação ou marcar recusa.
+- [x] **RQ17:** Finalizar contratação ou marcar recusa.

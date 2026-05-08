@@ -31,4 +31,10 @@ public class RecruitmentProcessController {
         recruitmentProcessService.withdraw(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{id}/hire")
+    public ResponseEntity<Void> hire(@PathVariable Integer id) {
+        recruitmentProcessService.hire(id);
+        return ResponseEntity.ok().build();
+    }
 }
