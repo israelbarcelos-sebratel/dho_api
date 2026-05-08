@@ -5,6 +5,7 @@ import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoRecruitmentSource;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoResignationMotivation;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoResignationType;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoSituation;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -101,4 +102,8 @@ public class People {
     @ManyToOne
     @JoinColumn(name = "id_recruitment_source")
     private DhoRecruitmentSource recruitmentSource;
+
+    @ManyToOne
+    @JoinColumn(name = "id_role")
+    private DhoRole role;
 }

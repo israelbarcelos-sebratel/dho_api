@@ -28,4 +28,6 @@ public class OpportunityResponseDTO {
     private LocalDateTime acceptDate;
     private String responsibleRecruiterName;
     private String observations;
+    private String refusalJustification;
+    private String finalizationJustification;
 }

@@ -81,4 +81,10 @@ public class Opportunity {
     private People responsibleRecruiter;
 
     private String observations;
+
+    @Column(name = "refusal_justification", length = 1000)
+    private String refusalJustification;
+
+    @Column(name = "finalization_justification", length = 1000)
+    private String finalizationJustification;
 }

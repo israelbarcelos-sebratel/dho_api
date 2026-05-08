@@ -1,10 +1,21 @@
 package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
+import br.com.sebratel.bff.dho.domain.entity.People;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
+import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
+import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
+import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
+
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+
+import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,12 +25,104 @@ import java.util.stream.Collectors;
 public class OpportunityService {
 
     private final OpportunityRepository opportunityRepository;
+    private final DhoOpportunityStatusRepository statusRepository;
+    private final RecruitmentProcessRepository recruitmentProcessRepository;
+
+    public List<CandidateResponseDTO> findCandidatesByOpportunityId(Integer id) {
+        return recruitmentProcessRepository.findByOpportunityId(id).stream()
+                .map(rp -> CandidateResponseDTO.builder()
+                        .id(rp.getCandidate().getId())
+                        .name(rp.getCandidate().getName())
+                        .processStage(rp.getProcessStage() != null ? rp.getProcessStage().getName() : null)
+                        .processStatus(rp.getProcessStatus() != null ? rp.getProcessStatus().getName() : null)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+
 
     public List<OpportunityResponseDTO> findAll() {
         return opportunityRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+    public OpportunityResponseDTO findById(Integer id) {
+        return opportunityRepository.findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+    }
+
+
+
+    @Transactional
+    public OpportunityResponseDTO create(OpportunityRequestDTO dto) {
+        Opportunity opportunity = Opportunity.builder()
+                .openOpportunityDate(dto.openOpportunityDate())
+                .candidate(dto.candidateId() != null ? People.builder().id(dto.candidateId()).build() : null)
+                .position(dto.positionId() != null ? DhoPosition.builder().id(dto.positionId()).build() : null)
+                .team(dto.teamId() != null ? DhoTeam.builder().id(dto.teamId()).build() : null)
+                .department(dto.departmentId() != null ? DhoDepartment.builder().id(dto.departmentId()).build() : null)
+                .opportunityMotive(dto.opportunityMotiveId() != null ? DhoOpportunityMotive.builder().id(dto.opportunityMotiveId()).build() : null)
+                .replacedPerson(dto.replacedPersonId() != null ? People.builder().id(dto.replacedPersonId()).build() : null)
+                .baseOrigin(dto.baseOriginId() != null ? DhoBaseOrigin.builder().id(dto.baseOriginId()).build() : null)
+                .opportunityStatus(dto.opportunityStatusId() != null ? DhoOpportunityStatus.builder().id(dto.opportunityStatusId()).build() : null)
+                .processStage(dto.processStageId() != null ? DhoProcessStage.builder().id(dto.processStageId()).build() : null)
+                .processStatus(dto.processStatusId() != null ? DhoProcessStatus.builder().id(dto.processStatusId()).build() : null)
+                .deadlineSlaDays(dto.deadlineSlaDays())
+                .acceptDate(dto.acceptDate())
+                .responsibleRecruiter(dto.responsibleRecruiterId() != null ? People.builder().id(dto.responsibleRecruiterId()).build() : null)
+                .observations(dto.observations())
+                .build();
+
+        Opportunity saved = opportunityRepository.save(opportunity);
+        return convertToDTO(saved);
+    }
+    @Transactional
+    public OpportunityResponseDTO approve(Integer id) {
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        DhoOpportunityStatus approvedStatus = statusRepository.findByName("Aprovada")
+                .orElseThrow(() -> new RuntimeException("Status 'Aprovada' não encontrado"));
+
+        opportunity.setOpportunityStatus(approvedStatus);
+        return convertToDTO(opportunityRepository.save(opportunity));
+    }
+
+    @Transactional
+    public OpportunityResponseDTO refuse(Integer id, OpportunityApprovalDTO dto) {
+        if (dto.justification() == null || dto.justification().length() < 200) {
+            throw new RuntimeException("A justificativa de recusa deve ter no mínimo 200 caracteres");
+        }
+
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        DhoOpportunityStatus refusedStatus = statusRepository.findByName("Recusada")
+                .orElseThrow(() -> new RuntimeException("Status 'Recusada' não encontrado"));
+
+        opportunity.setOpportunityStatus(refusedStatus);
+        opportunity.setRefusalJustification(dto.justification());
+        return convertToDTO(opportunityRepository.save(opportunity));
+    }
+
+    @Transactional
+    public OpportunityResponseDTO finalize(Integer id, OpportunityApprovalDTO dto) {
+        if (dto.justification() == null || dto.justification().length() < 200) {
+            throw new RuntimeException("A justificativa de finalização deve ter no mínimo 200 caracteres");
+        }
+
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        DhoOpportunityStatus finalizedStatus = statusRepository.findByName("Finalizada")
+                .orElseThrow(() -> new RuntimeException("Status 'Finalizada' não encontrado"));
+
+        opportunity.setOpportunityStatus(finalizedStatus);
+        opportunity.setFinalizationJustification(dto.justification());
+        return convertToDTO(opportunityRepository.save(opportunity));
+    }
+
 
     private OpportunityResponseDTO convertToDTO(Opportunity opportunity) {
         return OpportunityResponseDTO.builder()
@@ -39,6 +142,8 @@ public class OpportunityService {
                 .acceptDate(opportunity.getAcceptDate())
                 .responsibleRecruiterName(opportunity.getResponsibleRecruiter() != null ? opportunity.getResponsibleRecruiter().getName() : null)
                 .observations(opportunity.getObservations())
+                .refusalJustification(opportunity.getRefusalJustification())
+                .finalizationJustification(opportunity.getFinalizationJustification())
                 .build();
     }
 }

@@ -79,6 +79,20 @@ Tracks the individual recruitment process of a candidate for a specific opportun
 | `recruitment_source_id` | INT (FK) | Links to `recruitment_source` |
 | `situation_id` | INT (FK) | Links to `situation` |
 
+
+### 4. `documents`
+Stores documents uploaded for candidates.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | INT (PK) | Unique identifier (Identity) |
+| `file_name` | VARCHAR | Original file name |
+| `file_type` | VARCHAR | MIME type of the file |
+| `file_path` | VARCHAR | Physical path where the file is stored |
+| `people_id` | INT (FK) | Candidate ID (links to `people`) |
+| `document_type_id` | INT (FK) | Document type ID (links to `document_type`) |
+| `upload_date` | DATETIME | When the document was uploaded |
+
 ---
 
 ## Auxiliary Tables
@@ -99,6 +113,8 @@ Most auxiliary tables follow a standard structure: `id`, `name`, and `descriptio
 | `opportunity_motive`| `DhoOpportunityMotive`| `id`, `opportunity_motive_name`, `opportunity_motive_description` |
 | `team` | `DhoTeam` | `id`, `team_name`, `team_description`, `manager_id` (FK to `people`) |
 | `process_status` | `DhoProcessStatus` | `id`, `process_status_name`, `process_status_description` |
+| `document_type` | `DhoDocumentType` | `id`, `document_type_name`, `document_type_description` |
+
 
 ---
 

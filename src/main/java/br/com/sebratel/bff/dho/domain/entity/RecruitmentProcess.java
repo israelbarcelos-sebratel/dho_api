@@ -4,6 +4,8 @@ import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStage;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStatus;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoRecruitmentSource;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoSituation;
+import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -50,4 +52,7 @@ public class RecruitmentProcess {
     @ManyToOne
     @JoinColumn(name = "situation_id")
     private DhoSituation situation;
+
+    @Column(name = "interview_report", length = 1000)
+    private String interviewReport;
 }
