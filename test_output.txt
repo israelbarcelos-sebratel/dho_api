@@ -17,7 +17,7 @@
 [INFO] 
 [INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dho-api ---
 [INFO] Recompiling the module because of changed source code.
-[INFO] Compiling 14 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] Compiling 15 source files with javac [debug parameters release 21] to target/test-classes
 [INFO] Annotation processing is enabled because one or more processors were found
   on the class path. A future release of javac may disable annotation processing
   unless at least one processor is specified by name (-processor), or a search
@@ -25,48 +25,48 @@
   processing is enabled explicitly (-proc:only, -proc:full).
   Use -Xlint:-options to suppress this message.
   Use -proc:none to disable annotation processing.
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[WARNING] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
-[INFO] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/admin/AdminPeopleControllerTest.java: Some input files use unchecked or unsafe operations.
-[INFO] /home/israelbarcelos/.cline/worktrees/832e3/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/admin/AdminPeopleControllerTest.java: Recompile with -Xlint:unchecked for details.
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[INFO] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/admin/AdminPeopleControllerTest.java: Some input files use unchecked or unsafe operations.
+[INFO] /home/israelbarcelos/.cline/worktrees/dae81/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/admin/AdminPeopleControllerTest.java: Recompile with -Xlint:unchecked for details.
 [INFO] 
 [INFO] --- surefire:3.5.2:test (default-test) @ dho-api ---
 [INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
@@ -74,11 +74,9 @@
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
-[INFO] Running br.com.sebratel.bff.dho.service.RecruitmentProcessServiceTest
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.279 s -- in br.com.sebratel.bff.dho.service.RecruitmentProcessServiceTest
-[INFO] Running br.com.sebratel.bff.dho.controller.RecruitmentProcessControllerTest
-16:21:35.576 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [br.com.sebratel.bff.dho.controller.RecruitmentProcessControllerTest]: RecruitmentProcessControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-16:21:35.750 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration br.com.sebratel.bff.dho.DhoApiApplication for test class br.com.sebratel.bff.dho.controller.RecruitmentProcessControllerTest
+[INFO] Running br.com.sebratel.bff.dho.controller.RequisitionControllerIntegrationTest
+17:44:16.307 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [br.com.sebratel.bff.dho.controller.RequisitionControllerIntegrationTest]: RequisitionControllerIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+17:44:16.438 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration br.com.sebratel.bff.dho.DhoApiApplication for test class br.com.sebratel.bff.dho.controller.RequisitionControllerIntegrationTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -89,22 +87,51 @@
 
  :: Spring Boot ::                (v3.4.3)
 
-2026-05-11T16:21:36.019-03:00  INFO 17691 --- [           main] s.b.d.c.RecruitmentProcessControllerTest : Starting RecruitmentProcessControllerTest using Java 21.0.10 with PID 17691 (started by israelbarcelos in /home/israelbarcelos/.cline/worktrees/832e3/dho-api)
-2026-05-11T16:21:36.020-03:00  INFO 17691 --- [           main] s.b.d.c.RecruitmentProcessControllerTest : No active profile set, falling back to 1 default profile: "default"
-2026-05-11T16:21:37.211-03:00  INFO 17691 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-05-11T16:21:37.212-03:00  INFO 17691 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-05-11T16:21:37.214-03:00  INFO 17691 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2026-05-11T16:21:37.240-03:00  INFO 17691 --- [           main] s.b.d.c.RecruitmentProcessControllerTest : Started RecruitmentProcessControllerTest in 1.445 seconds (process running for 3.508)
-2026-05-11T16:21:37.389-03:00 ERROR 17691 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de validação: Validation failed for argument [1] in public org.springframework.http.ResponseEntity<java.lang.Void> br.com.sebratel.bff.dho.controller.RecruitmentProcessController.refuse(java.lang.Integer,br.com.sebratel.bff.dho.dto.InterviewDecisionDTO): [Field error in object 'interviewDecisionDTO' on field 'report': rejected value [Too short]; codes [Size.interviewDecisionDTO.report,Size.report,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [interviewDecisionDTO.report,report]; arguments []; default message [report],2147483647,200]; default message [O relato detalhado deve ter no mínimo 200 caracteres]] 
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.011 s -- in br.com.sebratel.bff.dho.controller.RecruitmentProcessControllerTest
+2026-05-11T17:44:16.749-03:00  INFO 62779 --- [           main] d.c.RequisitionControllerIntegrationTest : Starting RequisitionControllerIntegrationTest using Java 21.0.10 with PID 62779 (started by israelbarcelos in /home/israelbarcelos/.cline/worktrees/dae81/dho-api)
+2026-05-11T17:44:16.750-03:00  INFO 62779 --- [           main] d.c.RequisitionControllerIntegrationTest : No active profile set, falling back to 1 default profile: "default"
+2026-05-11T17:44:17.779-03:00  INFO 62779 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-11T17:44:17.874-03:00  INFO 62779 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 84 ms. Found 14 JPA repository interfaces.
+2026-05-11T17:44:18.455-03:00  INFO 62779 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-11T17:44:18.500-03:00  INFO 62779 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.8.Final
+2026-05-11T17:44:18.528-03:00  INFO 62779 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-05-11T17:44:18.699-03:00  INFO 62779 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-11T17:44:18.718-03:00  INFO 62779 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-05-11T17:44:18.830-03:00  INFO 62779 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-05-11T17:44:18.831-03:00  INFO 62779 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-05-11T17:44:18.849-03:00  WARN 62779 --- [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-11T17:44:18.865-03:00  INFO 62779 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-05-11T17:44:19.755-03:00  INFO 62779 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-11T17:44:19.852-03:00  INFO 62779 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-11T17:44:20.287-03:00  INFO 62779 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-05-11T17:44:21.043-03:00  WARN 62779 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-11T17:44:21.681-03:00  INFO 62779 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-05-11T17:44:21.682-03:00  INFO 62779 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-05-11T17:44:21.683-03:00  INFO 62779 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-05-11T17:44:21.703-03:00  INFO 62779 --- [           main] d.c.RequisitionControllerIntegrationTest : Started RequisitionControllerIntegrationTest in 5.165 seconds (process running for 5.957)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/home/israelbarcelos/.m2/repository/net/bytebuddy/byte-buddy-agent/1.15.11/byte-buddy-agent-1.15.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-05-11T17:44:22.143-03:00  INFO 62779 --- [           main] b.c.s.b.dho.service.OpportunityService   : Buscando requisições para o usuário: manager@test.com
+2026-05-11T17:44:22.200-03:00  INFO 62779 --- [           main] b.c.s.b.dho.service.OpportunityService   : Retornando 1 requisições para o email manager@test.com
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.089 s -- in br.com.sebratel.bff.dho.controller.RequisitionControllerIntegrationTest
 [INFO] 
 [INFO] Results:
 [INFO] 
-[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 [INFO] 
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  6.667 s
-[INFO] Finished at: 2026-05-11T16:21:37-03:00
+[INFO] Total time:  9.517 s
+[INFO] Finished at: 2026-05-11T17:44:22-03:00
 [INFO] ------------------------------------------------------------------------

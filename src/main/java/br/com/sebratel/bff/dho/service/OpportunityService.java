@@ -210,7 +210,8 @@ public class OpportunityService {
         if (hasPermission(authentication, Permission.view_all_requests)) {
             return findAll();
         }
-        return opportunityRepository.findByRequesterEmail(authentication.getName()).stream()
+        String email = authentication != null ? authentication.getName() : "";
+        return opportunityRepository.findByRequesterEmail(email).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
