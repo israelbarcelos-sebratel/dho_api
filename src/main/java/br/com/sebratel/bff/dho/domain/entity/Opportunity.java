@@ -43,7 +43,7 @@ public class Opportunity {
     private DhoTeam team;
 
     @ManyToOne
-    @JoinColumn(name = "departament_id")
+    @JoinColumn(name = "department_id")
     private DhoDepartment department;
 
     @ManyToOne
@@ -87,4 +87,13 @@ public class Opportunity {
 
     @Column(name = "finalization_justification", length = 1000)
     private String finalizationJustification;
+
+    @Column(name = "work_schedule")
+    private String workSchedule;
+
+    @Column(name = "hard_skills", length = 2000)
+    private String hardSkills;
+
+    @Column(name = "soft_skills", length = 2000)
+    private String softSkills;
 }

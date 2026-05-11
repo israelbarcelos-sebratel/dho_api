@@ -30,4 +30,7 @@ public class OpportunityResponseDTO {
     private String observations;
     private String refusalJustification;
     private String finalizationJustification;
+    private String workSchedule;
+    private String hardSkills;
+    private String softSkills;
 }

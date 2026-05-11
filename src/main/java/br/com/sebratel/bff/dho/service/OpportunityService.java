@@ -17,8 +17,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +37,8 @@ public class OpportunityService {
                 .map(rp -> CandidateResponseDTO.builder()
                         .id(rp.getCandidate().getId())
                         .name(rp.getCandidate().getName())
-                        .processStage(rp.getProcessStage() != null ? rp.getProcessStage().getName() : null)
-                        .processStatus(rp.getProcessStatus() != null ? rp.getProcessStatus().getName() : null)
+                        .processStage(mapName(rp.getProcessStage(), DhoProcessStage::getName))
+                        .processStatus(mapName(rp.getProcessStatus(), DhoProcessStatus::getName))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -56,22 +60,28 @@ public class OpportunityService {
 
     @Transactional
     public OpportunityResponseDTO create(OpportunityRequestDTO dto) {
+        DhoOpportunityStatus pendingStatus = statusRepository.findByName("Pendente")
+                .orElseThrow(() -> new RuntimeException("Status 'Pendente' não encontrado"));
+
         Opportunity opportunity = Opportunity.builder()
-                .openOpportunityDate(dto.openOpportunityDate())
-                .candidate(dto.candidateId() != null ? People.builder().id(dto.candidateId()).build() : null)
-                .position(dto.positionId() != null ? DhoPosition.builder().id(dto.positionId()).build() : null)
-                .team(dto.teamId() != null ? DhoTeam.builder().id(dto.teamId()).build() : null)
-                .department(dto.departmentId() != null ? DhoDepartment.builder().id(dto.departmentId()).build() : null)
-                .opportunityMotive(dto.opportunityMotiveId() != null ? DhoOpportunityMotive.builder().id(dto.opportunityMotiveId()).build() : null)
-                .replacedPerson(dto.replacedPersonId() != null ? People.builder().id(dto.replacedPersonId()).build() : null)
-                .baseOrigin(dto.baseOriginId() != null ? DhoBaseOrigin.builder().id(dto.baseOriginId()).build() : null)
-                .opportunityStatus(dto.opportunityStatusId() != null ? DhoOpportunityStatus.builder().id(dto.opportunityStatusId()).build() : null)
-                .processStage(dto.processStageId() != null ? DhoProcessStage.builder().id(dto.processStageId()).build() : null)
-                .processStatus(dto.processStatusId() != null ? DhoProcessStatus.builder().id(dto.processStatusId()).build() : null)
+                .openOpportunityDate(Optional.ofNullable(dto.openOpportunityDate()).orElse(LocalDateTime.now()))
+                .candidate(mapReference(dto.candidateId(), id -> People.builder().id(id).build()))
+                .position(mapReference(dto.positionId(), id -> DhoPosition.builder().id(id).build()))
+                .team(mapReference(dto.teamId(), id -> DhoTeam.builder().id(id).build()))
+                .department(mapReference(dto.departmentId(), id -> DhoDepartment.builder().id(id).build()))
+                .opportunityMotive(mapReference(dto.opportunityMotiveId(), id -> DhoOpportunityMotive.builder().id(id).build()))
+                .replacedPerson(mapReference(dto.replacedPersonId(), id -> People.builder().id(id).build()))
+                .baseOrigin(mapReference(dto.baseOriginId(), id -> DhoBaseOrigin.builder().id(id).build()))
+                .opportunityStatus(pendingStatus)
+                .processStage(mapReference(dto.processStageId(), id -> DhoProcessStage.builder().id(id).build()))
+                .processStatus(mapReference(dto.processStatusId(), id -> DhoProcessStatus.builder().id(id).build()))
                 .deadlineSlaDays(dto.deadlineSlaDays())
                 .acceptDate(dto.acceptDate())
-                .responsibleRecruiter(dto.responsibleRecruiterId() != null ? People.builder().id(dto.responsibleRecruiterId()).build() : null)
+                .responsibleRecruiter(mapReference(dto.responsibleRecruiterId(), id -> People.builder().id(id).build()))
                 .observations(dto.observations())
+                .workSchedule(dto.workSchedule())
+                .hardSkills(dto.hardSkills())
+                .softSkills(dto.softSkills())
                 .build();
 
         Opportunity saved = opportunityRepository.save(opportunity);
@@ -128,22 +138,33 @@ public class OpportunityService {
         return OpportunityResponseDTO.builder()
                 .id(opportunity.getId())
                 .openOpportunityDate(opportunity.getOpenOpportunityDate())
-                .candidateName(opportunity.getCandidate() != null ? opportunity.getCandidate().getName() : null)
-                .positionName(opportunity.getPosition() != null ? opportunity.getPosition().getName() : null)
-                .teamName(opportunity.getTeam() != null ? opportunity.getTeam().getName() : null)
-                .departmentName(opportunity.getDepartment() != null ? opportunity.getDepartment().getName() : null)
-                .opportunityMotiveName(opportunity.getOpportunityMotive() != null ? opportunity.getOpportunityMotive().getName() : null)
-                .replacedPersonName(opportunity.getReplacedPerson() != null ? opportunity.getReplacedPerson().getName() : null)
-                .baseOriginName(opportunity.getBaseOrigin() != null ? opportunity.getBaseOrigin().getName() : null)
-                .opportunityStatusName(opportunity.getOpportunityStatus() != null ? opportunity.getOpportunityStatus().getName() : null)
-                .processStageName(opportunity.getProcessStage() != null ? opportunity.getProcessStage().getName() : null)
-                .processStatusName(opportunity.getProcessStatus() != null ? opportunity.getProcessStatus().getName() : null)
+                .candidateName(mapName(opportunity.getCandidate(), People::getName))
+                .positionName(mapName(opportunity.getPosition(), DhoPosition::getName))
+                .teamName(mapName(opportunity.getTeam(), DhoTeam::getName))
+                .departmentName(mapName(opportunity.getDepartment(), DhoDepartment::getName))
+                .opportunityMotiveName(mapName(opportunity.getOpportunityMotive(), DhoOpportunityMotive::getName))
+                .replacedPersonName(mapName(opportunity.getReplacedPerson(), People::getName))
+                .baseOriginName(mapName(opportunity.getBaseOrigin(), DhoBaseOrigin::getName))
+                .opportunityStatusName(mapName(opportunity.getOpportunityStatus(), DhoOpportunityStatus::getName))
+                .processStageName(mapName(opportunity.getProcessStage(), DhoProcessStage::getName))
+                .processStatusName(mapName(opportunity.getProcessStatus(), DhoProcessStatus::getName))
                 .deadlineSlaDays(opportunity.getDeadlineSlaDays())
                 .acceptDate(opportunity.getAcceptDate())
-                .responsibleRecruiterName(opportunity.getResponsibleRecruiter() != null ? opportunity.getResponsibleRecruiter().getName() : null)
+                .responsibleRecruiterName(mapName(opportunity.getResponsibleRecruiter(), People::getName))
                 .observations(opportunity.getObservations())
                 .refusalJustification(opportunity.getRefusalJustification())
                 .finalizationJustification(opportunity.getFinalizationJustification())
+                .workSchedule(opportunity.getWorkSchedule())
+                .hardSkills(opportunity.getHardSkills())
+                .softSkills(opportunity.getSoftSkills())
                 .build();
+    }
+
+    private <T, ID> T mapReference(ID id, Function<ID, T> builder) {
+        return Optional.ofNullable(id).map(builder).orElse(null);
+    }
+
+    private <T, R> R mapName(T entity, Function<T, R> mapper) {
+        return Optional.ofNullable(entity).map(mapper).orElse(null);
     }
 }

@@ -5,6 +5,9 @@ import java.util.List;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import br.com.sebratel.bff.dho.service.OpportunityService;
+import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoPermissionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,15 @@ public class OpportunityControllerTest {
 
     @MockBean
     private OpportunityService opportunityService;
+
+    @MockBean
+    private PeopleRepository peopleRepository;
+
+    @MockBean
+    private DhoRoleRepository roleRepository;
+
+    @MockBean
+    private DhoPermissionRepository permissionRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
