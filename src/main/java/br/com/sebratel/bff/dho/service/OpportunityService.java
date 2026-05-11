@@ -90,8 +90,6 @@ public class OpportunityService {
                 .replacedPerson(mapReference(dto.replacedPersonId(), id -> People.builder().id(id).build()))
                 .baseOrigin(mapReference(dto.baseOriginId(), id -> DhoBaseOrigin.builder().id(id).build()))
                 .opportunityStatus(pendingStatus)
-                .processStage(mapReference(dto.processStageId(), id -> DhoProcessStage.builder().id(id).build()))
-                .processStatus(mapReference(dto.processStatusId(), id -> DhoProcessStatus.builder().id(id).build()))
                 .deadlineSlaDays(dto.deadlineSlaDays())
                 .acceptDate(dto.acceptDate())
                 .responsibleRecruiter(mapReference(dto.responsibleRecruiterId(), id -> People.builder().id(id).build()))

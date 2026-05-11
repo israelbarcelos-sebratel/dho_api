@@ -61,20 +61,12 @@ public class Opportunity {
     @ManyToOne
     @JoinColumn(name = "opportunity_status_id")
     private DhoOpportunityStatus opportunityStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "process_stage_id")
-    private DhoProcessStage processStage;
-
-    @ManyToOne
-    @JoinColumn(name = "process_status_id")
-    private DhoProcessStatus processStatus;
-
     @Column(name = "deadline_sla_days")
     private Integer deadlineSlaDays;
 
     @Column(name = "accept_date")
     private LocalDateTime acceptDate;
+
 
     @ManyToOne
     @JoinColumn(name = "responsible_recruiter_id")
