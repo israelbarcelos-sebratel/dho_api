@@ -13,6 +13,7 @@ public enum Permission {
     suggestions("Usuário pode ler, criar e votar em sugestões"),
     DEFAULT("Permissão padrão"),
     initiate_contract_process("Usuário pode ler, criar e votar em sugestões"),
+    approve_contract_proccess("Erro de digitação no banco (proccess)"),
     approve_contract_process("Permite aprovar ou reprovar requisições de pessoal pendentes"),
     add_candidate("Usuário pode ler, criar e votar em sugestões"),
     approve_candidate("Usuário pode ler, criar e votar em sugestões"),
