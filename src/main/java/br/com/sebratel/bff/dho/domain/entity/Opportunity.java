@@ -43,7 +43,7 @@ public class Opportunity {
     private DhoTeam team;
 
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "departament_id")
     private DhoDepartment department;
 
     @ManyToOne
