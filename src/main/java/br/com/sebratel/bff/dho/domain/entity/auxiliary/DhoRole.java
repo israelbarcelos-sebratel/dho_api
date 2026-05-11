@@ -11,8 +11,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import java.util.Set;
+
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,9 +28,17 @@ public class DhoRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "role_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "role_description")
+    @Column(name = "description")
     private String description;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "role_permissions",
+        joinColumns = @JoinColumn(name = "role_id"),
+        inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<DhoPermission> permissions;
 }

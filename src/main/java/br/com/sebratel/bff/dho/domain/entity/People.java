@@ -6,20 +6,14 @@ import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoResignationMotivation;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoResignationType;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoSituation;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoRole;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "people")
@@ -39,6 +33,8 @@ public class People {
     private Integer registrationNumber;
 
     private String name;
+
+    private String email;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -103,7 +99,11 @@ public class People {
     @JoinColumn(name = "id_recruitment_source")
     private DhoRecruitmentSource recruitmentSource;
 
-    @ManyToOne
-    @JoinColumn(name = "id_role")
-    private DhoRole role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "people_roles",
+        joinColumns = @JoinColumn(name = "people_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<DhoRole> roles;
 }

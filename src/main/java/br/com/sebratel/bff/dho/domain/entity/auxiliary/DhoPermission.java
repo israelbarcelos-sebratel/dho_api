@@ -12,12 +12,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "departments")
+@Table(name = "permissions")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DhoDepartment {
+public class DhoPermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

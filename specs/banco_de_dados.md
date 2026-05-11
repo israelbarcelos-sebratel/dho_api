@@ -13,6 +13,7 @@ Centraliza as informações de todos os indivíduos no sistema (candidatos, cola
 | `profile_image` | String | Caminho ou link da imagem de perfil. |
 | `registration_number` | Integer | Número de matrícula/registro. |
 | `name` | String | Nome completo. |
+ | `email` | String | Email do usuário. |
 | `phone_number` | String | Telefone de contato. |
 | `cpf` | String | Cadastro de Pessoa Física. |
 | `rg` | String | Registro Geral. |
@@ -35,8 +36,55 @@ Centraliza as informações de todos os indivíduos no sistema (candidatos, cola
 | `id_situation` | Integer (FK) | Referência a `situation`. |
 | `id_recruitment_source` | Integer (FK) | Referência a `recruitment_source`. |
 
+### 1.2. `roles`
+Define os papéis de acesso no sistema (ex: ADMIN, GESTOR, COLABORADOR).
 
-### 1.2. `opportunities`
+| Campo | Tipo | Descrição |
+|-------|------|-------------|
+| `id` | Integer (PK) | Identificador único. |
+| `name` | String | Nome do papel. |
+| `description` | String | Descrição das responsabilidades. |
+
+### 1.3. `permissions`
+Define permissões granulares para funcionalidades do sistema.
+
+| Campo | Tipo | Descrição |
+|-------|------|-------------|
+| `id` | Integer (PK) | Identificador único. |
+| `name` | String | Nome da permissão (ex: sugerir_ideia). |
+| `description` | String | O que a permissão permite fazer. |
+
+### 1.4. `people_roles` (Tabela de Ligação)
+Relaciona pessoas a papéis (roles).
+
+| Campo | Tipo | Descrição |
+|-------|------|-------------|
+| `people_id` | Integer (PK, FK)| Link com `people`. |
+| `role_id` | Integer (PK, FK)| Link com `roles`. |
+
+### 1.5. `role_permissions` (Tabela de Ligação)
+Relaciona papéis a permissões.
+
+| Campo | Tipo | Descrição |
+|-------|------|-------------|
+| `role_id` | Integer (PK, FK)| Link com `roles`. |
+| `permission_id` | Integer (PK, FK)| Link com `permissions`. |
+
+
+### 1.6. `role_requests`
+Gerencia solicitações de papéis feitas pelos usuários.
+
+| Campo | Tipo | Descrição |
+|-------|------|-------------|
+| `id` | Integer (PK) | Identificador único. |
+| `people_id` | Integer (FK) | Usuário que solicitou. |
+| `role_id` | Integer (FK) | Papel solicitado. |
+| `status` | String | Status (PENDING, APPROVED, REJECTED). |
+| `request_date` | LocalDateTime| Data da solicitação. |
+| `resolution_date`| LocalDateTime| Data de aprovação/rejeição. |
+
+
+### 1.7. `opportunities`
 Gerencia as vagas e o ciclo de vida da abertura de oportunidades.
 
 | Campo | Tipo (JPA/SQL) | Descrição |
@@ -59,7 +107,7 @@ Gerencia as vagas e o ciclo de vida da abertura de oportunidades.
 | `observations` | String | Observações da oportunidade. |
 | `refusal_justification` | String (1000) | Justificativa em caso de recusa. |
 
-### 1.3. `recruitment_process`
+### 1.8. `recruitment_process`
 Acompanha a jornada específica de um candidato dentro de uma oportunidade.
 
 | Campo | Tipo (JPA/SQL) | Descrição |
@@ -73,7 +121,7 @@ Acompanha a jornada específica de um candidato dentro de uma oportunidade.
 | `situation_id` | Integer (FK) | Referência à situação atual. |
 | `interview_report` | String (1000) | Relatório/parecer da entrevista. |
 
-### 1.4. `suggestions` & `suggestions_votes`
+### 1.9. `suggestions` & `suggestions_votes`
 Sistema de feedback e sugestões.
 
 **Tabela `suggestions`**:

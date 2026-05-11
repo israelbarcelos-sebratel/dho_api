@@ -17,6 +17,7 @@ Represents individuals involved in the recruitment and organizational process (c
 | `profile_image` | VARCHAR | Path or link to profile image |
 | `registration_number`| INT | Employee registration number |
 | `name` | VARCHAR | Full name |
+ | `email` | VARCHAR | User email |
 | `phone_number` | VARCHAR | Contact phone |
 | `cpf` | VARCHAR | Brazilian tax ID |
 | `rg` | VARCHAR | General registry number |
@@ -37,6 +38,7 @@ Represents individuals involved in the recruitment and organizational process (c
 | `id_resignation_type` | INT (FK) | Links to `resignation_type` |
 | `id_education` | INT (FK) | Links to `education` |
 | `id_situation` | INT (FK) | Links to `situation` |
+ | \n | ### 1.1. `people_roles` (Join Table)\n | Links individuals to their roles.\n | \n | | Field | Type | Description |\n | |-------|------|-------------|\n | | `people_id` | INT (PK, FK) | Links to `people` |\n | | `role_id` | INT (FK) | Links to `role` |\n
 | `id_recruitment_source` | INT (FK) | Links to `recruitment_source` |
 
 ---
