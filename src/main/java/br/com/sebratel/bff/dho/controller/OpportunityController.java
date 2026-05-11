@@ -30,14 +30,14 @@ public class OpportunityController {
     private final OpportunityService opportunityService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).VIEW_ALL_REQUESTS.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).VIEW_JOB_TRACKING.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_all_requests.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_job_tracking.name())")
     @Operation(summary = "Listar todas as oportunidades", description = "Retorna uma lista com todas as oportunidades cadastradas.")
     public ResponseEntity<List<OpportunityResponseDTO>> getAllOpportunities() {
         return ResponseEntity.ok(opportunityService.findAll());
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).INITIATE_CONTRACT_PROCESS.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).APPROVE_CONTRACT_PROCESS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).initiate_contract_process.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
     @Operation(summary = "Criar nova oportunidade", description = "Cadastra uma nova oportunidade no sistema.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Oportunidade criada com sucesso"),
@@ -48,14 +48,14 @@ public class OpportunityController {
     }
 
     @PostMapping("/{id}/approve")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).APPROVE_CONTRACT_PROCESS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
     @Operation(summary = "Aprovar oportunidade", description = "Altera o status da oportunidade para aprovada.")
     public ResponseEntity<OpportunityResponseDTO> approveOpportunity(@PathVariable Integer id) {
         return ResponseEntity.ok(opportunityService.approve(id));
     }
 
     @PostMapping("/{id}/refuse")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).APPROVE_CONTRACT_PROCESS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
     @Operation(summary = "Recusar oportunidade", description = "Altera o status da oportunidade para recusada.")
     public ResponseEntity<OpportunityResponseDTO> refuseOpportunity(
             @PathVariable Integer id,
@@ -64,7 +64,7 @@ public class OpportunityController {
     }
 
     @PostMapping("/{id}/finalize")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).FINAL_DECISION.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).final_decision.name())")
     @Operation(summary = "Finalizar oportunidade", description = "Marca a oportunidade como finalizada.")
     public ResponseEntity<OpportunityResponseDTO> finalizeOpportunity(
             @PathVariable Integer id,
@@ -73,7 +73,7 @@ public class OpportunityController {
     }
 
     @GetMapping("/{id}/candidates")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).VIEW_PIPELINE.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
     @Operation(summary = "Listar candidatos de uma oportunidade", description = "Retorna os candidatos associados a uma oportunidade específica.")
     public ResponseEntity<List<CandidateResponseDTO>> getCandidatesByOpportunity(@PathVariable Integer id) {
         return ResponseEntity.ok(opportunityService.findCandidatesByOpportunityId(id));

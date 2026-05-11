@@ -52,7 +52,7 @@ public class SuggestionController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).SUGGESTIONS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @Operation(summary = "Listar todas as sugestões", description = "Retorna uma lista com todas as sugestões cadastradas.")
     public List<SuggestionResponseDTO> getAll() {
         logSecurityContext("getAll", "GET /suggestions");
@@ -63,7 +63,7 @@ public class SuggestionController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).SUGGESTIONS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @Operation(summary = "Obter sugestão por ID")
     public SuggestionResponseDTO getById(@PathVariable Long id) {
         logSecurityContext("getById", "GET /suggestions/" + id);
@@ -74,7 +74,7 @@ public class SuggestionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).SUGGESTIONS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Criar nova sugestão")
     public SuggestionResponseDTO create(@RequestBody @Valid SuggestionRequestDTO dto) {
@@ -86,7 +86,7 @@ public class SuggestionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).SUGGESTIONS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @Operation(summary = "Atualizar sugestão existente")
     public SuggestionResponseDTO update(@PathVariable Long id, @RequestBody @Valid SuggestionRequestDTO dto) {
         logSecurityContext("update", "PUT /suggestions/" + id);
@@ -97,7 +97,7 @@ public class SuggestionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).SUGGESTIONS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Excluir sugestão")
     public void delete(@PathVariable Long id) {
@@ -108,7 +108,7 @@ public class SuggestionController {
     }
 
     @PostMapping("/{id}/vote")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).SUGGESTIONS.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Votar em uma sugestão")
     public void vote(@PathVariable Long id, @RequestBody @Valid VoteRequestDTO dto) {
