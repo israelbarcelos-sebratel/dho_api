@@ -63,11 +63,11 @@ public class Opportunity {
     private DhoOpportunityStatus opportunityStatus;
 
     @ManyToOne
-    @JoinColumn(name = "id_process_stage")
+    @JoinColumn(name = "process_stage_id")
     private DhoProcessStage processStage;
 
     @ManyToOne
-    @JoinColumn(name = "id_process_status")
+    @JoinColumn(name = "process_status_id")
     private DhoProcessStatus processStatus;
 
     @Column(name = "deadline_sla_days")
