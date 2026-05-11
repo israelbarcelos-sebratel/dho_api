@@ -4,13 +4,16 @@ import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
 import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
 import br.com.sebratel.bff.dho.service.SuggestionService;
+import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoPermissionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -29,8 +32,17 @@ class SuggestionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean
+    @MockBean
     private SuggestionService suggestionService;
+
+    @MockBean
+    private PeopleRepository peopleRepository;
+
+    @MockBean
+    private DhoRoleRepository roleRepository;
+
+    @MockBean
+    private DhoPermissionRepository permissionRepository;
 
     @Autowired
     private ObjectMapper objectMapper;

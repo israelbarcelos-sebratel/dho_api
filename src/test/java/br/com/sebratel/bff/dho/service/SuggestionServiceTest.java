@@ -7,6 +7,7 @@ import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
 import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
 import br.com.sebratel.bff.dho.util.EncryptionUtil;
+import br.com.sebratel.bff.dho.util.HashUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +35,9 @@ class SuggestionServiceTest {
 
     @Mock
     private EncryptionUtil encryptionUtil;
+
+    @Mock
+    private HashUtil hashUtil;
 
     @InjectMocks
     private SuggestionService suggestionService;
@@ -146,10 +150,12 @@ class SuggestionServiceTest {
     void vote_ShouldSaveVote() {
         VoteRequestDTO voteDTO = new VoteRequestDTO("voter@sebratel.com.br", 1);
         when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
+        when(hashUtil.hash(anyString())).thenReturn("hashed-email");
+        when(suggestionVoteRepository.findBySuggestionAndEmail(any(), anyString())).thenReturn(Optional.empty());
 
         suggestionService.vote(1L, voteDTO);
 
-        verify(encryptionUtil, times(1)).encrypt("voter@sebratel.com.br");
+        verify(hashUtil, times(1)).hash("voter@sebratel.com.br");
         verify(suggestionVoteRepository, times(1)).save(any());
     }
 }

@@ -8,12 +8,14 @@ import br.com.sebratel.bff.dho.dto.SuggestionRequestDTO;
 import br.com.sebratel.bff.dho.dto.SuggestionResponseDTO;
 import br.com.sebratel.bff.dho.dto.VoteRequestDTO;
 import br.com.sebratel.bff.dho.util.EncryptionUtil;
+import br.com.sebratel.bff.dho.util.HashUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class SuggestionService {
     private final SuggestionRepository suggestionRepository;
     private final SuggestionVoteRepository suggestionVoteRepository;
     private final EncryptionUtil encryptionUtil;
+    private final HashUtil hashUtil;
 
     public List<SuggestionResponseDTO> findAll() {
         return suggestionRepository.findAll()
@@ -68,12 +71,30 @@ public class SuggestionService {
         Suggestion suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sugestão não encontrada"));
 
-        SuggestionVote vote = SuggestionVote.builder()
-                .suggestion(suggestion)
-                .email(encryptionUtil.encrypt(dto.email()))
-                .vote(dto.vote() > 0 ? "POSITIVO" : "NEGATIVO")
-                .build();
+        String hashedEmail = hashUtil.hash(dto.email());
+        
+        Optional<SuggestionVote> existingVote = suggestionVoteRepository.findBySuggestionAndEmail(suggestion, hashedEmail);
+        
+        String requestedVoteType = dto.vote() > 0 ? "POSITIVO" : "NEGATIVO";
 
-        suggestionVoteRepository.save(vote);
+        if (existingVote.isPresent()) {
+            SuggestionVote vote = existingVote.get();
+            if (vote.getVote().equals(requestedVoteType)) {
+                // Se o voto enviado é igual ao atual, remove o voto (altera para SEM_VOTO)
+                vote.setVote("SEM_VOTO");
+            } else {
+                // Se o voto é diferente (ex: era POSITIVO e enviou NEGATIVO), atualiza para o novo
+                vote.setVote(requestedVoteType);
+            }
+            suggestionVoteRepository.save(vote);
+        } else {
+            // Se não existe voto, cria um novo
+            SuggestionVote vote = SuggestionVote.builder()
+                    .suggestion(suggestion)
+                    .email(hashedEmail)
+                    .vote(requestedVoteType)
+                    .build();
+            suggestionVoteRepository.save(vote);
+        }
     }
 }
