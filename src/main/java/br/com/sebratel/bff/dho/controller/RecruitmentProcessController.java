@@ -6,6 +6,8 @@ import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentIndicatorsDTO;
+
 
 import java.util.List;
 
@@ -67,5 +69,12 @@ public class RecruitmentProcessController {
         return ResponseEntity.ok(recruitmentProcessService.getLogs(id));
     }
 
+
+
+    @GetMapping("/indicators")
+    @PreAuthorize("hasAuthority('RQ09')")
+    public ResponseEntity<RecruitmentIndicatorsDTO> getIndicators() {
+        return ResponseEntity.ok(recruitmentProcessService.getIndicators());
+    }
 
 }

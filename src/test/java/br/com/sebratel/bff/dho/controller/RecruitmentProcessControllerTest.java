@@ -109,5 +109,11 @@ public class RecruitmentProcessControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void getIndicators_ShouldReturnOk() throws Exception {
+        mockMvc.perform(get("/recruitment-processes/indicators"))
+                .andExpect(status().isOk());
+    }
+
 
 }

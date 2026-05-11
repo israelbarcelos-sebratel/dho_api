@@ -30,3 +30,5 @@ O gestor deve poder iniciar o pedido de uma nova vaga para o DHO, o DHO deve val
 - [ ] **RQ15:** Acompanhamento de processos pós-aprovação.
 - [ ] **RQ16:** Upload de documentos em massa.
 - [x] **RQ17:** Finalizar contratação ou marcar recusa.
+- [ ] **RQ23:** Dashboard de Indicadores de Recrutamento (Vagas abertas, contratações no mês, aprovações pendentes e tempo médio de contratação).
+
