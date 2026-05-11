@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoPermission;
 import br.com.sebratel.bff.dho.domain.repository.DhoPermissionRepository;
 import java.util.Collections;
+import br.com.sebratel.bff.dho.domain.enums.Permission;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -67,10 +69,10 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
     private People autoProvisionUser(String email, String name) {
         DhoRole defaultRole = roleRepository.findByName("COLABORADOR")
                 .orElseGet(() -> {
-                    DhoPermission defaultPermission = permissionRepository.findByName("DEFAULT")
+                    DhoPermission defaultPermission = permissionRepository.findByName(Permission.DEFAULT)
                             .orElseGet(() -> permissionRepository.save(DhoPermission.builder()
-                                    .name("DEFAULT")
-                                    .description("Permissão padrão")
+                                    .name(Permission.DEFAULT)
+                                    .description(Permission.DEFAULT.getDescription())
                                     .build()));
 
                     return roleRepository.save(DhoRole.builder()
@@ -99,6 +101,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
                 if (role.getPermissions() != null && !role.getPermissions().isEmpty()) {
                     List<SimpleGrantedAuthority> permissions = role.getPermissions().stream()
                             .map(DhoPermission::getName)
+                            .map(Permission::name)
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
                     authorities.addAll(permissions);

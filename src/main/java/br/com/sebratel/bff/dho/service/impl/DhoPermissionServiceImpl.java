@@ -28,7 +28,7 @@ public class DhoPermissionServiceImpl implements DhoPermissionService {
     public PermissionResponseDTO create(PermissionRequestDTO request) {
         DhoPermission permission = DhoPermission.builder()
                 .name(request.getName())
-                .description(request.getDescription())
+                .description(request.getDescription() != null ? request.getDescription() : request.getName().getDescription())
                 .build();
         return mapToResponse(permissionRepository.save(permission));
     }

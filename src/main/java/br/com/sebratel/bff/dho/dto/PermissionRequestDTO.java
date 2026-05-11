@@ -1,5 +1,6 @@
 package br.com.sebratel.bff.dho.dto;
 
+import br.com.sebratel.bff.dho.domain.enums.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PermissionRequestDTO {
-    private String name;
+    private Permission name;
     private String description;
 }
