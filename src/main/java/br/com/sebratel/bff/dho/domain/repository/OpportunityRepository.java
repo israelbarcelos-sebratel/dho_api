@@ -10,4 +10,6 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, Intege
 
     long countByOpportunityStatusNameNotIn(List<String> statusNames);
 
+    List<Opportunity> findByRequesterEmail(String email);
+
 }

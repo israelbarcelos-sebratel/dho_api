@@ -80,6 +80,10 @@ public class Opportunity {
     @JoinColumn(name = "responsible_recruiter_id")
     private People responsibleRecruiter;
 
+    @ManyToOne
+    @JoinColumn(name = "requester_id")
+    private People requester;
+
     private String observations;
 
     @Column(name = "refusal_justification", length = 1000)

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 @RestController
 @RequestMapping("/opportunities")
 @RequiredArgsConstructor
@@ -43,8 +45,8 @@ public class OpportunityController {
             @ApiResponse(responseCode = "201", description = "Oportunidade criada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
-    public ResponseEntity<OpportunityResponseDTO> createOpportunity(@RequestBody @Valid OpportunityRequestDTO opportunityRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(opportunityService.create(opportunityRequestDTO));
+    public ResponseEntity<OpportunityResponseDTO> createOpportunity(@RequestBody @Valid OpportunityRequestDTO opportunityRequestDTO, Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(opportunityService.create(opportunityRequestDTO, authentication));
     }
 
     @PostMapping("/{id}/approve")

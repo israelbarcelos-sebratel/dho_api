@@ -6,6 +6,7 @@ import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
+import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 
@@ -21,6 +22,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.sebratel.bff.dho.domain.enums.Permission;
+import br.com.sebratel.bff.dho.dto.UserResponseDTO;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -31,6 +41,7 @@ public class OpportunityService {
     private final OpportunityRepository opportunityRepository;
     private final DhoOpportunityStatusRepository statusRepository;
     private final RecruitmentProcessRepository recruitmentProcessRepository;
+    private final PeopleRepository peopleRepository;
 
     public List<CandidateResponseDTO> findCandidatesByOpportunityId(Integer id) {
         return recruitmentProcessRepository.findByOpportunityId(id).stream()
@@ -59,12 +70,18 @@ public class OpportunityService {
 
 
     @Transactional
-    public OpportunityResponseDTO create(OpportunityRequestDTO dto) {
+    public OpportunityResponseDTO create(OpportunityRequestDTO dto, Authentication authentication) {
         DhoOpportunityStatus pendingStatus = statusRepository.findByName("Pendente")
                 .orElseThrow(() -> new RuntimeException("Status 'Pendente' não encontrado"));
 
+        People requester = null;
+        if (authentication != null) {
+            requester = peopleRepository.findByEmail(authentication.getName()).orElse(null);
+        }
+
         Opportunity opportunity = Opportunity.builder()
                 .openOpportunityDate(Optional.ofNullable(dto.openOpportunityDate()).orElse(LocalDateTime.now()))
+                .requester(requester)
                 .candidate(mapReference(dto.candidateId(), id -> People.builder().id(id).build()))
                 .position(mapReference(dto.positionId(), id -> DhoPosition.builder().id(id).build()))
                 .team(mapReference(dto.teamId(), id -> DhoTeam.builder().id(id).build()))
@@ -135,6 +152,27 @@ public class OpportunityService {
 
 
     private OpportunityResponseDTO convertToDTO(Opportunity opportunity) {
+        String statusName = mapName(opportunity.getOpportunityStatus(), DhoOpportunityStatus::getName);
+        String uiStatus = "Pendente".equals(statusName) ? "Enviado para aprovação" : statusName;
+        
+        String statusVariant = "warning";
+        if ("Aprovada".equals(statusName)) statusVariant = "success";
+        if ("Recusada".equals(statusName)) statusVariant = "danger";
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String formattedDate = opportunity.getOpenOpportunityDate() != null 
+            ? opportunity.getOpenOpportunityDate().format(formatter) 
+            : "";
+
+        UserResponseDTO requesterDTO = null;
+        if (opportunity.getRequester() != null) {
+            requesterDTO = UserResponseDTO.builder()
+                    .id(opportunity.getRequester().getId())
+                    .name(opportunity.getRequester().getName())
+                    .email(opportunity.getRequester().getEmail())
+                    .build();
+        }
+
         return OpportunityResponseDTO.builder()
                 .id(opportunity.getId())
                 .openOpportunityDate(opportunity.getOpenOpportunityDate())
@@ -145,7 +183,7 @@ public class OpportunityService {
                 .opportunityMotiveName(mapName(opportunity.getOpportunityMotive(), DhoOpportunityMotive::getName))
                 .replacedPersonName(mapName(opportunity.getReplacedPerson(), People::getName))
                 .baseOriginName(mapName(opportunity.getBaseOrigin(), DhoBaseOrigin::getName))
-                .opportunityStatusName(mapName(opportunity.getOpportunityStatus(), DhoOpportunityStatus::getName))
+                .opportunityStatusName(statusName)
                 .processStageName(mapName(opportunity.getProcessStage(), DhoProcessStage::getName))
                 .processStatusName(mapName(opportunity.getProcessStatus(), DhoProcessStatus::getName))
                 .deadlineSlaDays(opportunity.getDeadlineSlaDays())
@@ -157,7 +195,44 @@ public class OpportunityService {
                 .workSchedule(opportunity.getWorkSchedule())
                 .hardSkills(opportunity.getHardSkills())
                 .softSkills(opportunity.getSoftSkills())
+                // Frontend compatibility fields
+                .title(mapName(opportunity.getPosition(), DhoPosition::getName))
+                .type(opportunity.getWorkSchedule())
+                .team(mapName(opportunity.getTeam(), DhoTeam::getName))
+                .status(uiStatus)
+                .date(formattedDate)
+                .statusVariant(statusVariant)
+                .requester(requesterDTO)
                 .build();
+    }
+
+    public List<OpportunityResponseDTO> findAllForUser(Authentication authentication) {
+        if (hasPermission(authentication, Permission.view_all_requests)) {
+            return findAll();
+        }
+        return opportunityRepository.findByRequesterEmail(authentication.getName()).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public OpportunityResponseDTO findByIdForUser(Integer id, Authentication authentication) {
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        if (!hasPermission(authentication, Permission.view_all_requests)) {
+            if (opportunity.getRequester() == null || !opportunity.getRequester().getEmail().equals(authentication.getName())) {
+                throw new RuntimeException("Acesso negado a esta requisição");
+            }
+        }
+
+        return convertToDTO(opportunity);
+    }
+
+    private boolean hasPermission(Authentication authentication, Permission permission) {
+        if (authentication == null) return false;
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(a -> a.equals(permission.name()) || a.equals("ROLE_ADMIN"));
     }
 
     private <T, ID> T mapReference(ID id, Function<ID, T> builder) {

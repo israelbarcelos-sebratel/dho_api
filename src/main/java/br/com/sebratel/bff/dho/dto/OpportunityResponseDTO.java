@@ -33,4 +33,13 @@ public class OpportunityResponseDTO {
     private String workSchedule;
     private String hardSkills;
     private String softSkills;
+
+    // Frontend compatibility fields
+    private String title;
+    private String type;
+    private String team;
+    private String status;
+    private String date;
+    private String statusVariant;
+    private UserResponseDTO requester;
 }
