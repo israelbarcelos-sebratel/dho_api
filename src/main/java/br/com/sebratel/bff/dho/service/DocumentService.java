@@ -1,4 +1,5 @@
 package br.com.sebratel.bff.dho.service;
+import java.util.Optional;
 
 import br.com.sebratel.bff.dho.domain.entity.DhoDocument;
 import br.com.sebratel.bff.dho.domain.entity.People;
@@ -116,7 +117,7 @@ public class DocumentService {
                 .id(document.getId())
                 .fileName(document.getFileName())
                 .fileType(document.getFileType())
-                .documentTypeName(document.getDocumentType().getName())
+                .documentTypeName(java.util.Optional.ofNullable(document.getDocumentType()).map(type -> type.getName()).orElse(null))
                 .uploadDate(document.getUploadDate())
                 .build();
     }

@@ -21,6 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import java.util.Optional;
+import java.util.function.Function;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStage;
+
 @Service
 @RequiredArgsConstructor
 public class RecruitmentProcessService {
@@ -86,10 +90,12 @@ public class RecruitmentProcessService {
         return recruitmentProcessRepository.findByProcessStatusNameIn(finalizedStatuses).stream()
                 .map(process -> RecruitmentProcessHistoryDTO.builder()
                         .id(process.getId())
-                        .candidateName(process.getCandidate() != null ? process.getCandidate().getName() : null)
-                        .positionName(process.getOpportunity() != null && process.getOpportunity().getPosition() != null ? process.getOpportunity().getPosition().getName() : null)
-                        .statusName(process.getProcessStatus() != null ? process.getProcessStatus().getName() : null)
-                        .admissionDate(process.getCandidate() != null ? process.getCandidate().getAdmissionDate() : null)
+                        .candidateName(Optional.ofNullable(process.getCandidate()).map(People::getName).orElse(null))
+                        .positionName(Optional.ofNullable(process.getOpportunity())
+                                .map(opp -> Optional.ofNullable(opp.getPosition()).map(pos -> pos.getName()).orElse(null))
+                                .orElse(null))
+                        .statusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse(null))
+                        .admissionDate(Optional.ofNullable(process.getCandidate()).map(People::getAdmissionDate).orElse(null))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -99,19 +105,25 @@ public class RecruitmentProcessService {
                 .orElseThrow(() -> new RuntimeException("Recrutador não encontrado"));
 
         // Verify if the person has the recruiter role
-        if (recruiter.getRole() == null || (!"Recrutador".equalsIgnoreCase(recruiter.getRole().getName()) && !"RECRUITER".equalsIgnoreCase(recruiter.getRole().getName()))) {
-            // For now, we allow it if no role is assigned to avoid breaking existing data, 
-            // but the logic is ready to be enforced.
+        if (recruiter.getRoles() != null) {
+            boolean isRecruiter = recruiter.getRoles().stream()
+                    .anyMatch(role -> "Recrutador".equalsIgnoreCase(role.getName()) || "RECRUITER".equalsIgnoreCase(role.getName()));
+            if (!isRecruiter) {
+                // For now, we allow it if no role is assigned to avoid breaking existing data, 
+                // but the logic is ready to be enforced.
+            }
         }
 
         return recruitmentProcessRepository.findByOpportunityResponsibleRecruiterId(recruiterId).stream()
                 .map(process -> RecruitmentProcessResponseDTO.builder()
                         .id(process.getId())
-                        .candidateName(process.getCandidate() != null ? process.getCandidate().getName() : null)
-                        .positionName(process.getOpportunity() != null && process.getOpportunity().getPosition() != null ? process.getOpportunity().getPosition().getName() : null)
-                        .processStatusName(process.getProcessStatus() != null ? process.getProcessStatus().getName() : null)
-                        .processStageName(process.getProcessStage() != null ? process.getProcessStage().getName() : null)
-                        .opportunityId(process.getOpportunity() != null ? process.getOpportunity().getId() : null)
+                        .candidateName(Optional.ofNullable(process.getCandidate()).map(People::getName).orElse(null))
+                        .positionName(Optional.ofNullable(process.getOpportunity())
+                                .map(opp -> Optional.ofNullable(opp.getPosition()).map(pos -> pos.getName()).orElse(null))
+                                .orElse(null))
+                        .processStatusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse(null))
+                        .processStageName(Optional.ofNullable(process.getProcessStage()).map(stage -> stage.getName()).orElse(null))
+                        .opportunityId(Optional.ofNullable(process.getOpportunity()).map(opp -> opp.getId()).orElse(null))
                         .build())
                 .collect(Collectors.toList());
     }

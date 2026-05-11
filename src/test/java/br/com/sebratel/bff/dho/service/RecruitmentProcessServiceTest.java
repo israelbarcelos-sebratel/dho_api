@@ -24,6 +24,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -120,7 +122,7 @@ public class RecruitmentProcessServiceTest {
         recruiter.setId(1);
         DhoRole role = new DhoRole();
         role.setName("Recrutador");
-        recruiter.setRole(role);
+        recruiter.setRoles(new HashSet<>(Collections.singletonList(role)));
 
         Opportunity opportunity = new Opportunity();
         opportunity.setId(10);

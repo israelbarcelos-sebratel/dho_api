@@ -1,13 +1,18 @@
 package br.com.sebratel.bff.dho.controller;
 
+import br.com.sebratel.bff.dho.domain.repository.DhoPermissionRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
+import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
+import br.com.sebratel.bff.dho.security.CustomJwtAuthenticationConverter;
 import br.com.sebratel.bff.dho.service.RecruitmentProcessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -17,14 +22,30 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RecruitmentProcessController.class)
+@WebMvcTest(controllers = RecruitmentProcessController.class, excludeAutoConfiguration = {
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+        org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration.class
+})
+@AutoConfigureMockMvc(addFilters = false)
 public class RecruitmentProcessControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private RecruitmentProcessService recruitmentProcessService;
+
+    @MockitoBean
+    private CustomJwtAuthenticationConverter customJwtAuthenticationConverter;
+
+    @MockitoBean
+    private PeopleRepository peopleRepository;
+
+    @MockitoBean
+    private DhoRoleRepository roleRepository;
+
+    @MockitoBean
+    private DhoPermissionRepository permissionRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
