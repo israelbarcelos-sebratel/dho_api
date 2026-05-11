@@ -25,35 +25,35 @@ public class RecruitmentProcessController {
     private final RecruitmentProcessService recruitmentProcessService;
 
     @PostMapping("/{id}/approve")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).RQ14.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).APPROVE_CANDIDATE.name())")
     public ResponseEntity<Void> approve(@PathVariable Integer id) {
         recruitmentProcessService.approve(id);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/refuse")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).RQ14.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).REJECT_CANDIDATE.name())")
     public ResponseEntity<Void> refuse(@PathVariable Integer id, @RequestBody @Valid InterviewDecisionDTO dto) {
         recruitmentProcessService.refuse(id, dto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/withdraw")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).RQ14.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).WITHDRAW_CANDIDATE.name())")
     public ResponseEntity<Void> withdraw(@PathVariable Integer id) {
         recruitmentProcessService.withdraw(id);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/hire")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).RQ17.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).FINAL_DECISION.name())")
     public ResponseEntity<Void> hire(@PathVariable Integer id) {
         recruitmentProcessService.hire(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/history")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).RQ09.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).VIEW_JOB_TRACKING.name())")
     public ResponseEntity<List<RecruitmentProcessHistoryDTO>> getHistory() {
         return ResponseEntity.ok(recruitmentProcessService.getFinalizedProcesses());
     }
@@ -72,7 +72,7 @@ public class RecruitmentProcessController {
 
 
     @GetMapping("/indicators")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).RQ09.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).VIEW_INDICATORS.name())")
     public ResponseEntity<RecruitmentIndicatorsDTO> getIndicators() {
         return ResponseEntity.ok(recruitmentProcessService.getIndicators());
     }

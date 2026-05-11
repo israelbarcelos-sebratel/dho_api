@@ -86,7 +86,7 @@ public class SuggestionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).RQ18.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).SUGGESTIONS.name())")
     @Operation(summary = "Atualizar sugestão existente")
     public SuggestionResponseDTO update(@PathVariable Long id, @RequestBody @Valid SuggestionRequestDTO dto) {
         logSecurityContext("update", "PUT /suggestions/" + id);
@@ -97,7 +97,7 @@ public class SuggestionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).RQ18.name())")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).SUGGESTIONS.name())")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Excluir sugestão")
     public void delete(@PathVariable Long id) {
