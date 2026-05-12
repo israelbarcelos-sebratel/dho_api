@@ -91,4 +91,13 @@ class DhoRoleControllerTest {
                         .content(objectMapper.writeValueAsString(permissionIds)))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void addPermission_ShouldReturnOk() throws Exception {
+        RoleResponseDTO response = RoleResponseDTO.builder().id(1).name("ADMIN").build();
+        when(roleService.addPermission(eq(1), eq(2))).thenReturn(response);
+
+        mockMvc.perform(post("/api/admin/roles/1/permissions/2"))
+                .andExpect(status().isOk());
+    }
 }

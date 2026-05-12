@@ -9,5 +9,7 @@ import java.util.Set;
 public interface DhoRoleService {
     List<RoleResponseDTO> findAll();
     RoleResponseDTO create(RoleRequestDTO request);
+    RoleResponseDTO addPermission(Integer roleId, Integer permissionId);
+
     RoleResponseDTO assignPermissions(Integer roleId, Set<Integer> permissionIds);
 }

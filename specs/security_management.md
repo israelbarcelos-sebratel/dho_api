@@ -46,6 +46,10 @@ Este documento descreve os endpoints e regras de negócio para o gerenciamento d
 [1, 2, 3] // IDs das permissões
 ```
 
+### 3.4. Adicionar uma Permissão a um Papel
+- **POST** `/api/admin/roles/{roleId}/permissions/{permissionId}`
+- **Descrição**: Adiciona uma única permissão específica ao papel indicado.
+
 ## 4. Endpoints de Atribuição de Usuários (People Roles)
 
 ### 4.1. Listar Usuários e seus Papéis
