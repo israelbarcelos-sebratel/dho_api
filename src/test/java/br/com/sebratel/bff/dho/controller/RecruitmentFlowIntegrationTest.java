@@ -60,6 +60,8 @@ public class RecruitmentFlowIntegrationTest {
         MvcResult res = mockMvc.perform(post("/recruitment-processes").contentType(MediaType.APPLICATION_JSON).content(String.format("{\"candidateId\": %d, \"opportunityId\": %d}", candId, oppId)).with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk()).andReturn();
         Integer id = objectMapper.readTree(res.getResponse().getContentAsString()).get("id").asInt();
         
+        mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-screening").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
+
         mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-interview").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-technical-test").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isOk());
