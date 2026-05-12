@@ -308,4 +308,25 @@ public class RequisitionControllerIntegrationTest {
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_contract_process"))))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @Transactional
+    void shouldNotLinkSameCandidateToSameOpportunityTwice() throws Exception {
+        People candidate = peopleRepository.save(People.builder().name("John Doe").email("john@doe.com").build());
+        Opportunity opp = opportunityRepository.save(Opportunity.builder().openOpportunityDate(LocalDateTime.now()).build());
+
+        // First link
+        entityManager.persist(RecruitmentProcess.builder()
+                .candidate(candidate)
+                .opportunity(opp)
+                .build());
+
+        // Second link attempt via API
+        mockMvc.perform(post("/recruitment-processes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"candidateId\": " + candidate.getId() + ", \"opportunityId\": " + opp.getId() + "}")
+                .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process"))))
+                .andExpect(status().isBadRequest());
+    }
+
 }

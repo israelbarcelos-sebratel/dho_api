@@ -23,6 +23,9 @@ import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessRequestDTO;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -53,6 +56,11 @@ public class RecruitmentProcessService {
 
         Opportunity opportunity = opportunityRepository.findById(dto.getOpportunityId())
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+        if (recruitmentProcessRepository.existsByCandidateIdAndOpportunityId(dto.getCandidateId(), dto.getOpportunityId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Este candidato já está vinculado a esta oportunidade");
+        }
+
+
 
         DhoProcessStatus initialStatus = processStatusRepository.findByName("Em andamento")
                 .orElse(processStatusRepository.findByName("In Progress").orElse(null));
