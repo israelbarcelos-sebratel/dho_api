@@ -72,10 +72,10 @@ public class RecruitmentProcessService {
 
 
         DhoProcessStatus initialStatus = processStatusRepository.findByName("Em andamento")
-                .orElse(processStatusRepository.findByName("In Progress").orElse(null));
+                .orElseThrow(() -> new RuntimeException("Status 'Em andamento' não encontrado no banco"));
 
         DhoProcessStage initialStage = processStageRepository.findByName("Banco de Talentos")
-                .orElse(processStageRepository.findByName("Talent Pool").orElse(null));
+                .orElseThrow(() -> new RuntimeException("Estágio 'Banco de Talentos' não encontrado no banco"));
 
         RecruitmentProcess process = RecruitmentProcess.builder()
                 .candidate(candidate)
