@@ -1,6 +1,7 @@
 package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.entity.People;
+import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
@@ -9,7 +10,9 @@ import java.time.Duration;
 import java.util.Map;
 
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStatus;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStage;
 import br.com.sebratel.bff.dho.domain.repository.DhoProcessStatusRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoProcessStageRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
@@ -17,6 +20,7 @@ import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessRequestDTO;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +33,6 @@ import java.time.LocalDateTime;
 
 import java.util.Optional;
 import java.util.function.Function;
-import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStage;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +40,44 @@ public class RecruitmentProcessService {
 
     private final RecruitmentProcessRepository recruitmentProcessRepository;
     private final DhoProcessStatusRepository processStatusRepository;
+    private final DhoProcessStageRepository processStageRepository;
     private final PeopleRepository peopleRepository;
     private final DhoRoleRepository roleRepository;
     private final RecruitmentProcessLogRepository logRepository;
     private final OpportunityRepository opportunityRepository;
 
+    @Transactional
+    public RecruitmentProcessResponseDTO create(RecruitmentProcessRequestDTO dto) {
+        People candidate = peopleRepository.findById(dto.getCandidateId())
+                .orElseThrow(() -> new RuntimeException("Candidato não encontrado"));
+
+        Opportunity opportunity = opportunityRepository.findById(dto.getOpportunityId())
+                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        DhoProcessStatus initialStatus = processStatusRepository.findByName("Em andamento")
+                .orElse(processStatusRepository.findByName("In Progress").orElse(null));
+
+        DhoProcessStage initialStage = processStageRepository.findByName("Triagem")
+                .orElse(processStageRepository.findByName("Screening").orElse(null));
+
+        RecruitmentProcess process = RecruitmentProcess.builder()
+                .candidate(candidate)
+                .opportunity(opportunity)
+                .processStatus(initialStatus)
+                .processStage(initialStage)
+                .build();
+
+        RecruitmentProcess saved = recruitmentProcessRepository.save(process);
+
+        return RecruitmentProcessResponseDTO.builder()
+                .id(saved.getId())
+                .candidateName(candidate.getName())
+                .positionName(opportunity.getPosition() != null ? opportunity.getPosition().getName() : null)
+                .processStatusName(initialStatus != null ? initialStatus.getName() : null)
+                .processStageName(initialStage != null ? initialStage.getName() : null)
+                .opportunityId(opportunity.getId())
+                .build();
+    }
 
     @Transactional
     public void approve(Integer id) {
@@ -111,13 +147,10 @@ public class RecruitmentProcessService {
         People recruiter = peopleRepository.findById(recruiterId)
                 .orElseThrow(() -> new RuntimeException("Recrutador não encontrado"));
 
-        // Verify if the person has the recruiter role
         if (recruiter.getRoles() != null) {
             boolean isRecruiter = recruiter.getRoles().stream()
                     .anyMatch(role -> "Recrutador".equalsIgnoreCase(role.getName()) || "RECRUITER".equalsIgnoreCase(role.getName()));
             if (!isRecruiter) {
-                // For now, we allow it if no role is assigned to avoid breaking existing data, 
-                // but the logic is ready to be enforced.
             }
         }
 
@@ -148,23 +181,17 @@ public class RecruitmentProcessService {
                 .collect(Collectors.toList());
     }
 
-
-
     public RecruitmentIndicatorsDTO getIndicators() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime lastMonth = now.minusMonths(1);
         LocalDateTime lastYear = now.minusYears(1);
 
-        // 1. Vagas abertas (status != finalizada, cancelada)
         long openVacancies = opportunityRepository.countByOpportunityStatusNameNotIn(List.of("Finalizada", "Cancelada"));
 
-        // 2. Contratações aprovadas do último mês (usando logs de HIRE com status SUCCESS)
         long approvedHiresLastMonth = logRepository.findByActionNameAndStatusAndStartTimeAfter("HIRE", "SUCCESS", lastMonth).size();
 
-        // 3. Aprovações pendentes (Processos com status 'Aguardando aprovação')
         long pendingApprovals = recruitmentProcessRepository.countByProcessStatusName("Aguardando aprovação");
 
-        // 4. Tempo de contratação média do último ano
         List<RecruitmentProcessLog> hireLogs = logRepository.findByActionNameAndStatusAndStartTimeAfter("HIRE", "SUCCESS", lastYear);
         List<RecruitmentProcessLog> approveLogs = logRepository.findByActionNameAndStatusAndStartTimeAfter("APPROVE", "SUCCESS", lastYear);
 
@@ -172,7 +199,7 @@ public class RecruitmentProcessService {
                 .collect(Collectors.toMap(
                         log -> log.getRecruitmentProcess().getId(),
                         RecruitmentProcessLog::getStartTime,
-                        (existing, replacement) -> existing // In case of multiple approvals, take the first one
+                        (existing, replacement) -> existing
                 ));
 
         double totalDays = 0;
@@ -196,5 +223,4 @@ public class RecruitmentProcessService {
                 .averageHiringTimeLastYear(averageHiringTime)
                 .build();
     }
-
 }
