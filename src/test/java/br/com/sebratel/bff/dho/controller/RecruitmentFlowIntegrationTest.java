@@ -38,7 +38,7 @@ public class RecruitmentFlowIntegrationTest {
     void setup() {
         String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado pelo Gestor", "Recusado pelo gestor", "Enviada Proposta", "Finalizado", "Recusada pelo candidato"};
         for (String s : statuses) createStatusIfNotExist(s);
-        String[] stages = {"Triagem", "Entrevista", "Teste Técnico"};
+        String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico"};
         for (String s : stages) createStageIfNotExist(s);
     }
 
