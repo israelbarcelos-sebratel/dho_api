@@ -37,8 +37,12 @@ public class OpportunityServiceTest {
 
     @Test
     void shouldApproveOpportunity() {
+        DhoOpportunityStatus pendingStatus = new DhoOpportunityStatus();
+        pendingStatus.setName("Pendente");
+
         Opportunity opportunity = new Opportunity();
         opportunity.setId(1);
+        opportunity.setOpportunityStatus(pendingStatus);
         
         DhoOpportunityStatus approvedStatus = new DhoOpportunityStatus();
         approvedStatus.setName("Aprovada");
@@ -51,6 +55,7 @@ public class OpportunityServiceTest {
 
         assertNotNull(result);
         assertEquals("Aprovada", result.getOpportunityStatusName());
+        assertEquals(30, result.getDeadlineSlaDays());
         verify(opportunityRepository).save(opportunity);
     }
 
