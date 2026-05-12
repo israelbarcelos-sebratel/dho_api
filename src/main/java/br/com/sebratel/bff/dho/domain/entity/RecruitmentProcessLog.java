@@ -27,8 +27,12 @@ public class RecruitmentProcessLog {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "recruitment_process_id")
-    private RecruitmentProcess recruitmentProcess;
+    @JoinColumn(name = "opportunity_id")
+    private Opportunity opportunity;
+
+    @ManyToOne
+    @JoinColumn(name = "candidate_id")
+    private People candidate;
 
     @Column(name = "action_name")
     private String actionName;

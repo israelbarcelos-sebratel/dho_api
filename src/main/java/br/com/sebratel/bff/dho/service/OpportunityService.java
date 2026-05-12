@@ -1,6 +1,10 @@
 package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.repository.DhoBaseOriginRepository;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
+import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
+import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
+
 import br.com.sebratel.bff.dho.domain.repository.*;
 
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
@@ -49,6 +53,8 @@ public class OpportunityService {
     private final DhoPositionRepository positionRepository;
     private final DhoTeamRepository teamRepository;
     private final DhoDepartmentRepository departmentRepository;
+    private final RecruitmentProcessLogRepository logRepository;
+
     private final DhoOpportunityMotiveRepository opportunityMotiveRepository;
 
     public List<CandidateResponseDTO> findCandidatesForUser(Integer id, Authentication authentication) {
@@ -286,5 +292,20 @@ public class OpportunityService {
 
     private <T, R> R mapName(T entity, Function<T, R> mapper) {
         return Optional.ofNullable(entity).map(mapper).orElse(null);
+    }
+
+    public List<RecruitmentProcessLogDTO> getLogs(Integer id) {
+        return logRepository.findByOpportunityIdOrderByStartTimeDesc(id).stream()
+                .map(log -> RecruitmentProcessLogDTO.builder()
+                        .id(log.getId())
+                        .actionName(log.getActionName())
+                        .startTime(log.getStartTime())
+                        .endTime(log.getEndTime())
+                        .durationMs(log.getDurationMs())
+                        .status(log.getStatus())
+                        .errorMessage(log.getErrorMessage())
+                        .candidateName(log.getCandidate() != null ? log.getCandidate().getName() : null)
+                        .build())
+                .collect(Collectors.toList());
     }
 }

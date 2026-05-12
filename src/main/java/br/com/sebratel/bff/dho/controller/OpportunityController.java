@@ -4,6 +4,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 
 import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
+
 
 
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
@@ -81,4 +83,10 @@ public class OpportunityController {
         return ResponseEntity.ok(opportunityService.findCandidatesByOpportunityId(id));
     }
 
+    @GetMapping("/{id}/logs")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
+    @Operation(summary = "Listar logs de uma oportunidade", description = "Retorna o histórico completo de eventos de uma oportunidade e seus candidatos.")
+    public ResponseEntity<List<RecruitmentProcessLogDTO>> getLogs(@PathVariable Integer id) {
+        return ResponseEntity.ok(opportunityService.getLogs(id));
+    }
 }

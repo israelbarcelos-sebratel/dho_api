@@ -292,7 +292,12 @@ public class RecruitmentProcessService {
                 .collect(Collectors.toList());
     }
     public List<RecruitmentProcessLogDTO> getLogs(Integer id) {
-        return logRepository.findByRecruitmentProcessId(id).stream()
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+        
+        return logRepository.findByOpportunityIdAndCandidateIdOrderByStartTimeDesc(
+                process.getOpportunity().getId(), 
+                process.getCandidate().getId()).stream()
                 .map(log -> RecruitmentProcessLogDTO.builder()
                         .id(log.getId())
                         .actionName(log.getActionName())
@@ -301,6 +306,7 @@ public class RecruitmentProcessService {
                         .durationMs(log.getDurationMs())
                         .status(log.getStatus())
                         .errorMessage(log.getErrorMessage())
+                        .candidateName(log.getCandidate() != null ? log.getCandidate().getName() : null)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -320,8 +326,9 @@ public class RecruitmentProcessService {
         List<RecruitmentProcessLog> approveLogs = logRepository.findByActionNameAndStatusAndStartTimeAfter("APPROVE", "SUCCESS", lastYear);
 
         Map<Integer, LocalDateTime> approvalTimes = approveLogs.stream()
+                .filter(log -> log.getCandidate() != null)
                 .collect(Collectors.toMap(
-                        log -> log.getRecruitmentProcess().getId(),
+                        log -> log.getCandidate().getId(),
                         RecruitmentProcessLog::getStartTime,
                         (existing, replacement) -> existing
                 ));
@@ -330,11 +337,13 @@ public class RecruitmentProcessService {
         int hiredCount = 0;
 
         for (RecruitmentProcessLog hireLog : hireLogs) {
-            Integer processId = hireLog.getRecruitmentProcess().getId();
-            if (approvalTimes.containsKey(processId)) {
-                long days = Duration.between(approvalTimes.get(processId), hireLog.getStartTime()).toDays();
-                totalDays += days;
-                hiredCount++;
+            if (hireLog.getCandidate() != null) {
+                Integer candidateId = hireLog.getCandidate().getId();
+                if (approvalTimes.containsKey(candidateId)) {
+                    long days = Duration.between(approvalTimes.get(candidateId), hireLog.getStartTime()).toDays();
+                    totalDays += days;
+                    hiredCount++;
+                }
             }
         }
 
