@@ -143,4 +143,13 @@ public class RecruitmentProcessControllerTest {
     }
 
 
+
+    @Test
+    void moveToScreening_ShouldReturnOk() throws Exception {
+        doNothing().when(recruitmentProcessService).moveToScreening(1);
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+                .andExpect(status().isOk());
+    }
+
 }

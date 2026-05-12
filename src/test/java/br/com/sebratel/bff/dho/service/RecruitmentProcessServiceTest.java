@@ -8,6 +8,9 @@ import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoPosition;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStatus;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoRole;
 import br.com.sebratel.bff.dho.domain.repository.DhoProcessStatusRepository;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoOpportunityStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
@@ -199,4 +202,44 @@ public class RecruitmentProcessServiceTest {
         assertEquals(1, result.size());
         assertEquals("APPROVE", result.get(0).actionName());
     }
+
+    @Test
+    void moveToScreening_ShouldUpdateStage_WhenProcessIsAtTalentPool() {
+        DhoProcessStage talentPoolStage = new DhoProcessStage();
+        talentPoolStage.setName("Banco de Talentos");
+        process.setProcessStage(talentPoolStage);
+        
+        Opportunity approvedOpportunity = new Opportunity();
+        DhoOpportunityStatus approvedStatus = new DhoOpportunityStatus();
+        approvedStatus.setName("Aprovada");
+        approvedOpportunity.setOpportunityStatus(approvedStatus);
+        process.setOpportunity(approvedOpportunity);
+
+        DhoProcessStage screeningStage = new DhoProcessStage();
+        screeningStage.setName("Triagem");
+
+        when(recruitmentProcessRepository.findById(1)).thenReturn(Optional.of(process));
+        when(processStageRepository.findByName("Triagem")).thenReturn(Optional.of(screeningStage));
+
+        recruitmentProcessService.moveToScreening(1);
+
+        assertEquals("Triagem", process.getProcessStage().getName());
+        verify(recruitmentProcessRepository).save(process);
+    }
+
+    @Test
+    void moveToScreening_ShouldThrowException_WhenProcessIsNotAtTalentPool() {
+        DhoProcessStage interviewStage = new DhoProcessStage();
+        interviewStage.setName("Entrevista");
+        process.setProcessStage(interviewStage);
+
+        when(recruitmentProcessRepository.findById(1)).thenReturn(Optional.of(process));
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            recruitmentProcessService.moveToScreening(1);
+        });
+
+        assertEquals("Candidato deve estar no Banco de Talentos para ir para Triagem", exception.getReason());
+    }
+
 }

@@ -74,8 +74,8 @@ public class RecruitmentProcessService {
         DhoProcessStatus initialStatus = processStatusRepository.findByName("Em andamento")
                 .orElse(processStatusRepository.findByName("In Progress").orElse(null));
 
-        DhoProcessStage initialStage = processStageRepository.findByName("Triagem")
-                .orElse(processStageRepository.findByName("Screening").orElse(null));
+        DhoProcessStage initialStage = processStageRepository.findByName("Banco de Talentos")
+                .orElse(processStageRepository.findByName("Talent Pool").orElse(null));
 
         RecruitmentProcess process = RecruitmentProcess.builder()
                 .candidate(candidate)
@@ -156,6 +156,18 @@ public class RecruitmentProcessService {
         }
         updateStage(id, "Teste Técnico");
     }
+
+    @Transactional
+    public void moveToScreening(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+
+        if (!"Banco de Talentos".equals(process.getProcessStage().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar no Banco de Talentos para ir para Triagem");
+        }
+        updateStage(id, "Triagem");
+    }
+
 
     @Transactional
     public void managerDecision(Integer id, br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {

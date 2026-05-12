@@ -84,6 +84,15 @@ public class RecruitmentProcessController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/{id}/move-to-screening")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    @Operation(summary = "Mover para triagem", description = "Move o candidato do Banco de Talentos para a etapa de Triagem.")
+    public ResponseEntity<Void> moveToScreening(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        recruitmentProcessService.moveToScreening(id);
+        return ResponseEntity.ok().build();
+    }
+
+
     @PostMapping("/{id}/manager-decision")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).reject_candidate.name())")
     @Operation(summary = "Decisão do gestor", description = "Registra o feedback/decisão do gestor sobre o candidato.")

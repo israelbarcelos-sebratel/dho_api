@@ -1,6 +1,9 @@
 package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.repository.DhoBaseOriginRepository;
+import br.com.sebratel.bff.dho.domain.entity.Opportunity;
+import br.com.sebratel.bff.dho.domain.entity.People;
+
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
