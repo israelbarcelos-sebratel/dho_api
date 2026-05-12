@@ -1,6 +1,8 @@
 package br.com.sebratel.bff.dho.controller.admin;
 
 import br.com.sebratel.bff.dho.dto.PermissionRequestDTO;
+import br.com.sebratel.bff.dho.domain.enums.Permission;
+
 import br.com.sebratel.bff.dho.dto.PermissionResponseDTO;
 import br.com.sebratel.bff.dho.service.DhoPermissionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,19 +50,19 @@ class DhoPermissionControllerTest {
 
     @Test
     void getAll_ShouldReturnList() throws Exception {
-        PermissionResponseDTO response = new PermissionResponseDTO(1, "CAN_VIEW", "Can view documents");
+        PermissionResponseDTO response = new PermissionResponseDTO(1, Permission.DEFAULT, "Can view documents");
         when(permissionService.findAll()).thenReturn(List.of(response));
 
         mockMvc.perform(get("/api/admin/permissions"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].name").value("CAN_VIEW"));
+                .andExpect(jsonPath("$[0].name").value("DEFAULT"));
     }
 
     @Test
     void create_WithValidData_ShouldReturnCreated() throws Exception {
-        PermissionRequestDTO request = new PermissionRequestDTO("CAN_VIEW", "Can view documents");
-        PermissionResponseDTO response = new PermissionResponseDTO(1, "CAN_VIEW", "Can view documents");
+        PermissionRequestDTO request = new PermissionRequestDTO(Permission.DEFAULT, "Can view documents");
+        PermissionResponseDTO response = new PermissionResponseDTO(1, Permission.DEFAULT, "Can view documents");
         when(permissionService.create(any(PermissionRequestDTO.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/admin/permissions")
@@ -68,6 +70,6 @@ class DhoPermissionControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("CAN_VIEW"));
+                .andExpect(jsonPath("$.name").value("DEFAULT"));
     }
 }

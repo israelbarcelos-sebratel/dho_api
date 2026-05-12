@@ -39,6 +39,7 @@ public class AuthController {
                     .filter(role -> role.getPermissions() != null)
                     .flatMap(role -> role.getPermissions().stream())
                     .map(DhoPermission::getName)
+                    .map(Enum::name)
                     .distinct()
                     .collect(Collectors.toList());
             

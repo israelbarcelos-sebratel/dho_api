@@ -1,6 +1,6 @@
 package br.com.sebratel.bff.dho.dto;
 
-import br.com.sebratel.bff.dho.domain.enums.Permission;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionResponseDTO {
-    private Integer id;
-    private Permission name;
-    private String description;
+public class RecruitmentProcessStatusDTO {
+    @NotBlank(message = "O nome do status é obrigatório")
+    private String statusName;
 }

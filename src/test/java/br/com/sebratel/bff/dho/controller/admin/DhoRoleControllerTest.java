@@ -1,5 +1,7 @@
 package br.com.sebratel.bff.dho.controller.admin;
 
+import br.com.sebratel.bff.dho.domain.enums.Permission;
+
 import br.com.sebratel.bff.dho.dto.PermissionResponseDTO;
 import br.com.sebratel.bff.dho.dto.RoleRequestDTO;
 import br.com.sebratel.bff.dho.dto.RoleResponseDTO;
@@ -54,7 +56,7 @@ class DhoRoleControllerTest {
                 .id(1)
                 .name("ADMIN")
                 .description("Administrator")
-                .permissions(Set.of(new PermissionResponseDTO(1, "CAN_VIEW", "Can view")))
+                .permissions(Set.of(new PermissionResponseDTO(1, Permission.DEFAULT, "Can view")))
                 .build();
         when(roleService.findAll()).thenReturn(List.of(response));
 

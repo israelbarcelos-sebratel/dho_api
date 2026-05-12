@@ -30,3 +30,24 @@ O gestor deve poder iniciar o pedido de uma nova vaga para o DHO, o DHO deve val
 - [ ] **RQ15:** Acompanhamento de processos pós-aprovação.
 - [ ] **RQ16:** Upload de documentos em massa.
 - [x] **RQ17:** Finalizar contratação ou marcar recusa.
+- [ ] **RQ23:** Dashboard de Indicadores de Recrutamento (Vagas abertas, contratações no mês, aprovações pendentes e tempo médio de contratação).
+
+
+## 3. Especificações Técnicas
+
+### 3.1. Filtro de Requisições
+O endpoint de listagem de requisições (`POST /requisitions`) permite filtrar a visibilidade dos dados:
+
+- **Campo**: `showAllRequisitions` (Boolean)
+- **Comportamento**:
+    - Se `false` (padrão): Retorna apenas as requisições criadas pelo usuário autenticado.
+    - Se `true`: Retorna todas as requisições do sistema, **desde que** o usuário possua a permissão `view_all_requests` ou role `ADMIN`.
+    - Se o usuário não possuir a permissão necessária e enviar `true`, o sistema retornará apenas as suas próprias requisições como medida de segurança.
+
+### 3.2. Candidatos da Requisição
+O endpoint `GET /requisitions/{id}/candidates` permite que o gestor visualize os candidatos vinculados a uma de suas vagas aprovadas.
+
+- **Regras de Acesso**:
+    - O usuário deve ser o solicitante (`requester`) da vaga OU possuir permissão `view_all_requests`/`ROLE_ADMIN`.
+    - A vaga deve estar com o status "Aprovada".
+- **Retorno**: Lista de `CandidateResponseDTO`.

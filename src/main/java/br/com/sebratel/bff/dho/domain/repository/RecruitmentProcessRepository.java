@@ -11,4 +11,8 @@ public interface RecruitmentProcessRepository extends JpaRepository<RecruitmentP
     List<RecruitmentProcess> findByOpportunityId(Integer opportunityId);
     List<RecruitmentProcess> findByProcessStatusNameIn(List<String> statusNames);
     List<RecruitmentProcess> findByOpportunityResponsibleRecruiterId(Integer recruiterId);
+    long countByProcessStatusName(String statusName);
+    boolean existsByCandidateIdAndOpportunityId(Integer candidateId, Integer opportunityId);
+
+
 }
