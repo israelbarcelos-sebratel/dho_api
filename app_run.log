@@ -1,0 +1,479 @@
+[INFO] Scanning for projects...
+Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml
+Progress (1): 234 BProgress (2): 234 B | 255 B                           Downloaded from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml (255 B at 490 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml
+Progress (2): 234 B | 243 BProgress (3): 234 B | 243 B | 249 B                                   Downloaded from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml (234 B at 433 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml
+Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml (249 B at 454 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml
+Downloaded from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml (243 B at 442 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml
+Progress (1): 398 B                   Downloaded from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml (398 B at 8.1 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml
+Progress (1): 375 B                   Downloaded from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml (375 B at 10 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml
+Progress (1): 394 B                   Downloaded from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml (394 B at 11 kB/s)
+Progress (1): 242 B                   Downloaded from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml (242 B at 6.2 kB/s)
+Progress (1): 3.1 kBProgress (1): 7.7 kBProgress (1): 12 kB Progress (1): 17 kBProgress (1): 20 kBProgress (1): 21 kBProgress (2): 21 kB | 4.6 kBProgress (2): 21 kB | 9.7 kBProgress (2): 21 kB | 14 kB                            Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml (14 kB at 269 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml (21 kB at 219 kB/s)
+[INFO] 
+[INFO] --------------------< br.com.sebratel.bff:dho-api >---------------------
+[INFO] Building dho-api 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.4.3:run (default-cli) > test-compile @ dho-api >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dho-api ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dho-api ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 105 source files with javac [debug parameters release 21] to target/classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/main/java/br/com/sebratel/bff/dho/dto/RequisitionSearchDTO.java:[16,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/main/java/br/com/sebratel/bff/dho/security/GoogleAccessTokenDecoder.java: /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/main/java/br/com/sebratel/bff/dho/security/GoogleAccessTokenDecoder.java uses unchecked or unsafe operations.
+[INFO] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/main/java/br/com/sebratel/bff/dho/security/GoogleAccessTokenDecoder.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dho-api ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dho-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 16 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[36,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[39,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/OpportunityControllerTest.java:[42,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[35,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[38,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[41,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/SuggestionControllerTest.java:[44,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[INFO] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/admin/AdminPeopleControllerTest.java: Some input files use unchecked or unsafe operations.
+[INFO] /home/israelbarcelos/.cline/worktrees/7350b/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/admin/AdminPeopleControllerTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] <<< spring-boot:3.4.3:run (default-cli) < test-compile @ dho-api <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.4.3:run (default-cli) @ dho-api ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.3)
+
+2026-05-12T16:37:52.661-03:00  INFO 1054 --- [dho-api] [           main] b.c.sebratel.bff.dho.DhoApiApplication   : Starting DhoApiApplication using Java 21.0.10 with PID 1054 (/home/israelbarcelos/api/dho-api/target/classes started by israelbarcelos in /home/israelbarcelos/.cline/worktrees/7350b/dho-api)
+2026-05-12T16:37:52.662-03:00  INFO 1054 --- [dho-api] [           main] b.c.sebratel.bff.dho.DhoApiApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-05-12T16:37:53.331-03:00  INFO 1054 --- [dho-api] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-12T16:37:53.396-03:00  INFO 1054 --- [dho-api] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 16 JPA repository interfaces.
+2026-05-12T16:37:53.913-03:00  INFO 1054 --- [dho-api] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8090 (http)
+2026-05-12T16:37:53.926-03:00  INFO 1054 --- [dho-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-05-12T16:37:53.926-03:00  INFO 1054 --- [dho-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2026-05-12T16:37:53.966-03:00  INFO 1054 --- [dho-api] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-05-12T16:37:53.967-03:00  INFO 1054 --- [dho-api] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1272 ms
+2026-05-12T16:37:54.102-03:00  INFO 1054 --- [dho-api] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-12T16:37:54.148-03:00  INFO 1054 --- [dho-api] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.8.Final
+2026-05-12T16:37:54.171-03:00  INFO 1054 --- [dho-api] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-05-12T16:37:54.388-03:00  INFO 1054 --- [dho-api] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-12T16:37:54.410-03:00  INFO 1054 --- [dho-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-05-12T16:37:54.491-03:00  INFO 1054 --- [dho-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@36e3321e
+2026-05-12T16:37:54.493-03:00  INFO 1054 --- [dho-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-05-12T16:37:54.553-03:00  INFO 1054 --- [dho-api] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 10.11.10
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-05-12T16:37:55.521-03:00  INFO 1054 --- [dho-api] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-12T16:37:55.522-03:00  INFO 1054 --- [dho-api] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-12T16:37:55.822-03:00  INFO 1054 --- [dho-api] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-05-12T16:37:56.602-03:00  WARN 1054 --- [dho-api] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-12T16:37:57.146-03:00  INFO 1054 --- [dho-api] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8090 (http) with context path '/'
+2026-05-12T16:37:57.153-03:00  INFO 1054 --- [dho-api] [           main] b.c.sebratel.bff.dho.DhoApiApplication   : Started DhoApiApplication in 4.772 seconds (process running for 4.923)
+2026-05-12T16:40:11.665-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-12T16:40:11.666-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-05-12T16:40:11.670-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2026-05-12T16:40:12.380-03:00 ERROR 1054 --- [dho-api] [nio-8090-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+
+org.springframework.security.authentication.AuthenticationServiceException: Token inválido e não identificado como Google Access Token
+	at org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider.getJwt(JwtAuthenticationProvider.java:106) ~[spring-security-oauth2-resource-server-6.4.3.jar:6.4.3]
+	at org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider.authenticate(JwtAuthenticationProvider.java:88) ~[spring-security-oauth2-resource-server-6.4.3.jar:6.4.3]
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182) ~[spring-security-core-6.4.3.jar:6.4.3]
+	at org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.doFilterInternal(BearerTokenAuthenticationFilter.java:137) ~[spring-security-oauth2-resource-server-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:117) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:87) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238) ~[spring-security-config-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: org.springframework.security.oauth2.jwt.JwtException: Token inválido e não identificado como Google Access Token
+	at br.com.sebratel.bff.dho.security.GoogleAccessTokenDecoder.decode(GoogleAccessTokenDecoder.java:36) ~[classes/:na]
+	at org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider.getJwt(JwtAuthenticationProvider.java:99) ~[spring-security-oauth2-resource-server-6.4.3.jar:6.4.3]
+	... 60 common frames omitted
+Caused by: org.springframework.security.oauth2.jwt.JwtValidationException: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-05-12T19:07:32Z
+	at org.springframework.security.oauth2.jwt.NimbusJwtDecoder.validateJwt(NimbusJwtDecoder.java:193) ~[spring-security-oauth2-jose-6.4.3.jar:6.4.3]
+	at org.springframework.security.oauth2.jwt.NimbusJwtDecoder.decode(NimbusJwtDecoder.java:139) ~[spring-security-oauth2-jose-6.4.3.jar:6.4.3]
+	at br.com.sebratel.bff.dho.security.GoogleAccessTokenDecoder.decode(GoogleAccessTokenDecoder.java:30) ~[classes/:na]
+	... 61 common frames omitted
+
+2026-05-12T16:40:12.390-03:00 ERROR 1054 --- [dho-api] [nio-8090-exec-1] ityConfig$CustomAuthenticationEntryPoint : 401 Unauthorized - Path: /error | Remote Addr: 0:0:0:0:0:0:0:1 | Error: Full authentication is required to access this resource
+2026-05-12T16:40:38.397-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-3] s.b.d.s.CustomJwtAuthenticationConverter : Tentando autenticar usuário: israel.barcelos@sebratel.com.br (Israel Da Rosa Barcelos)
+Hibernate: select p1_0.id,p1_0.admission_date,p1_0.cis_link,p1_0.collaborator_knowledge,p1_0.cpf,p1_0.criminal_background,p1_0.date_birth,p1_0.id_education,p1_0.email,p1_0.external_link,p1_0.labor_lawsuit,p1_0.mindsight_link,p1_0.name,p1_0.observations,p1_0.phone_number,p1_0.professional_references,p1_0.profile_image,p1_0.recruitment_data,p1_0.id_recruitment_source,p1_0.registration_number,p1_0.replacement,p1_0.id_resignation_motivation,p1_0.id_resignation_type,p1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p2_0.role_id,p2_1.id,p2_1.description,p2_1.name,p1_0.sex,p1_0.id_situation from people p1_0 left join people_roles r1_0 on p1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p2_0 on r1_1.id=p2_0.role_id left join permissions p2_1 on p2_1.id=p2_0.permission_id where p1_0.email=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+2026-05-12T16:40:38.501-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-3] s.b.d.s.CustomJwtAuthenticationConverter : Usuário israel.barcelos@sebratel.com.br autenticado com sucesso. Autoridades: approve_contract_process, list_linked_processes, assign_recruiter, approve_contract_proccess, withdraw_candidate, manage_settings, view_pipeline, view_job_tracking, initiate_contract_process, reject_candidate, final_decision, add_candidate, view_indicators, view_all_requests, ROLE_ADMIN, suggestions, event_log, approve_candidate
+Hibernate: select p1_0.id,p1_0.admission_date,p1_0.cis_link,p1_0.collaborator_knowledge,p1_0.cpf,p1_0.criminal_background,p1_0.date_birth,p1_0.id_education,p1_0.email,p1_0.external_link,p1_0.labor_lawsuit,p1_0.mindsight_link,p1_0.name,p1_0.observations,p1_0.phone_number,p1_0.professional_references,p1_0.profile_image,p1_0.recruitment_data,p1_0.id_recruitment_source,p1_0.registration_number,p1_0.replacement,p1_0.id_resignation_motivation,p1_0.id_resignation_type,p1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p2_0.role_id,p2_1.id,p2_1.description,p2_1.name,p1_0.sex,p1_0.id_situation from people p1_0 left join people_roles r1_0 on p1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p2_0 on r1_1.id=p2_0.role_id left join permissions p2_1 on p2_1.id=p2_0.permission_id where p1_0.email=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+2026-05-12T16:40:38.588-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-6] s.b.d.s.CustomJwtAuthenticationConverter : Tentando autenticar usuário: israel.barcelos@sebratel.com.br (Israel Da Rosa Barcelos)
+Hibernate: select p1_0.id,p1_0.admission_date,p1_0.cis_link,p1_0.collaborator_knowledge,p1_0.cpf,p1_0.criminal_background,p1_0.date_birth,p1_0.id_education,p1_0.email,p1_0.external_link,p1_0.labor_lawsuit,p1_0.mindsight_link,p1_0.name,p1_0.observations,p1_0.phone_number,p1_0.professional_references,p1_0.profile_image,p1_0.recruitment_data,p1_0.id_recruitment_source,p1_0.registration_number,p1_0.replacement,p1_0.id_resignation_motivation,p1_0.id_resignation_type,p1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p2_0.role_id,p2_1.id,p2_1.description,p2_1.name,p1_0.sex,p1_0.id_situation from people p1_0 left join people_roles r1_0 on p1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p2_0 on r1_1.id=p2_0.role_id left join permissions p2_1 on p2_1.id=p2_0.permission_id where p1_0.email=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+2026-05-12T16:40:38.594-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-9] s.b.d.s.CustomJwtAuthenticationConverter : Tentando autenticar usuário: israel.barcelos@sebratel.com.br (Israel Da Rosa Barcelos)
+Hibernate: select p1_0.id,p1_0.admission_date,p1_0.cis_link,p1_0.collaborator_knowledge,p1_0.cpf,p1_0.criminal_background,p1_0.date_birth,p1_0.id_education,p1_0.email,p1_0.external_link,p1_0.labor_lawsuit,p1_0.mindsight_link,p1_0.name,p1_0.observations,p1_0.phone_number,p1_0.professional_references,p1_0.profile_image,p1_0.recruitment_data,p1_0.id_recruitment_source,p1_0.registration_number,p1_0.replacement,p1_0.id_resignation_motivation,p1_0.id_resignation_type,p1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p2_0.role_id,p2_1.id,p2_1.description,p2_1.name,p1_0.sex,p1_0.id_situation from people p1_0 left join people_roles r1_0 on p1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p2_0 on r1_1.id=p2_0.role_id left join permissions p2_1 on p2_1.id=p2_0.permission_id where p1_0.email=?
+2026-05-12T16:40:38.597-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-6] s.b.d.s.CustomJwtAuthenticationConverter : Usuário israel.barcelos@sebratel.com.br autenticado com sucesso. Autoridades: approve_contract_process, list_linked_processes, assign_recruiter, approve_contract_proccess, withdraw_candidate, manage_settings, view_pipeline, view_job_tracking, initiate_contract_process, reject_candidate, final_decision, add_candidate, view_indicators, view_all_requests, ROLE_ADMIN, suggestions, event_log, approve_candidate
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+2026-05-12T16:40:38.604-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-9] s.b.d.s.CustomJwtAuthenticationConverter : Usuário israel.barcelos@sebratel.com.br autenticado com sucesso. Autoridades: approve_contract_process, list_linked_processes, assign_recruiter, approve_contract_proccess, withdraw_candidate, manage_settings, view_pipeline, view_job_tracking, initiate_contract_process, reject_candidate, final_decision, add_candidate, view_indicators, view_all_requests, ROLE_ADMIN, suggestions, event_log, approve_candidate
+2026-05-12T16:40:38.614-03:00 ERROR 1054 --- [dho-api] [nio-8090-exec-9] b.c.s.b.d.e.GlobalExceptionHandler       : Recurso não encontrado: No static resource requisitions/122/activities.
+Hibernate: select o1_0.id,o1_0.accept_date,bo1_0.id,bo1_0.base_origin_description,bo1_0.base_origin_name,c1_0.id,c1_0.admission_date,c1_0.cis_link,c1_0.collaborator_knowledge,c1_0.cpf,c1_0.criminal_background,c1_0.date_birth,e1_0.id,e1_0.education_description,e1_0.education_name,c1_0.email,c1_0.external_link,c1_0.labor_lawsuit,c1_0.mindsight_link,c1_0.name,c1_0.observations,c1_0.phone_number,c1_0.professional_references,c1_0.profile_image,c1_0.recruitment_data,rs1_0.id,rs1_0.recruitment_source_description,rs1_0.recruitment_source_name,c1_0.registration_number,c1_0.replacement,rm1_0.id,rm1_0.resignation_motivation_description,rm1_0.resignation_motivation_name,rt1_0.id,rt1_0.resignation_type_description,rt1_0.resignation_type_name,c1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,c1_0.sex,s1_0.id,s1_0.situation_description,s1_0.situation_name,o1_0.deadline_sla_days,d1_0.id,d1_0.description,d1_0.name,o1_0.finalization_justification,o1_0.hard_skills,o1_0.observations,o1_0.open_opportunity_date,om1_0.id,om1_0.opportunity_motive_description,om1_0.opportunity_motive_name,os1_0.id,os1_0.opportunity_status_description,os1_0.opportunity_status_name,p1_0.id,p1_0.position_description,p1_0.position_name,o1_0.refusal_justification,rp1_0.id,rp1_0.admission_date,rp1_0.cis_link,rp1_0.collaborator_knowledge,rp1_0.cpf,rp1_0.criminal_background,rp1_0.date_birth,e2_0.id,e2_0.education_description,e2_0.education_name,rp1_0.email,rp1_0.external_link,rp1_0.labor_lawsuit,rp1_0.mindsight_link,rp1_0.name,rp1_0.observations,rp1_0.phone_number,rp1_0.professional_references,rp1_0.profile_image,rp1_0.recruitment_data,rs2_0.id,rs2_0.recruitment_source_description,rs2_0.recruitment_source_name,rp1_0.registration_number,rp1_0.replacement,rm2_0.id,rm2_0.resignation_motivation_description,rm2_0.resignation_motivation_name,rt2_0.id,rt2_0.resignation_type_description,rt2_0.resignation_type_name,rp1_0.rg,r2_0.people_id,r2_1.id,r2_1.description,r2_1.name,rp1_0.sex,s2_0.id,s2_0.situation_description,s2_0.situation_name,r3_0.id,r3_0.admission_date,r3_0.cis_link,r3_0.collaborator_knowledge,r3_0.cpf,r3_0.criminal_background,r3_0.date_birth,e3_0.id,e3_0.education_description,e3_0.education_name,r3_0.email,r3_0.external_link,r3_0.labor_lawsuit,r3_0.mindsight_link,r3_0.name,r3_0.observations,r3_0.phone_number,r3_0.professional_references,r3_0.profile_image,r3_0.recruitment_data,rs3_0.id,rs3_0.recruitment_source_description,rs3_0.recruitment_source_name,r3_0.registration_number,r3_0.replacement,rm3_0.id,rm3_0.resignation_motivation_description,rm3_0.resignation_motivation_name,rt3_0.id,rt3_0.resignation_type_description,rt3_0.resignation_type_name,r3_0.rg,r4_0.people_id,r4_1.id,r4_1.description,r4_1.name,r3_0.sex,s3_0.id,s3_0.situation_description,s3_0.situation_name,rr1_0.id,rr1_0.admission_date,rr1_0.cis_link,rr1_0.collaborator_knowledge,rr1_0.cpf,rr1_0.criminal_background,rr1_0.date_birth,e4_0.id,e4_0.education_description,e4_0.education_name,rr1_0.email,rr1_0.external_link,rr1_0.labor_lawsuit,rr1_0.mindsight_link,rr1_0.name,rr1_0.observations,rr1_0.phone_number,rr1_0.professional_references,rr1_0.profile_image,rr1_0.recruitment_data,rs4_0.id,rs4_0.recruitment_source_description,rs4_0.recruitment_source_name,rr1_0.registration_number,rr1_0.replacement,rm4_0.id,rm4_0.resignation_motivation_description,rm4_0.resignation_motivation_name,rt4_0.id,rt4_0.resignation_type_description,rt4_0.resignation_type_name,rr1_0.rg,r5_0.people_id,r5_1.id,r5_1.description,r5_1.name,rr1_0.sex,s4_0.id,s4_0.situation_description,s4_0.situation_name,o1_0.soft_skills,t1_0.id,t1_0.team_description,m1_0.id,m1_0.admission_date,m1_0.cis_link,m1_0.collaborator_knowledge,m1_0.cpf,m1_0.criminal_background,m1_0.date_birth,m1_0.id_education,m1_0.email,m1_0.external_link,m1_0.labor_lawsuit,m1_0.mindsight_link,m1_0.name,m1_0.observations,m1_0.phone_number,m1_0.professional_references,m1_0.profile_image,m1_0.recruitment_data,m1_0.id_recruitment_source,m1_0.registration_number,m1_0.replacement,m1_0.id_resignation_motivation,m1_0.id_resignation_type,m1_0.rg,m1_0.sex,m1_0.id_situation,t1_0.team_name,o1_0.work_schedule from opportunities o1_0 left join base_origin bo1_0 on bo1_0.id=o1_0.base_origin_id left join people c1_0 on c1_0.id=o1_0.people_id left join education e1_0 on e1_0.id=c1_0.id_education left join recruitment_source rs1_0 on rs1_0.id=c1_0.id_recruitment_source left join resignation_motivation rm1_0 on rm1_0.id=c1_0.id_resignation_motivation left join resignation_type rt1_0 on rt1_0.id=c1_0.id_resignation_type left join people_roles r1_0 on c1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join situation s1_0 on s1_0.id=c1_0.id_situation left join departments d1_0 on d1_0.id=o1_0.departament_id left join opportunity_motive om1_0 on om1_0.id=o1_0.opportunity_motive_id left join opportunity_status os1_0 on os1_0.id=o1_0.opportunity_status_id left join position p1_0 on p1_0.id=o1_0.position_id left join people rp1_0 on rp1_0.id=o1_0.replaced_person_id left join education e2_0 on e2_0.id=rp1_0.id_education left join recruitment_source rs2_0 on rs2_0.id=rp1_0.id_recruitment_source left join resignation_motivation rm2_0 on rm2_0.id=rp1_0.id_resignation_motivation left join resignation_type rt2_0 on rt2_0.id=rp1_0.id_resignation_type left join people_roles r2_0 on rp1_0.id=r2_0.people_id left join roles r2_1 on r2_1.id=r2_0.role_id left join situation s2_0 on s2_0.id=rp1_0.id_situation left join people r3_0 on r3_0.id=o1_0.requester_id left join education e3_0 on e3_0.id=r3_0.id_education left join recruitment_source rs3_0 on rs3_0.id=r3_0.id_recruitment_source left join resignation_motivation rm3_0 on rm3_0.id=r3_0.id_resignation_motivation left join resignation_type rt3_0 on rt3_0.id=r3_0.id_resignation_type left join people_roles r4_0 on r3_0.id=r4_0.people_id left join roles r4_1 on r4_1.id=r4_0.role_id left join situation s3_0 on s3_0.id=r3_0.id_situation left join people rr1_0 on rr1_0.id=o1_0.responsible_recruiter_id left join education e4_0 on e4_0.id=rr1_0.id_education left join recruitment_source rs4_0 on rs4_0.id=rr1_0.id_recruitment_source left join resignation_motivation rm4_0 on rm4_0.id=rr1_0.id_resignation_motivation left join resignation_type rt4_0 on rt4_0.id=rr1_0.id_resignation_type left join people_roles r5_0 on rr1_0.id=r5_0.people_id left join roles r5_1 on r5_1.id=r5_0.role_id left join situation s4_0 on s4_0.id=rr1_0.id_situation left join team t1_0 on t1_0.id=o1_0.team_id left join people m1_0 on m1_0.id=t1_0.manager_id where o1_0.id=?
+2026-05-12T16:40:38.625-03:00  INFO 1054 --- [dho-api] [io-8090-exec-10] s.b.d.s.CustomJwtAuthenticationConverter : Tentando autenticar usuário: israel.barcelos@sebratel.com.br (Israel Da Rosa Barcelos)
+Hibernate: select p1_0.id,p1_0.admission_date,p1_0.cis_link,p1_0.collaborator_knowledge,p1_0.cpf,p1_0.criminal_background,p1_0.date_birth,p1_0.id_education,p1_0.email,p1_0.external_link,p1_0.labor_lawsuit,p1_0.mindsight_link,p1_0.name,p1_0.observations,p1_0.phone_number,p1_0.professional_references,p1_0.profile_image,p1_0.recruitment_data,p1_0.id_recruitment_source,p1_0.registration_number,p1_0.replacement,p1_0.id_resignation_motivation,p1_0.id_resignation_type,p1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p2_0.role_id,p2_1.id,p2_1.description,p2_1.name,p1_0.sex,p1_0.id_situation from people p1_0 left join people_roles r1_0 on p1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p2_0 on r1_1.id=p2_0.role_id left join permissions p2_1 on p2_1.id=p2_0.permission_id where p1_0.email=?
+Hibernate: select de1_0.id,de1_0.education_description,de1_0.education_name from education de1_0 where de1_0.id=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+Hibernate: select drs1_0.id,drs1_0.recruitment_source_description,drs1_0.recruitment_source_name from recruitment_source drs1_0 where drs1_0.id=?
+2026-05-12T16:40:38.633-03:00  INFO 1054 --- [dho-api] [io-8090-exec-10] s.b.d.s.CustomJwtAuthenticationConverter : Usuário israel.barcelos@sebratel.com.br autenticado com sucesso. Autoridades: approve_contract_process, list_linked_processes, assign_recruiter, approve_contract_proccess, withdraw_candidate, manage_settings, view_pipeline, view_job_tracking, initiate_contract_process, reject_candidate, final_decision, add_candidate, view_indicators, view_all_requests, ROLE_ADMIN, suggestions, event_log, approve_candidate
+Hibernate: select ds1_0.id,ds1_0.situation_description,ds1_0.situation_name from situation ds1_0 where ds1_0.id=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+Hibernate: select r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from people_roles r1_0 join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p1_0 on r1_1.id=p1_0.role_id left join permissions p1_1 on p1_1.id=p1_0.permission_id where r1_0.people_id=?
+2026-05-12T16:40:38.640-03:00 ERROR 1054 --- [dho-api] [io-8090-exec-10] b.c.s.b.d.e.GlobalExceptionHandler       : Recurso não encontrado: No static resource requisitions/122/activities.
+2026-05-12T16:40:38.662-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-1] s.b.d.s.CustomJwtAuthenticationConverter : Tentando autenticar usuário: israel.barcelos@sebratel.com.br (Israel Da Rosa Barcelos)
+Hibernate: select p1_0.id,p1_0.admission_date,p1_0.cis_link,p1_0.collaborator_knowledge,p1_0.cpf,p1_0.criminal_background,p1_0.date_birth,p1_0.id_education,p1_0.email,p1_0.external_link,p1_0.labor_lawsuit,p1_0.mindsight_link,p1_0.name,p1_0.observations,p1_0.phone_number,p1_0.professional_references,p1_0.profile_image,p1_0.recruitment_data,p1_0.id_recruitment_source,p1_0.registration_number,p1_0.replacement,p1_0.id_resignation_motivation,p1_0.id_resignation_type,p1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p2_0.role_id,p2_1.id,p2_1.description,p2_1.name,p1_0.sex,p1_0.id_situation from people p1_0 left join people_roles r1_0 on p1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p2_0 on r1_1.id=p2_0.role_id left join permissions p2_1 on p2_1.id=p2_0.permission_id where p1_0.email=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+2026-05-12T16:40:38.669-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-1] s.b.d.s.CustomJwtAuthenticationConverter : Usuário israel.barcelos@sebratel.com.br autenticado com sucesso. Autoridades: approve_contract_process, list_linked_processes, assign_recruiter, approve_contract_proccess, withdraw_candidate, manage_settings, view_pipeline, view_job_tracking, initiate_contract_process, reject_candidate, final_decision, add_candidate, view_indicators, view_all_requests, ROLE_ADMIN, suggestions, event_log, approve_candidate
+Hibernate: select o1_0.id,o1_0.accept_date,bo1_0.id,bo1_0.base_origin_description,bo1_0.base_origin_name,c1_0.id,c1_0.admission_date,c1_0.cis_link,c1_0.collaborator_knowledge,c1_0.cpf,c1_0.criminal_background,c1_0.date_birth,e1_0.id,e1_0.education_description,e1_0.education_name,c1_0.email,c1_0.external_link,c1_0.labor_lawsuit,c1_0.mindsight_link,c1_0.name,c1_0.observations,c1_0.phone_number,c1_0.professional_references,c1_0.profile_image,c1_0.recruitment_data,rs1_0.id,rs1_0.recruitment_source_description,rs1_0.recruitment_source_name,c1_0.registration_number,c1_0.replacement,rm1_0.id,rm1_0.resignation_motivation_description,rm1_0.resignation_motivation_name,rt1_0.id,rt1_0.resignation_type_description,rt1_0.resignation_type_name,c1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,c1_0.sex,s1_0.id,s1_0.situation_description,s1_0.situation_name,o1_0.deadline_sla_days,d1_0.id,d1_0.description,d1_0.name,o1_0.finalization_justification,o1_0.hard_skills,o1_0.observations,o1_0.open_opportunity_date,om1_0.id,om1_0.opportunity_motive_description,om1_0.opportunity_motive_name,os1_0.id,os1_0.opportunity_status_description,os1_0.opportunity_status_name,p1_0.id,p1_0.position_description,p1_0.position_name,o1_0.refusal_justification,rp1_0.id,rp1_0.admission_date,rp1_0.cis_link,rp1_0.collaborator_knowledge,rp1_0.cpf,rp1_0.criminal_background,rp1_0.date_birth,e2_0.id,e2_0.education_description,e2_0.education_name,rp1_0.email,rp1_0.external_link,rp1_0.labor_lawsuit,rp1_0.mindsight_link,rp1_0.name,rp1_0.observations,rp1_0.phone_number,rp1_0.professional_references,rp1_0.profile_image,rp1_0.recruitment_data,rs2_0.id,rs2_0.recruitment_source_description,rs2_0.recruitment_source_name,rp1_0.registration_number,rp1_0.replacement,rm2_0.id,rm2_0.resignation_motivation_description,rm2_0.resignation_motivation_name,rt2_0.id,rt2_0.resignation_type_description,rt2_0.resignation_type_name,rp1_0.rg,r2_0.people_id,r2_1.id,r2_1.description,r2_1.name,rp1_0.sex,s2_0.id,s2_0.situation_description,s2_0.situation_name,r3_0.id,r3_0.admission_date,r3_0.cis_link,r3_0.collaborator_knowledge,r3_0.cpf,r3_0.criminal_background,r3_0.date_birth,e3_0.id,e3_0.education_description,e3_0.education_name,r3_0.email,r3_0.external_link,r3_0.labor_lawsuit,r3_0.mindsight_link,r3_0.name,r3_0.observations,r3_0.phone_number,r3_0.professional_references,r3_0.profile_image,r3_0.recruitment_data,rs3_0.id,rs3_0.recruitment_source_description,rs3_0.recruitment_source_name,r3_0.registration_number,r3_0.replacement,rm3_0.id,rm3_0.resignation_motivation_description,rm3_0.resignation_motivation_name,rt3_0.id,rt3_0.resignation_type_description,rt3_0.resignation_type_name,r3_0.rg,r4_0.people_id,r4_1.id,r4_1.description,r4_1.name,r3_0.sex,s3_0.id,s3_0.situation_description,s3_0.situation_name,rr1_0.id,rr1_0.admission_date,rr1_0.cis_link,rr1_0.collaborator_knowledge,rr1_0.cpf,rr1_0.criminal_background,rr1_0.date_birth,e4_0.id,e4_0.education_description,e4_0.education_name,rr1_0.email,rr1_0.external_link,rr1_0.labor_lawsuit,rr1_0.mindsight_link,rr1_0.name,rr1_0.observations,rr1_0.phone_number,rr1_0.professional_references,rr1_0.profile_image,rr1_0.recruitment_data,rs4_0.id,rs4_0.recruitment_source_description,rs4_0.recruitment_source_name,rr1_0.registration_number,rr1_0.replacement,rm4_0.id,rm4_0.resignation_motivation_description,rm4_0.resignation_motivation_name,rt4_0.id,rt4_0.resignation_type_description,rt4_0.resignation_type_name,rr1_0.rg,r5_0.people_id,r5_1.id,r5_1.description,r5_1.name,rr1_0.sex,s4_0.id,s4_0.situation_description,s4_0.situation_name,o1_0.soft_skills,t1_0.id,t1_0.team_description,m1_0.id,m1_0.admission_date,m1_0.cis_link,m1_0.collaborator_knowledge,m1_0.cpf,m1_0.criminal_background,m1_0.date_birth,m1_0.id_education,m1_0.email,m1_0.external_link,m1_0.labor_lawsuit,m1_0.mindsight_link,m1_0.name,m1_0.observations,m1_0.phone_number,m1_0.professional_references,m1_0.profile_image,m1_0.recruitment_data,m1_0.id_recruitment_source,m1_0.registration_number,m1_0.replacement,m1_0.id_resignation_motivation,m1_0.id_resignation_type,m1_0.rg,m1_0.sex,m1_0.id_situation,t1_0.team_name,o1_0.work_schedule from opportunities o1_0 left join base_origin bo1_0 on bo1_0.id=o1_0.base_origin_id left join people c1_0 on c1_0.id=o1_0.people_id left join education e1_0 on e1_0.id=c1_0.id_education left join recruitment_source rs1_0 on rs1_0.id=c1_0.id_recruitment_source left join resignation_motivation rm1_0 on rm1_0.id=c1_0.id_resignation_motivation left join resignation_type rt1_0 on rt1_0.id=c1_0.id_resignation_type left join people_roles r1_0 on c1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join situation s1_0 on s1_0.id=c1_0.id_situation left join departments d1_0 on d1_0.id=o1_0.departament_id left join opportunity_motive om1_0 on om1_0.id=o1_0.opportunity_motive_id left join opportunity_status os1_0 on os1_0.id=o1_0.opportunity_status_id left join position p1_0 on p1_0.id=o1_0.position_id left join people rp1_0 on rp1_0.id=o1_0.replaced_person_id left join education e2_0 on e2_0.id=rp1_0.id_education left join recruitment_source rs2_0 on rs2_0.id=rp1_0.id_recruitment_source left join resignation_motivation rm2_0 on rm2_0.id=rp1_0.id_resignation_motivation left join resignation_type rt2_0 on rt2_0.id=rp1_0.id_resignation_type left join people_roles r2_0 on rp1_0.id=r2_0.people_id left join roles r2_1 on r2_1.id=r2_0.role_id left join situation s2_0 on s2_0.id=rp1_0.id_situation left join people r3_0 on r3_0.id=o1_0.requester_id left join education e3_0 on e3_0.id=r3_0.id_education left join recruitment_source rs3_0 on rs3_0.id=r3_0.id_recruitment_source left join resignation_motivation rm3_0 on rm3_0.id=r3_0.id_resignation_motivation left join resignation_type rt3_0 on rt3_0.id=r3_0.id_resignation_type left join people_roles r4_0 on r3_0.id=r4_0.people_id left join roles r4_1 on r4_1.id=r4_0.role_id left join situation s3_0 on s3_0.id=r3_0.id_situation left join people rr1_0 on rr1_0.id=o1_0.responsible_recruiter_id left join education e4_0 on e4_0.id=rr1_0.id_education left join recruitment_source rs4_0 on rs4_0.id=rr1_0.id_recruitment_source left join resignation_motivation rm4_0 on rm4_0.id=rr1_0.id_resignation_motivation left join resignation_type rt4_0 on rt4_0.id=rr1_0.id_resignation_type left join people_roles r5_0 on rr1_0.id=r5_0.people_id left join roles r5_1 on r5_1.id=r5_0.role_id left join situation s4_0 on s4_0.id=rr1_0.id_situation left join team t1_0 on t1_0.id=o1_0.team_id left join people m1_0 on m1_0.id=t1_0.manager_id where o1_0.id=?
+Hibernate: select de1_0.id,de1_0.education_description,de1_0.education_name from education de1_0 where de1_0.id=?
+Hibernate: select drs1_0.id,drs1_0.recruitment_source_description,drs1_0.recruitment_source_name from recruitment_source drs1_0 where drs1_0.id=?
+Hibernate: select ds1_0.id,ds1_0.situation_description,ds1_0.situation_name from situation ds1_0 where ds1_0.id=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+Hibernate: select r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from people_roles r1_0 join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p1_0 on r1_1.id=p1_0.role_id left join permissions p1_1 on p1_1.id=p1_0.permission_id where r1_0.people_id=?
+2026-05-12T16:42:10.592-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-7] s.b.d.s.CustomJwtAuthenticationConverter : Tentando autenticar usuário: israel.barcelos@sebratel.com.br (Israel Da Rosa Barcelos)
+Hibernate: select p1_0.id,p1_0.admission_date,p1_0.cis_link,p1_0.collaborator_knowledge,p1_0.cpf,p1_0.criminal_background,p1_0.date_birth,p1_0.id_education,p1_0.email,p1_0.external_link,p1_0.labor_lawsuit,p1_0.mindsight_link,p1_0.name,p1_0.observations,p1_0.phone_number,p1_0.professional_references,p1_0.profile_image,p1_0.recruitment_data,p1_0.id_recruitment_source,p1_0.registration_number,p1_0.replacement,p1_0.id_resignation_motivation,p1_0.id_resignation_type,p1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p2_0.role_id,p2_1.id,p2_1.description,p2_1.name,p1_0.sex,p1_0.id_situation from people p1_0 left join people_roles r1_0 on p1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p2_0 on r1_1.id=p2_0.role_id left join permissions p2_1 on p2_1.id=p2_0.permission_id where p1_0.email=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+2026-05-12T16:42:10.602-03:00  INFO 1054 --- [dho-api] [nio-8090-exec-7] s.b.d.s.CustomJwtAuthenticationConverter : Usuário israel.barcelos@sebratel.com.br autenticado com sucesso. Autoridades: approve_contract_process, list_linked_processes, assign_recruiter, approve_contract_proccess, withdraw_candidate, manage_settings, view_pipeline, view_job_tracking, initiate_contract_process, reject_candidate, final_decision, add_candidate, view_indicators, view_all_requests, ROLE_ADMIN, suggestions, event_log, approve_candidate
+Hibernate: select dos1_0.id,dos1_0.opportunity_status_description,dos1_0.opportunity_status_name from opportunity_status dos1_0 where dos1_0.opportunity_status_name=?
+Hibernate: select p1_0.id,p1_0.admission_date,p1_0.cis_link,p1_0.collaborator_knowledge,p1_0.cpf,p1_0.criminal_background,p1_0.date_birth,p1_0.id_education,p1_0.email,p1_0.external_link,p1_0.labor_lawsuit,p1_0.mindsight_link,p1_0.name,p1_0.observations,p1_0.phone_number,p1_0.professional_references,p1_0.profile_image,p1_0.recruitment_data,p1_0.id_recruitment_source,p1_0.registration_number,p1_0.replacement,p1_0.id_resignation_motivation,p1_0.id_resignation_type,p1_0.rg,r1_0.people_id,r1_1.id,r1_1.description,r1_1.name,p2_0.role_id,p2_1.id,p2_1.description,p2_1.name,p1_0.sex,p1_0.id_situation from people p1_0 left join people_roles r1_0 on p1_0.id=r1_0.people_id left join roles r1_1 on r1_1.id=r1_0.role_id left join role_permissions p2_0 on r1_1.id=p2_0.role_id left join permissions p2_1 on p2_1.id=p2_0.permission_id where p1_0.email=?
+Hibernate: select p1_0.role_id,p1_1.id,p1_1.description,p1_1.name from role_permissions p1_0 join permissions p1_1 on p1_1.id=p1_0.permission_id where p1_0.role_id=?
+Hibernate: select dbo1_0.id,dbo1_0.base_origin_description,dbo1_0.base_origin_name from base_origin dbo1_0 where dbo1_0.base_origin_name=?
+Hibernate: insert into opportunities (accept_date,base_origin_id,people_id,deadline_sla_days,departament_id,finalization_justification,hard_skills,observations,open_opportunity_date,opportunity_motive_id,opportunity_status_id,position_id,refusal_justification,replaced_person_id,requester_id,responsible_recruiter_id,soft_skills,team_id,work_schedule) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+2026-05-12T16:42:10.776-03:00  WARN 1054 --- [dho-api] [nio-8090-exec-7] o.m.jdbc.message.server.ErrorPacket      : Error: 1142-42000: INSERT command denied to user 'dev_reading'@'10.1.1.113' for table `DHO_Application`.`opportunities`
+2026-05-12T16:42:10.779-03:00  WARN 1054 --- [dho-api] [nio-8090-exec-7] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 1142, SQLState: 42000
+2026-05-12T16:42:10.779-03:00 ERROR 1054 --- [dho-api] [nio-8090-exec-7] o.h.engine.jdbc.spi.SqlExceptionHelper   : (conn=12121815) INSERT command denied to user 'dev_reading'@'10.1.1.113' for table `DHO_Application`.`opportunities`
+2026-05-12T16:42:10.791-03:00 ERROR 1054 --- [dho-api] [nio-8090-exec-7] b.c.s.b.d.e.GlobalExceptionHandler       : Erro interno do servidor
+
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not execute statement [(conn=12121815) INSERT command denied to user 'dev_reading'@'10.1.1.113' for table `DHO_Application`.`opportunities`] [insert into opportunities (accept_date,base_origin_id,people_id,deadline_sla_days,departament_id,finalization_justification,hard_skills,observations,open_opportunity_date,opportunity_motive_id,opportunity_status_id,position_id,refusal_justification,replaced_person_id,requester_id,responsible_recruiter_id,soft_skills,team_id,work_schedule) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; SQL [insert into opportunities (accept_date,base_origin_id,people_id,deadline_sla_days,departament_id,finalization_justification,hard_skills,observations,open_opportunity_date,opportunity_motive_id,opportunity_status_id,position_id,refusal_justification,replaced_person_id,requester_id,responsible_recruiter_id,soft_skills,team_id,work_schedule) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:277) ~[spring-orm-6.2.3.jar:6.2.3]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241) ~[spring-orm-6.2.3.jar:6.2.3]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560) ~[spring-orm-6.2.3.jar:6.2.3]
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[spring-tx-6.2.3.jar:6.2.3]
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343) ~[spring-tx-6.2.3.jar:6.2.3]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160) ~[spring-tx-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165) ~[spring-data-jpa-3.4.3.jar:3.4.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.3.jar:6.2.3]
+	at jdk.proxy2/jdk.proxy2.$Proxy166.save(Unknown Source) ~[na:na]
+	at br.com.sebratel.bff.dho.service.OpportunityService.create(OpportunityService.java:127) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.3.jar:6.2.3]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:727) ~[spring-aop-6.2.3.jar:6.2.3]
+	at br.com.sebratel.bff.dho.service.OpportunityService$$SpringCGLIB$$0.create(<generated>) ~[classes/:na]
+	at br.com.sebratel.bff.dho.controller.OpportunityController.createOpportunity(OpportunityController.java:49) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.proceed(AuthorizationManagerBeforeMethodInterceptor.java:268) ~[spring-security-core-6.4.3.jar:6.4.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.attemptAuthorization(AuthorizationManagerBeforeMethodInterceptor.java:263) ~[spring-security-core-6.4.3.jar:6.4.3]
+	at org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor.invoke(AuthorizationManagerBeforeMethodInterceptor.java:196) ~[spring-security-core-6.4.3.jar:6.4.3]
+	at org.springframework.security.config.annotation.method.configuration.DeferringMethodInterceptor.invoke(DeferringMethodInterceptor.java:44) ~[spring-security-config-6.4.3.jar:6.4.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:727) ~[spring-aop-6.2.3.jar:6.2.3]
+	at br.com.sebratel.bff.dho.controller.OpportunityController$$SpringCGLIB$$0.createOpportunity(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:257) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:190) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1088) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:978) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.36.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.36.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter.doFilterInternal(BearerTokenAuthenticationFilter.java:145) ~[spring-security-oauth2-resource-server-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:117) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:87) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243) ~[spring-webmvc-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238) ~[spring-security-config-6.4.3.jar:6.4.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.3.jar:6.2.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1743) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.36.jar:10.1.36]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: org.hibernate.exception.SQLGrammarException: could not execute statement [(conn=12121815) INSERT command denied to user 'dev_reading'@'10.1.1.113' for table `DHO_Application`.`opportunities`] [insert into opportunities (accept_date,base_origin_id,people_id,deadline_sla_days,departament_id,finalization_justification,hard_skills,observations,open_opportunity_date,opportunity_motive_id,opportunity_status_id,position_id,refusal_justification,replaced_person_id,requester_id,responsible_recruiter_id,soft_skills,team_id,work_schedule) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:66) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.id.insert.GetGeneratedKeysDelegate.performMutation(GetGeneratedKeysDelegate.java:116) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:47) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.doStaticInserts(InsertCoordinatorStandard.java:194) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.coordinateInsert(InsertCoordinatorStandard.java:132) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.insert(InsertCoordinatorStandard.java:95) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:85) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:682) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:293) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:274) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:324) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:393) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:307) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:223) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:136) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.entityIsTransient(DefaultPersistEventListener.java:177) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.persist(DefaultPersistEventListener.java:95) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:79) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:55) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:761) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at org.hibernate.internal.SessionImpl.persist(SessionImpl.java:745) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:364) ~[spring-orm-6.2.3.jar:6.2.3]
+	at jdk.proxy2/jdk.proxy2.$Proxy143.persist(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:320) ~[spring-orm-6.2.3.jar:6.2.3]
+	at jdk.proxy2/jdk.proxy2.$Proxy143.persist(Unknown Source) ~[na:na]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.save(SimpleJpaRepository.java:636) ~[spring-data-jpa-3.4.3.jar:3.4.3]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:752) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-3.4.3.jar:3.4.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.3.jar:6.2.3]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.3.jar:6.2.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138) ~[spring-tx-6.2.3.jar:6.2.3]
+	... 124 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: (conn=12121815) INSERT command denied to user 'dev_reading'@'10.1.1.113' for table `DHO_Application`.`opportunities`
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:289) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:189) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:1235) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:1174) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:1093) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:1017) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:101) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:313) ~[mariadb-java-client-3.4.1.jar:na]
+	at org.mariadb.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:290) ~[mariadb-java-client-3.4.1.jar:na]
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61) ~[HikariCP-5.1.0.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java) ~[HikariCP-5.1.0.jar:na]
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194) ~[hibernate-core-6.6.8.Final.jar:6.6.8.Final]
+	... 174 common frames omitted
+

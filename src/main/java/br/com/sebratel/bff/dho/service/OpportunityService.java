@@ -1,6 +1,8 @@
 package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.repository.DhoBaseOriginRepository;
+import br.com.sebratel.bff.dho.domain.repository.*;
+
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.People;
 
@@ -44,6 +46,10 @@ public class OpportunityService {
     private final RecruitmentProcessRepository recruitmentProcessRepository;
     private final PeopleRepository peopleRepository;
     private final DhoBaseOriginRepository baseOriginRepository;
+    private final DhoPositionRepository positionRepository;
+    private final DhoTeamRepository teamRepository;
+    private final DhoDepartmentRepository departmentRepository;
+    private final DhoOpportunityMotiveRepository opportunityMotiveRepository;
 
     public List<CandidateResponseDTO> findCandidatesForUser(Integer id, Authentication authentication) {
         Opportunity opportunity = opportunityRepository.findById(id)
@@ -98,26 +104,35 @@ public class OpportunityService {
 
         DhoBaseOrigin baseOrigin = null;
         if (dto.baseOriginId() != null) {
-            baseOrigin = DhoBaseOrigin.builder().id(dto.baseOriginId()).build();
+            baseOrigin = baseOriginRepository.findById(dto.baseOriginId())
+                    .orElseThrow(() -> new RuntimeException("Base de origem não encontrada"));
         } else {
             baseOrigin = baseOriginRepository.findByName("Porto Alegre")
                     .orElseThrow(() -> new RuntimeException("Base de origem padrão 'Porto Alegre' não encontrada no banco"));
         }
 
+        People candidate = dto.candidateId() != null ? peopleRepository.findById(dto.candidateId()).orElse(null) : null;
+        DhoPosition position = dto.positionId() != null ? positionRepository.findById(dto.positionId()).orElse(null) : null;
+        DhoTeam team = dto.teamId() != null ? teamRepository.findById(dto.teamId()).orElse(null) : null;
+        DhoDepartment department = dto.departmentId() != null ? departmentRepository.findById(dto.departmentId()).orElse(null) : null;
+        DhoOpportunityMotive motive = dto.opportunityMotiveId() != null ? opportunityMotiveRepository.findById(dto.opportunityMotiveId()).orElse(null) : null;
+        People responsibleRecruiter = dto.responsibleRecruiterId() != null ? peopleRepository.findById(dto.responsibleRecruiterId()).orElse(null) : null;
+        People replacedPerson = dto.replacedPersonId() != null ? peopleRepository.findById(dto.replacedPersonId()).orElse(null) : null;
+
         Opportunity opportunity = Opportunity.builder()
                 .openOpportunityDate(Optional.ofNullable(dto.openOpportunityDate()).orElse(LocalDateTime.now()))
                 .requester(requester)
-                .candidate(mapReference(dto.candidateId(), id -> People.builder().id(id).build()))
-                .position(mapReference(dto.positionId(), id -> DhoPosition.builder().id(id).build()))
-                .team(mapReference(dto.teamId(), id -> DhoTeam.builder().id(id).build()))
-                .department(mapReference(dto.departmentId(), id -> DhoDepartment.builder().id(id).build()))
-                .opportunityMotive(mapReference(dto.opportunityMotiveId(), id -> DhoOpportunityMotive.builder().id(id).build()))
-                .replacedPerson(mapReference(dto.replacedPersonId(), id -> People.builder().id(id).build()))
+                .candidate(candidate)
+                .position(position)
+                .team(team)
+                .department(department)
+                .opportunityMotive(motive)
+                .replacedPerson(replacedPerson)
                 .baseOrigin(baseOrigin)
                 .opportunityStatus(pendingStatus)
                 .deadlineSlaDays(dto.deadlineSlaDays())
                 .acceptDate(dto.acceptDate())
-                .responsibleRecruiter(mapReference(dto.responsibleRecruiterId(), id -> People.builder().id(id).build()))
+                .responsibleRecruiter(responsibleRecruiter)
                 .observations(dto.observations())
                 .workSchedule(dto.workSchedule())
                 .hardSkills(dto.hardSkills())

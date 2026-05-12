@@ -90,8 +90,8 @@ public class RecruitmentProcessService {
                 .id(saved.getId())
                 .candidateName(candidate.getName())
                 .positionName(opportunity.getPosition() != null ? opportunity.getPosition().getName() : null)
-                .processStatusName(initialStatus != null ? initialStatus.getName() : null)
-                .processStageName(initialStage != null ? initialStage.getName() : null)
+                .processStatusName(initialStatus.getName())
+                .processStageName(initialStage.getName())
                 .opportunityId(opportunity.getId())
                 .build();
     }
