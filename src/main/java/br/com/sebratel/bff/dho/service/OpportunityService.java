@@ -27,6 +27,8 @@ import br.com.sebratel.bff.dho.dto.UserResponseDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import br.com.sebratel.bff.dho.dto.RequisitionSearchDTO;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -204,8 +206,11 @@ public class OpportunityService {
                 .build();
     }
 
-    public List<OpportunityResponseDTO> findAllForUser(Authentication authentication) {
-        if (hasPermission(authentication, Permission.view_all_requests)) {
+    public List<OpportunityResponseDTO> findAllForUser(Authentication authentication, RequisitionSearchDTO searchDTO) {
+        boolean canViewAll = hasPermission(authentication, Permission.view_all_requests);
+        boolean wantViewAll = searchDTO != null && Boolean.TRUE.equals(searchDTO.getShowAllRequisitions());
+
+        if (canViewAll && wantViewAll) {
             return findAll();
         }
         String email = authentication != null ? authentication.getName() : "";

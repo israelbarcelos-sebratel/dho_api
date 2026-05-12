@@ -17,6 +17,9 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import org.springframework.http.MediaType;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,7 +76,9 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         opportunityRepository.save(opp);
 
-        mockMvc.perform(get("/requisitions")
+        mockMvc.perform(post("/requisitions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "manager@test.com")
                         .subject("manager@test.com"))))
@@ -81,5 +86,88 @@ public class RequisitionControllerIntegrationTest {
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].title").value("Developer"))
                 .andExpect(jsonPath("$[0].status").value("Enviado para aprovação"));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnAllRequisitionsForAdminWhenRequested() throws Exception {
+        People requester1 = peopleRepository.save(People.builder().name("User 1").email("user1@test.com").build());
+        People admin = peopleRepository.save(People.builder().name("Admin").email("admin@test.com").build());
+
+        DhoPosition position = DhoPosition.builder().name("Dev").build();
+        entityManager.persist(position);
+        DhoTeam team = DhoTeam.builder().name("IT").build();
+        entityManager.persist(team);
+        DhoDepartment dept = DhoDepartment.builder().name("IT").build();
+        entityManager.persist(dept);
+        DhoOpportunityMotive motive = DhoOpportunityMotive.builder().name("New").build();
+        entityManager.persist(motive);
+        DhoOpportunityStatus status = DhoOpportunityStatus.builder().name("Pendente").build();
+        entityManager.persist(status);
+
+        opportunityRepository.save(Opportunity.builder()
+                .position(position).team(team).department(dept).opportunityMotive(motive)
+                .opportunityStatus(status).openOpportunityDate(LocalDateTime.now())
+                .requester(requester1).build());
+
+        opportunityRepository.save(Opportunity.builder()
+                .position(position).team(team).department(dept).opportunityMotive(motive)
+                .opportunityStatus(status).openOpportunityDate(LocalDateTime.now())
+                .requester(admin).build());
+
+        // Admin requesting ONLY THEIR OWN (default)
+        mockMvc.perform(post("/requisitions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "admin@test.com")
+                        .subject("admin@test.com"))
+                        .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        // Admin requesting ALL
+        mockMvc.perform(post("/requisitions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"showAllRequisitions\": true}")
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "admin@test.com")
+                        .subject("admin@test.com"))
+                        .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    @Transactional
+    void shouldNotReturnAllRequisitionsForRegularUserEvenIfRequested() throws Exception {
+        People requester1 = peopleRepository.save(People.builder().name("User 1").email("user1@test.com").build());
+        People user2 = peopleRepository.save(People.builder().name("User 2").email("user2@test.com").build());
+
+        DhoPosition position = DhoPosition.builder().name("Dev").build();
+        entityManager.persist(position);
+        DhoTeam team = DhoTeam.builder().name("IT").build();
+        entityManager.persist(team);
+        DhoDepartment dept = DhoDepartment.builder().name("IT").build();
+        entityManager.persist(dept);
+        DhoOpportunityMotive motive = DhoOpportunityMotive.builder().name("New").build();
+        entityManager.persist(motive);
+        DhoOpportunityStatus status = DhoOpportunityStatus.builder().name("Pendente").build();
+        entityManager.persist(status);
+
+        opportunityRepository.save(Opportunity.builder()
+                .position(position).team(team).department(dept).opportunityMotive(motive)
+                .opportunityStatus(status).openOpportunityDate(LocalDateTime.now())
+                .requester(requester1).build());
+
+        // User 2 requesting ALL (should fail and return only their own, which is 0)
+        mockMvc.perform(post("/requisitions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"showAllRequisitions\": true}")
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "user2@test.com")
+                        .subject("user2@test.com"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
     }
 }

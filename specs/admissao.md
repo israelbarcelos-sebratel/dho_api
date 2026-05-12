@@ -32,3 +32,5 @@ O gestor deve poder iniciar o pedido de uma nova vaga para o DHO, o DHO deve val
 - [x] **RQ17:** Finalizar contratação ou marcar recusa.
 - [ ] **RQ23:** Dashboard de Indicadores de Recrutamento (Vagas abertas, contratações no mês, aprovações pendentes e tempo médio de contratação).
 
+
+\n## 3. Especificações Técnicas\n\n### 3.1. Filtro de Requisições\nO endpoint de listagem de requisições (`POST /requisitions`) permite filtrar a visibilidade dos dados:\n\n- **Campo**: `showAllRequisitions` (Boolean)\n- **Comportamento**:\n    - Se `false` (padrão): Retorna apenas as requisições criadas pelo usuário autenticado.\n    - Se `true`: Retorna todas as requisições do sistema, **desde que** o usuário possua a permissão `view_all_requests` ou role `ADMIN`.\n    - Se o usuário não possuir a permissão necessária e enviar `true`, o sistema retornará apenas as suas próprias requisições como medida de segurança.\n

@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import br.com.sebratel.bff.dho.dto.RequisitionSearchDTO;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
+
 @RestController
 @RequestMapping("/requisitions")
 @RequiredArgsConstructor
@@ -22,10 +26,13 @@ public class RequisitionController {
 
     private final OpportunityService opportunityService;
 
-    @GetMapping
-    @Operation(summary = "Listar requisições do gestor", description = "Retorna as requisições criadas pelo usuário autenticado ou todas se for admin/DHO.")
-    public ResponseEntity<List<OpportunityResponseDTO>> getAll(Authentication authentication) {
-        return ResponseEntity.ok(opportunityService.findAllForUser(authentication));
+    @PostMapping
+    @Operation(summary = "Listar requisições do gestor", description = "Retorna as requisições criadas pelo usuário autenticado. Admins podem usar showAllRequisitions: true para ver tudo.")
+    public ResponseEntity<List<OpportunityResponseDTO>> getAll(@RequestBody(required = false) RequisitionSearchDTO searchDTO, Authentication authentication) {
+        if (searchDTO == null) {
+            searchDTO = new RequisitionSearchDTO();
+        }
+        return ResponseEntity.ok(opportunityService.findAllForUser(authentication, searchDTO));
     }
 
     @GetMapping("/{id}")
