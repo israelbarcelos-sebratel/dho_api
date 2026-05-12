@@ -4,6 +4,8 @@ import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoRole;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.dto.UserResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,11 +24,13 @@ import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoPermission;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Tag(name = "Autenticação", description = "Endpoints para consulta de informações do usuário autenticado")
 public class AuthController {
 
     private final PeopleRepository peopleRepository;
 
     @GetMapping("/me")
+    @Operation(summary = "Obter dados do usuário atual", description = "Retorna os detalhes, cargos e permissões do usuário autenticado via JWT.")
     public ResponseEntity<UserResponseDTO> getCurrentUser(Authentication authentication) {
         String email = authentication.getName();
         People person = peopleRepository.findByEmail(email)
