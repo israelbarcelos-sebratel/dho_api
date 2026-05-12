@@ -1,5 +1,8 @@
 package br.com.sebratel.bff.dho.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
@@ -44,6 +47,25 @@ public class OpportunityService {
     private final DhoOpportunityStatusRepository statusRepository;
     private final RecruitmentProcessRepository recruitmentProcessRepository;
     private final PeopleRepository peopleRepository;
+
+    public List<CandidateResponseDTO> findCandidatesForUser(Integer id, Authentication authentication) {
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Oportunidade não encontrada"));
+
+        if (!"Aprovada".equals(opportunity.getOpportunityStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A requisição deve estar aprovada para ver os candidatos");
+        }
+
+        boolean isAdmin = hasPermission(authentication, Permission.view_all_requests);
+        boolean isRequester = opportunity.getRequester() != null && opportunity.getRequester().getEmail().equals(authentication.getName());
+
+        if (!isAdmin && !isRequester) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acesso negado a esta requisição");
+        }
+
+        return findCandidatesByOpportunityId(id);
+    }
+
 
     public List<CandidateResponseDTO> findCandidatesByOpportunityId(Integer id) {
         return recruitmentProcessRepository.findByOpportunityId(id).stream()

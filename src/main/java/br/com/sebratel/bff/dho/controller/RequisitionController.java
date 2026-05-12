@@ -1,5 +1,7 @@
 package br.com.sebratel.bff.dho.controller;
 
+import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
+
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import br.com.sebratel.bff.dho.service.OpportunityService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,4 +42,11 @@ public class RequisitionController {
     public ResponseEntity<OpportunityResponseDTO> getById(@PathVariable Integer id, Authentication authentication) {
         return ResponseEntity.ok(opportunityService.findByIdForUser(id, authentication));
     }
+
+    @GetMapping("/{id}/candidates")
+    @Operation(summary = "Listar candidatos de uma requisição aprovada", description = "Retorna os candidatos vinculados a uma vaga aprovada. Requer ser o solicitante ou ter permissão admin.")
+    public ResponseEntity<List<CandidateResponseDTO>> getCandidates(@PathVariable Integer id, Authentication authentication) {
+        return ResponseEntity.ok(opportunityService.findCandidatesForUser(id, authentication));
+    }
+
 }

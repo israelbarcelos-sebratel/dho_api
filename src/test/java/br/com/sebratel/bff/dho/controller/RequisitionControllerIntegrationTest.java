@@ -2,6 +2,7 @@ package br.com.sebratel.bff.dho.controller;
 
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
+import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.*;
 import jakarta.persistence.EntityManager;
@@ -169,5 +170,126 @@ public class RequisitionControllerIntegrationTest {
                         .subject("user2@test.com"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnCandidatesWhenApprovedAndRequester() throws Exception {
+        People requester = peopleRepository.save(People.builder().name("Manager").email("manager@test.com").build());
+        People candidate = peopleRepository.save(People.builder().name("John Doe").email("john@doe.com").build());
+
+        DhoOpportunityStatus approvedStatus = DhoOpportunityStatus.builder().name("Aprovada").build();
+        entityManager.persist(approvedStatus);
+
+        Opportunity opp = Opportunity.builder()
+                .opportunityStatus(approvedStatus)
+                .requester(requester)
+                .openOpportunityDate(LocalDateTime.now())
+                .build();
+        opp = opportunityRepository.save(opp);
+
+        DhoProcessStage stage = DhoProcessStage.builder().name("Interview").build();
+        entityManager.persist(stage);
+        DhoProcessStatus status = DhoProcessStatus.builder().name("In Progress").build();
+        entityManager.persist(status);
+
+        RecruitmentProcess rp = RecruitmentProcess.builder()
+                .opportunity(opp)
+                .candidate(candidate)
+                .processStage(stage)
+                .processStatus(status)
+                .build();
+        entityManager.persist(rp);
+
+        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "manager@test.com")
+                        .subject("manager@test.com"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].name").value("John Doe"))
+                .andExpect(jsonPath("$[0].processStage").value("Interview"));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnCandidatesWhenApprovedAndAdmin() throws Exception {
+        People requester = peopleRepository.save(People.builder().name("Manager").email("manager@test.com").build());
+        People candidate = peopleRepository.save(People.builder().name("John Doe").email("john@doe.com").build());
+
+        DhoOpportunityStatus approvedStatus = DhoOpportunityStatus.builder().name("Aprovada").build();
+        entityManager.persist(approvedStatus);
+
+        Opportunity opp = Opportunity.builder()
+                .opportunityStatus(approvedStatus)
+                .requester(requester)
+                .openOpportunityDate(LocalDateTime.now())
+                .build();
+        opp = opportunityRepository.save(opp);
+
+        DhoProcessStage stage = DhoProcessStage.builder().name("Interview").build();
+        entityManager.persist(stage);
+        DhoProcessStatus status = DhoProcessStatus.builder().name("In Progress").build();
+        entityManager.persist(status);
+
+        RecruitmentProcess rp = RecruitmentProcess.builder()
+                .opportunity(opp)
+                .candidate(candidate)
+                .processStage(stage)
+                .processStatus(status)
+                .build();
+        entityManager.persist(rp);
+
+        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "admin@test.com")
+                        .subject("admin@test.com"))
+                        .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnForbiddenWhenNotRequesterNorAdmin() throws Exception {
+        People requester = peopleRepository.save(People.builder().name("Manager").email("manager@test.com").build());
+        
+        DhoOpportunityStatus approvedStatus = DhoOpportunityStatus.builder().name("Aprovada").build();
+        entityManager.persist(approvedStatus);
+
+        Opportunity opp = Opportunity.builder()
+                .opportunityStatus(approvedStatus)
+                .requester(requester)
+                .openOpportunityDate(LocalDateTime.now())
+                .build();
+        opp = opportunityRepository.save(opp);
+
+        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "other@test.com")
+                        .subject("other@test.com"))))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnBadRequestWhenNotApproved() throws Exception {
+        People requester = peopleRepository.save(People.builder().name("Manager").email("manager@test.com").build());
+        
+        DhoOpportunityStatus pendingStatus = DhoOpportunityStatus.builder().name("Pendente").build();
+        entityManager.persist(pendingStatus);
+
+        Opportunity opp = Opportunity.builder()
+                .opportunityStatus(pendingStatus)
+                .requester(requester)
+                .openOpportunityDate(LocalDateTime.now())
+                .build();
+        opp = opportunityRepository.save(opp);
+
+        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "manager@test.com")
+                        .subject("manager@test.com"))))
+                .andExpect(status().isBadRequest());
     }
 }
