@@ -60,6 +60,11 @@ public class RecruitmentProcessService {
 
         Opportunity opportunity = opportunityRepository.findById(dto.getOpportunityId())
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+        if (!"Aprovada".equals(opportunity.getOpportunityStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível vincular um candidato a uma oportunidade que não esteja aprovada");
+        }
+
+
         if (recruitmentProcessRepository.existsByCandidateIdAndOpportunityId(dto.getCandidateId(), dto.getOpportunityId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Este candidato já está vinculado a esta oportunidade");
         }
@@ -113,6 +118,11 @@ public class RecruitmentProcessService {
     public void hire(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+        if (process.getOpportunity() != null && !"Aprovada".equals(process.getOpportunity().getOpportunityStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível efetivar a contratação de um processo cuja oportunidade não está aprovada");
+        }
+
+
 
         DhoProcessStatus status = processStatusRepository.findByName("Contratado")
                 .orElseThrow(() -> new RuntimeException("Status 'Contratado' não encontrado"));
@@ -182,6 +192,11 @@ public class RecruitmentProcessService {
     private void updateStage(Integer id, String stageName) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+        if (process.getOpportunity() != null && !"Aprovada".equals(process.getOpportunity().getOpportunityStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível alterar a etapa de um processo cuja oportunidade não está aprovada");
+        }
+
+
 
         DhoProcessStage stage = processStageRepository.findByName(stageName)
                 .orElseThrow(() -> new RuntimeException("Estágio '" + stageName + "' não encontrado"));
@@ -211,6 +226,11 @@ public class RecruitmentProcessService {
     private void updateStatus(Integer id, String statusName, String report) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+        if (process.getOpportunity() != null && !"Aprovada".equals(process.getOpportunity().getOpportunityStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível alterar o status de um processo cuja oportunidade não está aprovada");
+        }
+
+
 
         DhoProcessStatus status = processStatusRepository.findByName(statusName)
                 .orElseThrow(() -> new RuntimeException("Status '" + statusName + "' não encontrado"));

@@ -1,7 +1,6 @@
 package br.com.sebratel.bff.dho.service;
 
-import br.com.sebratel.bff.dho.domain.entity.Opportunity;
-import br.com.sebratel.bff.dho.domain.entity.People;
+import br.com.sebratel.bff.dho.domain.repository.DhoBaseOriginRepository;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
@@ -41,6 +40,7 @@ public class OpportunityService {
     private final DhoOpportunityStatusRepository statusRepository;
     private final RecruitmentProcessRepository recruitmentProcessRepository;
     private final PeopleRepository peopleRepository;
+    private final DhoBaseOriginRepository baseOriginRepository;
 
     public List<CandidateResponseDTO> findCandidatesForUser(Integer id, Authentication authentication) {
         Opportunity opportunity = opportunityRepository.findById(id)
@@ -93,6 +93,14 @@ public class OpportunityService {
             requester = peopleRepository.findByEmail(authentication.getName()).orElse(null);
         }
 
+        DhoBaseOrigin baseOrigin = null;
+        if (dto.baseOriginId() != null) {
+            baseOrigin = DhoBaseOrigin.builder().id(dto.baseOriginId()).build();
+        } else {
+            baseOrigin = baseOriginRepository.findByName("Porto Alegre")
+                    .orElseThrow(() -> new RuntimeException("Base de origem padrão 'Porto Alegre' não encontrada no banco"));
+        }
+
         Opportunity opportunity = Opportunity.builder()
                 .openOpportunityDate(Optional.ofNullable(dto.openOpportunityDate()).orElse(LocalDateTime.now()))
                 .requester(requester)
@@ -102,7 +110,7 @@ public class OpportunityService {
                 .department(mapReference(dto.departmentId(), id -> DhoDepartment.builder().id(id).build()))
                 .opportunityMotive(mapReference(dto.opportunityMotiveId(), id -> DhoOpportunityMotive.builder().id(id).build()))
                 .replacedPerson(mapReference(dto.replacedPersonId(), id -> People.builder().id(id).build()))
-                .baseOrigin(mapReference(dto.baseOriginId(), id -> DhoBaseOrigin.builder().id(id).build()))
+                .baseOrigin(baseOrigin)
                 .opportunityStatus(pendingStatus)
                 .deadlineSlaDays(dto.deadlineSlaDays())
                 .acceptDate(dto.acceptDate())
@@ -130,6 +138,8 @@ public class OpportunityService {
                 .orElseThrow(() -> new RuntimeException("Status 'Aprovada' não encontrado"));
 
         opportunity.setOpportunityStatus(approvedStatus);
+        opportunity.setDeadlineSlaDays(30);
+        
         return convertToDTO(opportunityRepository.save(opportunity));
     }
 
@@ -192,12 +202,10 @@ public class OpportunityService {
         return OpportunityResponseDTO.builder()
                 .id(opportunity.getId())
                 .openOpportunityDate(opportunity.getOpenOpportunityDate())
-                .candidateName(mapName(opportunity.getCandidate(), People::getName))
                 .positionName(mapName(opportunity.getPosition(), DhoPosition::getName))
                 .teamName(mapName(opportunity.getTeam(), DhoTeam::getName))
                 .departmentName(mapName(opportunity.getDepartment(), DhoDepartment::getName))
                 .opportunityMotiveName(mapName(opportunity.getOpportunityMotive(), DhoOpportunityMotive::getName))
-                .replacedPersonName(mapName(opportunity.getReplacedPerson(), People::getName))
                 .baseOriginName(mapName(opportunity.getBaseOrigin(), DhoBaseOrigin::getName))
                 .opportunityStatusName(statusName)
                 .processStageName(null)
