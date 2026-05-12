@@ -295,7 +295,7 @@ public class OpportunityService {
     }
 
     public List<RecruitmentProcessLogDTO> getLogs(Integer id) {
-        return logRepository.findByOpportunityIdOrderByStartTimeDesc(id).stream()
+        return logRepository.findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(id).stream()
                 .map(log -> RecruitmentProcessLogDTO.builder()
                         .id(log.getId())
                         .actionName(log.getActionName())
@@ -304,7 +304,8 @@ public class OpportunityService {
                         .durationMs(log.getDurationMs())
                         .status(log.getStatus())
                         .errorMessage(log.getErrorMessage())
-                        .candidateName(log.getCandidate() != null ? log.getCandidate().getName() : null)
+                        .candidateName(log.getRecruitmentProcess() != null && log.getRecruitmentProcess().getCandidate() != null 
+                                ? log.getRecruitmentProcess().getCandidate().getName() : null)
                         .build())
                 .collect(Collectors.toList());
     }

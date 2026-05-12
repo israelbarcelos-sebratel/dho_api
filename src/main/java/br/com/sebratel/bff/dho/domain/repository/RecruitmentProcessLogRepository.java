@@ -12,7 +12,7 @@ import java.util.List;
 public interface RecruitmentProcessLogRepository extends JpaRepository<RecruitmentProcessLog, Integer> {
     List<RecruitmentProcessLog> findByActionNameAndStatusAndStartTimeAfter(String actionName, String status, LocalDateTime startTime);
 
-    List<RecruitmentProcessLog> findByOpportunityIdOrderByStartTimeDesc(Integer opportunityId);
+    List<RecruitmentProcessLog> findByRecruitmentProcessIdOrderByStartTimeDesc(Integer processId);
 
-    List<RecruitmentProcessLog> findByOpportunityIdAndCandidateIdOrderByStartTimeDesc(Integer opportunityId, Integer candidateId);
+    List<RecruitmentProcessLog> findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(Integer opportunityId);
 }

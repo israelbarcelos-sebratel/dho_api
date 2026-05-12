@@ -5,6 +5,10 @@ import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import br.com.sebratel.bff.dho.domain.entity.People;
 
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
+import br.com.sebratel.bff.dho.domain.repository.DhoProcessStageRepository;
+import br.com.sebratel.bff.dho.domain.repository.DhoProcessStatusRepository;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStage;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStatus;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
@@ -18,6 +22,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.time.LocalDateTime;
 
 @Aspect
@@ -90,34 +95,40 @@ public class RecruitmentProcessLoggingAspect {
     private void saveLog(String serviceName, Integer id, String actionName, LocalDateTime startTime, LocalDateTime endTime, 
                          long durationMs, String status, String errorMessage) {
         
-        Opportunity opportunity = null;
-        People candidate = null;
+        RecruitmentProcess process = null;
 
         if (serviceName.contains("RecruitmentProcessService")) {
-            RecruitmentProcess process = recruitmentProcessRepository.findById(id).orElse(null);
-            if (process != null) {
-                opportunity = process.getOpportunity();
-                candidate = process.getCandidate();
-            }
+            process = recruitmentProcessRepository.findById(id).orElse(null);
         } else if (serviceName.contains("OpportunityService")) {
-            opportunity = opportunityRepository.findById(id).orElse(null);
-            // In OpportunityService.create, the candidate might be in the DTO, 
-            // but for simple logging of the opportunity itself, candidate is null.
+            // If it's an opportunity, we might want to log it against all its processes
+            // or maybe just the "main" one. Given the requirement to update opportunity log,
+            // we should probably find the relevant processes.
+            List<RecruitmentProcess> processes = recruitmentProcessRepository.findByOpportunityId(id);
+            // For simplicity and to match the "process log" nature, we'll log it for each process 
+            // of this opportunity if they exist.
+            for (RecruitmentProcess rp : processes) {
+                saveSingleLog(rp, actionName, startTime, endTime, durationMs, status, errorMessage);
+            }
+            return;
         }
 
-        if (opportunity != null) {
-            RecruitmentProcessLog recruitmentLog = RecruitmentProcessLog.builder()
-                    .opportunity(opportunity)
-                    .candidate(candidate)
-                    .actionName(actionName.toUpperCase())
-                    .startTime(startTime)
-                    .endTime(endTime)
-                    .durationMs(durationMs)
-                    .status(status)
-                    .errorMessage(errorMessage != null && errorMessage.length() > 2000 ? 
-                                 errorMessage.substring(0, 2000) : errorMessage)
-                    .build();
-            logRepository.save(recruitmentLog);
+        if (process != null) {
+            saveSingleLog(process, actionName, startTime, endTime, durationMs, status, errorMessage);
         }
+    }
+
+    private void saveSingleLog(RecruitmentProcess process, String actionName, LocalDateTime startTime, LocalDateTime endTime,
+                               long durationMs, String status, String errorMessage) {
+        RecruitmentProcessLog recruitmentLog = RecruitmentProcessLog.builder()
+                .recruitmentProcess(process)
+                .actionName(actionName.toUpperCase())
+                .startTime(startTime)
+                .endTime(endTime)
+                .durationMs(durationMs)
+                .status(status)
+                .errorMessage(errorMessage != null && errorMessage.length() > 2000 ? 
+                             errorMessage.substring(0, 2000) : errorMessage)
+                .build();
+        logRepository.save(recruitmentLog);
     }
 }

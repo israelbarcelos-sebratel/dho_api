@@ -194,8 +194,10 @@ public class RecruitmentProcessServiceTest {
         RecruitmentProcessLog log = new RecruitmentProcessLog();
         log.setId(1);
         log.setActionName("APPROVE");
-
-        when(logRepository.findByRecruitmentProcessId(1)).thenReturn(List.of(log));
+        log.setRecruitmentProcess(process);
+        
+        when(logRepository.findByRecruitmentProcessIdOrderByStartTimeDesc(1))
+                .thenReturn(List.of(log));
 
         List<RecruitmentProcessLogDTO> result = recruitmentProcessService.getLogs(1);
 
