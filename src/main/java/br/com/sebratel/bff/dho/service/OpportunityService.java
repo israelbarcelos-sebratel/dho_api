@@ -1,8 +1,5 @@
 package br.com.sebratel.bff.dho.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
@@ -12,14 +9,14 @@ import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
-
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
-
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,9 +30,6 @@ import org.springframework.security.core.GrantedAuthority;
 import br.com.sebratel.bff.dho.dto.RequisitionSearchDTO;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -66,7 +60,6 @@ public class OpportunityService {
         return findCandidatesByOpportunityId(id);
     }
 
-
     public List<CandidateResponseDTO> findCandidatesByOpportunityId(Integer id) {
         return recruitmentProcessRepository.findByOpportunityId(id).stream()
                 .map(rp -> CandidateResponseDTO.builder()
@@ -78,20 +71,17 @@ public class OpportunityService {
                 .collect(Collectors.toList());
     }
 
-
-
     public List<OpportunityResponseDTO> findAll() {
         return opportunityRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
     public OpportunityResponseDTO findById(Integer id) {
         return opportunityRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
     }
-
-
 
     @Transactional
     public OpportunityResponseDTO create(OpportunityRequestDTO dto, Authentication authentication) {
@@ -126,10 +116,15 @@ public class OpportunityService {
         Opportunity saved = opportunityRepository.save(opportunity);
         return convertToDTO(saved);
     }
+
     @Transactional
     public OpportunityResponseDTO approve(Integer id) {
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+
+        if ("Aprovada".equals(opportunity.getOpportunityStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esta oportunidade já está aprovada");
+        }
 
         DhoOpportunityStatus approvedStatus = statusRepository.findByName("Aprovada")
                 .orElseThrow(() -> new RuntimeException("Status 'Aprovada' não encontrado"));
@@ -171,7 +166,6 @@ public class OpportunityService {
         opportunity.setFinalizationJustification(dto.justification());
         return convertToDTO(opportunityRepository.save(opportunity));
     }
-
 
     private OpportunityResponseDTO convertToDTO(Opportunity opportunity) {
         String statusName = mapName(opportunity.getOpportunityStatus(), DhoOpportunityStatus::getName);
@@ -217,7 +211,6 @@ public class OpportunityService {
                 .workSchedule(opportunity.getWorkSchedule())
                 .hardSkills(opportunity.getHardSkills())
                 .softSkills(opportunity.getSoftSkills())
-                // Frontend compatibility fields
                 .title(mapName(opportunity.getPosition(), DhoPosition::getName))
                 .type(opportunity.getWorkSchedule())
                 .team(mapName(opportunity.getTeam(), DhoTeam::getName))
