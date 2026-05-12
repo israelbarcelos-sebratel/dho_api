@@ -312,8 +312,14 @@ public class RequisitionControllerIntegrationTest {
     @Test
     @Transactional
     void shouldNotLinkSameCandidateToSameOpportunityTwice() throws Exception {
+        DhoOpportunityStatus approvedStatus = DhoOpportunityStatus.builder().name("Aprovada").build();
+        entityManager.persist(approvedStatus);
+        
         People candidate = peopleRepository.save(People.builder().name("John Doe").email("john@doe.com").build());
-        Opportunity opp = opportunityRepository.save(Opportunity.builder().openOpportunityDate(LocalDateTime.now()).build());
+        Opportunity opp = opportunityRepository.save(Opportunity.builder()
+                .openOpportunityDate(LocalDateTime.now())
+                .opportunityStatus(approvedStatus)
+                .build());
 
         // First link
         entityManager.persist(RecruitmentProcess.builder()
