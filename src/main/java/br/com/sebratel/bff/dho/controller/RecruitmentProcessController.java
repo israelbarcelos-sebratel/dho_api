@@ -7,6 +7,10 @@ import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentIndicatorsDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessRequestDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
+
+
 import java.util.List;
 import br.com.sebratel.bff.dho.service.RecruitmentProcessService;
 import jakarta.validation.Valid;
@@ -52,6 +56,20 @@ public class RecruitmentProcessController {
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).final_decision.name())")
     public ResponseEntity<Void> hire(@PathVariable Integer id) {
         recruitmentProcessService.hire(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}/stage")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    public ResponseEntity<Void> updateStage(@PathVariable Integer id, @RequestBody @Valid RecruitmentProcessStageDTO dto) {
+        recruitmentProcessService.updateStage(id, dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    public ResponseEntity<Void> updateStatus(@PathVariable Integer id, @RequestBody @Valid RecruitmentProcessStatusDTO dto) {
+        recruitmentProcessService.updateStatus(id, dto);
         return ResponseEntity.ok().build();
     }
 

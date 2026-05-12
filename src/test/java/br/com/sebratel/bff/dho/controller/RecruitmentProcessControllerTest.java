@@ -20,6 +20,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
+
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = RecruitmentProcessController.class, excludeAutoConfiguration = {
@@ -106,6 +111,28 @@ public class RecruitmentProcessControllerTest {
     void getMyProcesses_ShouldReturnOk() throws Exception {
         mockMvc.perform(get("/recruitment-processes/mine")
                         .param("recruiterId", "1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateStage_ShouldReturnOk() throws Exception {
+        RecruitmentProcessStageDTO dto = new RecruitmentProcessStageDTO("Entrevista");
+        doNothing().when(recruitmentProcessService).updateStage(eq(1), any(RecruitmentProcessStageDTO.class));
+
+        mockMvc.perform(patch("/recruitment-processes/1/stage")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateStatus_ShouldReturnOk() throws Exception {
+        RecruitmentProcessStatusDTO dto = new RecruitmentProcessStatusDTO("Teste técnico");
+        doNothing().when(recruitmentProcessService).updateStatus(eq(1), any(RecruitmentProcessStatusDTO.class));
+
+        mockMvc.perform(patch("/recruitment-processes/1/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
     }
 

@@ -22,6 +22,10 @@ import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessRequestDTO;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
+
+
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -122,6 +126,23 @@ public class RecruitmentProcessService {
         }
 
         recruitmentProcessRepository.save(process);
+    }
+
+    @Transactional
+    public void updateStage(Integer id, RecruitmentProcessStageDTO dto) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+
+        DhoProcessStage stage = processStageRepository.findByName(dto.getStageName())
+                .orElseThrow(() -> new RuntimeException("Estágio '" + dto.getStageName() + "' não encontrado"));
+
+        process.setProcessStage(stage);
+        recruitmentProcessRepository.save(process);
+    }
+
+    @Transactional
+    public void updateStatus(Integer id, RecruitmentProcessStatusDTO dto) {
+        updateStatus(id, dto.getStatusName(), null);
     }
 
     private void updateStatus(Integer id, String statusName, String report) {

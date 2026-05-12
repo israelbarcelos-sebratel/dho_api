@@ -13,6 +13,12 @@ import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStage;
+import br.com.sebratel.bff.dho.domain.repository.DhoProcessStageRepository;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
+
+
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +45,10 @@ public class RecruitmentProcessServiceTest {
 
     @Mock
     private DhoProcessStatusRepository processStatusRepository;
+    @Mock
+    private DhoProcessStageRepository processStageRepository;
+
+
 
     @Mock
     private PeopleRepository peopleRepository;
@@ -115,6 +125,37 @@ public class RecruitmentProcessServiceTest {
         assertEquals(longReport, process.getInterviewReport());
         verify(recruitmentProcessRepository).save(process);
     }
+
+    @Test
+    void updateStage_ShouldUpdateStage_WhenStageIsValid() {
+        RecruitmentProcessStageDTO dto = new RecruitmentProcessStageDTO("Entrevista");
+        DhoProcessStage stage = new DhoProcessStage();
+        stage.setName("Entrevista");
+
+        when(recruitmentProcessRepository.findById(1)).thenReturn(Optional.of(process));
+        when(processStageRepository.findByName("Entrevista")).thenReturn(Optional.of(stage));
+
+        recruitmentProcessService.updateStage(1, dto);
+
+        assertEquals("Entrevista", process.getProcessStage().getName());
+        verify(recruitmentProcessRepository).save(process);
+    }
+    @Test
+    void updateStatus_ShouldUpdateStatus_WhenStatusIsValid() {
+        RecruitmentProcessStatusDTO dto = new RecruitmentProcessStatusDTO("Teste técnico");
+        DhoProcessStatus status = new DhoProcessStatus();
+        status.setName("Teste técnico");
+
+        when(recruitmentProcessRepository.findById(1)).thenReturn(Optional.of(process));
+        when(processStatusRepository.findByName("Teste técnico")).thenReturn(Optional.of(status));
+
+        recruitmentProcessService.updateStatus(1, dto);
+
+        assertEquals("Teste técnico", process.getProcessStatus().getName());
+        verify(recruitmentProcessRepository).save(process);
+    }
+
+
 
     @Test
     void getProcessesByRecruiter_ShouldReturnProcesses() {
