@@ -58,6 +58,41 @@ public class RecruitmentProcessController {
         recruitmentProcessService.hire(id);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/{id}/move-to-interview")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    public ResponseEntity<Void> moveToInterview(@PathVariable Integer id) {
+        recruitmentProcessService.moveToInterview(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/move-to-technical-test")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    public ResponseEntity<Void> moveToTechnicalTest(@PathVariable Integer id) {
+        recruitmentProcessService.moveToTechnicalTest(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/manager-decision")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).reject_candidate.name())")
+    public ResponseEntity<Void> managerDecision(@PathVariable Integer id, @RequestBody br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {
+        recruitmentProcessService.managerDecision(id, dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/proposal")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).initiate_contract_process.name())")
+    public ResponseEntity<Void> sendProposal(@PathVariable Integer id) {
+        recruitmentProcessService.sendProposal(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/candidate-decision")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).initiate_contract_process.name())")
+    public ResponseEntity<Void> candidateDecision(@PathVariable Integer id, @RequestBody br.com.sebratel.bff.dho.dto.CandidateDecisionDTO dto) {
+        recruitmentProcessService.candidateDecision(id, dto);
+        return ResponseEntity.ok().build();
+    }
+
 
     @PatchMapping("/{id}/stage")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")

@@ -127,6 +127,69 @@ public class RecruitmentProcessService {
 
         recruitmentProcessRepository.save(process);
     }
+    @Transactional
+    public void moveToInterview(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+        if (!"Triagem".equals(process.getProcessStage().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Triagem para ir para Entrevista");
+        }
+        updateStage(id, "Entrevista");
+    }
+
+    @Transactional
+    public void moveToTechnicalTest(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+        if (!"Entrevista".equals(process.getProcessStage().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Entrevista para ir para Teste Técnico");
+        }
+        updateStage(id, "Teste Técnico");
+    }
+
+    @Transactional
+    public void managerDecision(Integer id, br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+        if (!"Teste Técnico".equals(process.getProcessStage().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do gestor só pode ser tomada após Teste Técnico");
+        }
+        String statusName = dto.isApproved() ? "Aprovado pelo Gestor" : "Recusado pelo gestor";
+        updateStatus(id, statusName, dto.getReason());
+    }
+
+    @Transactional
+    public void sendProposal(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+        if (!"Aprovado pelo Gestor".equals(process.getProcessStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proposta só pode ser enviada após aprovação do gestor");
+        }
+        updateStatus(id, "Enviada Proposta", null);
+    }
+
+    @Transactional
+    public void candidateDecision(Integer id, br.com.sebratel.bff.dho.dto.CandidateDecisionDTO dto) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+        if (!"Enviada Proposta".equals(process.getProcessStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do candidato só pode ser tomada após envio da proposta");
+        }
+        String statusName = dto.isAccepted() ? "Finalizado" : "Recusada pelo candidato";
+        updateStatus(id, statusName, dto.getReason());
+    }
+
+    private void updateStage(Integer id, String stageName) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+
+        DhoProcessStage stage = processStageRepository.findByName(stageName)
+                .orElseThrow(() -> new RuntimeException("Estágio '" + stageName + "' não encontrado"));
+
+        process.setProcessStage(stage);
+        recruitmentProcessRepository.save(process);
+    }
+
 
     @Transactional
     public void updateStage(Integer id, RecruitmentProcessStageDTO dto) {
