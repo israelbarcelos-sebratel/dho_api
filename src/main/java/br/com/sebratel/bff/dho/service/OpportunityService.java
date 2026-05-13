@@ -103,50 +103,43 @@ public class OpportunityService {
         DhoOpportunityStatus pendingStatus = statusRepository.findByName("Pendente")
                 .orElseThrow(() -> new RuntimeException("Status 'Pendente' não encontrado"));
 
-        People requester = null;
-        if (authentication != null) {
-            requester = peopleRepository.findByEmail(authentication.getName()).orElse(null);
-        }
+        People requester = Optional.ofNullable(authentication)
+                .map(Authentication::getName)
+                .flatMap(peopleRepository::findByEmail)
+                .orElse(null);
 
-        DhoBaseOrigin baseOrigin = null;
-        if (dto.baseOriginId() != null) {
-            baseOrigin = baseOriginRepository.findById(dto.baseOriginId())
-                    .orElseThrow(() -> new RuntimeException("Base de origem não encontrada"));
-        } else {
-            baseOrigin = baseOriginRepository.findByName("Porto Alegre")
-                    .orElseThrow(() -> new RuntimeException("Base de origem padrão 'Porto Alegre' não encontrada no banco"));
-        }
-
-        People candidate = dto.candidateId() != null ? peopleRepository.findById(dto.candidateId()).orElse(null) : null;
-        DhoPosition position = dto.positionId() != null ? positionRepository.findById(dto.positionId()).orElse(null) : null;
-        DhoTeam team = dto.teamId() != null ? teamRepository.findById(dto.teamId()).orElse(null) : null;
-        DhoDepartment department = dto.departmentId() != null ? departmentRepository.findById(dto.departmentId()).orElse(null) : null;
-        DhoOpportunityMotive motive = dto.opportunityMotiveId() != null ? opportunityMotiveRepository.findById(dto.opportunityMotiveId()).orElse(null) : null;
-        People responsibleRecruiter = dto.responsibleRecruiterId() != null ? peopleRepository.findById(dto.responsibleRecruiterId()).orElse(null) : null;
-        People replacedPerson = dto.replacedPersonId() != null ? peopleRepository.findById(dto.replacedPersonId()).orElse(null) : null;
+        DhoBaseOrigin baseOrigin = Optional.ofNullable(dto.baseOriginId())
+                .flatMap(baseOriginRepository::findById)
+                .or(() -> baseOriginRepository.findByName("Porto Alegre"))
+                .orElseThrow(() -> new RuntimeException("Base de origem padrão não encontrada"));
 
         Opportunity opportunity = Opportunity.builder()
                 .openOpportunityDate(Optional.ofNullable(dto.openOpportunityDate()).orElse(LocalDateTime.now()))
                 .requester(requester)
-                .candidate(candidate)
-                .position(position)
-                .team(team)
-                .department(department)
-                .opportunityMotive(motive)
-                .replacedPerson(replacedPerson)
+                .candidate(findOptionalEntity(dto.candidateId(), peopleRepository))
+                .position(findOptionalEntity(dto.positionId(), positionRepository))
+                .team(findOptionalEntity(dto.teamId(), teamRepository))
+                .department(findOptionalEntity(dto.departmentId(), departmentRepository))
+                .opportunityMotive(findOptionalEntity(dto.opportunityMotiveId(), opportunityMotiveRepository))
+                .replacedPerson(findOptionalEntity(dto.replacedPersonId(), peopleRepository))
+                .responsibleRecruiter(findOptionalEntity(dto.responsibleRecruiterId(), peopleRepository))
                 .baseOrigin(baseOrigin)
                 .opportunityStatus(pendingStatus)
                 .deadlineSlaDays(dto.deadlineSlaDays())
                 .acceptDate(dto.acceptDate())
-                .responsibleRecruiter(responsibleRecruiter)
                 .observations(dto.observations())
                 .workSchedule(dto.workSchedule())
                 .hardSkills(dto.hardSkills())
                 .softSkills(dto.softSkills())
                 .build();
 
-        Opportunity saved = opportunityRepository.save(opportunity);
-        return convertToDTO(saved);
+        return convertToDTO(opportunityRepository.save(opportunity));
+    }
+
+    private <T, ID> T findOptionalEntity(ID id, org.springframework.data.repository.CrudRepository<T, ID> repository) {
+        return Optional.ofNullable(id)
+                .flatMap(repository::findById)
+                .orElse(null);
     }
 
     @Transactional

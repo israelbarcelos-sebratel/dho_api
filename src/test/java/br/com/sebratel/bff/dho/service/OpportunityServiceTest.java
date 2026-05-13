@@ -96,6 +96,54 @@ public class OpportunityServiceTest {
     }
 
     @Test
+    void create_ShouldWorkWithAuthentication() {
+        OpportunityRequestDTO dto = new OpportunityRequestDTO(
+            null, null, 1, 1, 1, 1, "work", "hard", "soft", null, null, null, null, null, null, null, null, null
+        );
+        Authentication auth = mock(Authentication.class);
+        when(auth.getName()).thenReturn("test@test.com");
+        when(peopleRepository.findByEmail("test@test.com")).thenReturn(Optional.of(new People()));
+        when(statusRepository.findByName("Pendente")).thenReturn(Optional.of(new DhoOpportunityStatus()));
+        when(baseOriginRepository.findByName("Porto Alegre")).thenReturn(Optional.of(new DhoBaseOrigin()));
+        when(opportunityRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        assertNotNull(opportunityService.create(dto, auth));
+    }
+
+
+    @Test
+    void create_ShouldWorkWithProvidedBaseOrigin() {
+        OpportunityRequestDTO dto = new OpportunityRequestDTO(
+            null, null, 1, 1, 1, 1, "work", "hard", "soft", null, 1, null, null, null, null, null, null, null
+        );
+        when(statusRepository.findByName("Pendente")).thenReturn(Optional.of(new DhoOpportunityStatus()));
+        when(baseOriginRepository.findById(1)).thenReturn(Optional.of(new DhoBaseOrigin()));
+        when(opportunityRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        assertNotNull(opportunityService.create(dto, null));
+    }
+
+    @Test
+    void create_ShouldThrowException_WhenDefaultBaseOriginNotFound() {
+        OpportunityRequestDTO dto = new OpportunityRequestDTO(
+            null, null, 1, 1, 1, 1, "work", "hard", "soft", null, null, null, null, null, null, null, null, null
+        );
+        when(statusRepository.findByName("Pendente")).thenReturn(Optional.of(new DhoOpportunityStatus()));
+        when(baseOriginRepository.findByName("Porto Alegre")).thenReturn(Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.create(dto, null));
+        assertEquals("Base de origem padrão não encontrada", ex.getMessage());
+    }
+
+    @Test
+    void create_ShouldThrowException_WhenStatusNotFound() {
+        OpportunityRequestDTO dto = new OpportunityRequestDTO(
+            null, null, 1, 1, 1, 1, "work", "hard", "soft", null, null, null, null, null, null, null, null, null
+        );
+        when(statusRepository.findByName("Pendente")).thenReturn(Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.create(dto, null));
+        assertEquals("Status 'Pendente' não encontrado", ex.getMessage());
+    }
+
+
+    @Test
     void findCandidatesForUser_ShouldAllowAdmin() {
         Authentication auth = mock(Authentication.class);
         doReturn(Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))).when(auth).getAuthorities();
@@ -107,7 +155,6 @@ public class OpportunityServiceTest {
         when(recruitmentProcessRepository.findByOpportunityId(1)).thenReturn(Collections.emptyList());
         assertNotNull(opportunityService.findCandidatesForUser(1, auth));
     }
-
 
     @Test
     void findByIdForUser_ShouldReturnOpportunity_WhenAdmin() {
@@ -168,17 +215,13 @@ public class OpportunityServiceTest {
         assertEquals("Acesso negado a esta requisição", ex.getMessage());
     }
 
-
     @Test
     void findById_ShouldReturnOpportunity_WhenExists() {
         Opportunity opportunity = new Opportunity();
         opportunity.setId(1);
         opportunity.setOpportunityStatus(new DhoOpportunityStatus());
-        
         when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
-        
         OpportunityResponseDTO result = opportunityService.findById(1);
-        
         assertNotNull(result);
         assertEquals(1, result.getId());
         verify(opportunityRepository).findById(1);
@@ -187,7 +230,6 @@ public class OpportunityServiceTest {
     @Test
     void findById_ShouldThrowRuntimeException_WhenNotFound() {
         when(opportunityRepository.findById(1)).thenReturn(Optional.empty());
-        
         RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.findById(1));
         assertEquals("Oportunidade não encontrada", ex.getMessage());
     }
