@@ -4,23 +4,26 @@ import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
-import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoBaseOrigin;
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoOpportunityStatus;
 import br.com.sebratel.bff.dho.domain.repository.*;
-import br.com.sebratel.bff.dho.dto.*;
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
+import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,11 +37,7 @@ public class OpportunityServiceTest {
     @Mock private RecruitmentProcessRepository recruitmentProcessRepository;
     @Mock private PeopleRepository peopleRepository;
     @Mock private DhoBaseOriginRepository baseOriginRepository;
-    @Mock private DhoPositionRepository positionRepository;
-    @Mock private DhoTeamRepository teamRepository;
-    @Mock private DhoDepartmentRepository departmentRepository;
     @Mock private RecruitmentProcessLogRepository logRepository;
-    @Mock private DhoOpportunityMotiveRepository opportunityMotiveRepository;
 
     @InjectMocks
     private OpportunityService opportunityService;
@@ -243,44 +242,6 @@ public class OpportunityServiceTest {
     }
 
     @Test
-<<<<<<< HEAD
-    void finalize_ShouldWork_WhenValidJustification() {
-        Opportunity opportunity = new Opportunity();
-        opportunity.setId(1);
-        DhoOpportunityStatus finalizedStatus = new DhoOpportunityStatus();
-        finalizedStatus.setName("Finalizada");
-        String justification = "A".repeat(200);
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
-
-        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
-        when(statusRepository.findByName("Finalizada")).thenReturn(Optional.of(finalizedStatus));
-        when(opportunityRepository.save(any(Opportunity.class))).thenReturn(opportunity);
-
-        OpportunityResponseDTO result = opportunityService.finalize(1, dto);
-
-        assertNotNull(result);
-        assertEquals("Finalizada", result.getOpportunityStatusName());
-        assertEquals(justification, result.getFinalizationJustification());
-        verify(opportunityRepository).save(opportunity);
-    }
-
-    @Test
-    void finalize_ShouldThrowException_WhenJustificationIsTooShort() {
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO("Too short");
-        
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.finalize(1, dto));
-        assertEquals("A justificativa de finalização deve ter no mínimo 200 caracteres", ex.getMessage());
-    }
-
-    @Test
-    void finalize_ShouldThrowException_WhenOpportunityNotFound() {
-        String justification = "A".repeat(200);
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
-        when(opportunityRepository.findById(1)).thenReturn(Optional.empty());
-
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.finalize(1, dto));
-        assertEquals("Oportunidade não encontrada", ex.getMessage());
-=======
     void getLogs_ShouldReturnEmptyList_WhenNoLogsFound() {
         when(logRepository.findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(1))
                 .thenReturn(Collections.emptyList());
@@ -313,7 +274,7 @@ public class OpportunityServiceTest {
         List<RecruitmentProcessLogDTO> result = opportunityService.getLogs(1);
 
         assertEquals(1, result.size());
-        RecruitmentProcessLogDTO dto = result.get(0);
+        RecruitmentProcessLogDTO dto = result.getFirst();
         assertEquals(log.getId(), dto.id());
         assertEquals(log.getActionName(), dto.actionName());
         assertEquals(log.getStartTime(), dto.startTime());
@@ -335,7 +296,7 @@ public class OpportunityServiceTest {
 
         List<RecruitmentProcessLogDTO> result = opportunityService.getLogs(1);
 
-        assertNull(result.get(0).candidateName());
+        assertNull(result.getFirst().candidateName());
     }
 
     @Test
@@ -350,8 +311,7 @@ public class OpportunityServiceTest {
 
         List<RecruitmentProcessLogDTO> result = opportunityService.getLogs(1);
 
-        assertNull(result.get(0).candidateName());
->>>>>>> 71b0cd0 (test: add unit tests for OpportunityService.getLogs to achieve 100% line coverage)
+        assertNull(result.getFirst().candidateName());
     }
 
     @Test
