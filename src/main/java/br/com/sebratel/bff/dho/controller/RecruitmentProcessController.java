@@ -144,8 +144,9 @@ public class RecruitmentProcessController {
     @GetMapping("/mine")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).list_linked_processes.name())")
     @Operation(summary = "Listar meus processos", description = "Retorna os processos vinculados ao recrutador autenticado.")
-    public ResponseEntity<List<RecruitmentProcessResponseDTO>> getMyProcesses(Authentication authentication) {
-        return ResponseEntity.ok(recruitmentProcessService.getProcessesByRecruiterEmail(authentication.getName()));
+    public ResponseEntity<List<RecruitmentProcessResponseDTO>> getMyProcesses() {
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(recruitmentProcessService.getProcessesByRecruiterEmail(email));
     }
 
     @GetMapping("/{id}/logs")
