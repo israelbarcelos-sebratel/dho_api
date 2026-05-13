@@ -28,10 +28,7 @@ import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = RecruitmentProcessController.class, excludeAutoConfiguration = {
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-        org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration.class
-})
+@WebMvcTest(controllers = RecruitmentProcessController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class RecruitmentProcessControllerTest {
 
@@ -52,6 +49,9 @@ public class RecruitmentProcessControllerTest {
 
     @MockitoBean
     private DhoPermissionRepository permissionRepository;
+
+    @MockitoBean
+    private org.springframework.security.oauth2.jwt.JwtDecoder jwtDecoder;
 
     @Autowired
     private ObjectMapper objectMapper;
