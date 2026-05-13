@@ -263,6 +263,10 @@ public class OpportunityService {
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
+        if (authentication == null) {
+            throw new RuntimeException("Usuário não autenticado");
+        }
+
         if (!hasPermission(authentication, Permission.view_all_requests)) {
             if (opportunity.getRequester() == null || !opportunity.getRequester().getEmail().equals(authentication.getName())) {
                 throw new RuntimeException("Acesso negado a esta requisição");

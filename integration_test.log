@@ -1,0 +1,121 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< br.com.sebratel.bff:dho-api >---------------------
+[INFO] Building dho-api 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default) @ dho-api ---
+[INFO] argLine set to -javaagent:/home/israelbarcelos/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/target/jacoco.exec,excludes=br/com/sebratel/bff/dho/DhoApiApplication.class:br/com/sebratel/bff/dho/config/**:br/com/sebratel/bff/dho/domain/entity/**:br/com/sebratel/bff/dho/dto/**:br/com/sebratel/bff/dho/exception/**
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ dho-api ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ dho-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ dho-api ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ dho-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 16 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[341,72] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[341,73] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[342,75] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[342,76] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[351,29] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[351,30] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[353,32] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[353,33] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[354,34] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[354,35] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[356,37] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[356,38] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[362,72] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[362,73] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[363,75] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[363,76] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[372,29] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[372,30] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[374,32] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[374,33] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[375,34] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[375,35] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[376,109] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[376,110] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[378,37] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[378,38] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[384,72] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[384,73] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[385,75] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[385,76] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[394,29] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[394,30] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[396,32] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[396,33] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[397,34] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[397,35] unclosed string literal
+[INFO] 36 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.379 s
+[INFO] Finished at: 2026-05-13T10:05:26-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.13.0:testCompile (default-testCompile) on project dho-api: Compilation failure: Compilation failure: 
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[341,72] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[341,73] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[342,75] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[342,76] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[351,29] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[351,30] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[353,32] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[353,33] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[354,34] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[354,35] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[356,37] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[356,38] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[362,72] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[362,73] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[363,75] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[363,76] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[372,29] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[372,30] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[374,32] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[374,33] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[375,34] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[375,35] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[376,109] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[376,110] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[378,37] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[378,38] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[384,72] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[384,73] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[385,75] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[385,76] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[394,29] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[394,30] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[396,32] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[396,33] unclosed string literal
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[397,34] illegal character: '\'
+[ERROR] /home/israelbarcelos/.cline/worktrees/c7cc8/dho-api/src/test/java/br/com/sebratel/bff/dho/controller/RequisitionControllerIntegrationTest.java:[397,35] unclosed string literal
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

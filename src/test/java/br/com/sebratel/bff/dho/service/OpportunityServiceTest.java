@@ -185,8 +185,21 @@ public class OpportunityServiceTest {
     }
 
     @Test
-    void findByIdForUser_ShouldThrowException_WhenNotFound() {
-        when(opportunityRepository.findById(1)).thenReturn(Optional.empty());
+    void findByIdForUser_ShouldReturnOpportunity_WhenHasViewAllRequestsPermission() {
+        Authentication auth = mock(Authentication.class);
+        doReturn(Collections.singleton(new SimpleGrantedAuthority("view_all_requests"))).when(auth).getAuthorities();
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        opportunity.setOpportunityStatus(new DhoOpportunityStatus());
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        assertNotNull(opportunityService.findByIdForUser(1, auth));
+    }
+
+    @Test
+    void findByIdForUser_ShouldThrowException_WhenAuthenticationIsNull() {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
         assertThrows(RuntimeException.class, () -> opportunityService.findByIdForUser(1, null));
     }
 

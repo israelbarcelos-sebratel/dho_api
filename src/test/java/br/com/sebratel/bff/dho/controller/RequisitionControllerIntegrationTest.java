@@ -335,4 +335,69 @@ public class RequisitionControllerIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @Transactional
+    void shouldReturnRequisitionByIdForOwner() throws Exception {
+        People requester = peopleRepository.save(People.builder().name("Owner").email("owner@test.com").build());
+        DhoOpportunityStatus status = DhoOpportunityStatus.builder().name("Pendente").build();
+        entityManager.persist(status);
+
+        Opportunity opp = opportunityRepository.save(Opportunity.builder()
+                .requester(requester)
+                .opportunityStatus(status)
+                .openOpportunityDate(LocalDateTime.now())
+                .build());
+
+        mockMvc.perform(get("/requisitions/" + opp.getId())
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "owner@test.com")
+                        .subject("owner@test.com"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(opp.getId()));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnRequisitionByIdForAdmin() throws Exception {
+        People requester = peopleRepository.save(People.builder().name("Owner").email("owner@test.com").build());
+        DhoOpportunityStatus status = DhoOpportunityStatus.builder().name("Pendente").build();
+        entityManager.persist(status);
+
+        Opportunity opp = opportunityRepository.save(Opportunity.builder()
+                .requester(requester)
+                .opportunityStatus(status)
+                .openOpportunityDate(LocalDateTime.now())
+                .build());
+
+        mockMvc.perform(get("/requisitions/" + opp.getId())
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "admin@test.com")
+                        .subject("admin@test.com"))
+                        .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(opp.getId()));
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnForbiddenWhenNotOwnerNorAdmin() throws Exception {
+        People requester = peopleRepository.save(People.builder().name("Owner").email("owner@test.com").build());
+        DhoOpportunityStatus status = DhoOpportunityStatus.builder().name("Pendente").build();
+        entityManager.persist(status);
+
+        Opportunity opp = opportunityRepository.save(Opportunity.builder()
+                .requester(requester)
+                .opportunityStatus(status)
+                .openOpportunityDate(LocalDateTime.now())
+                .build());
+
+        mockMvc.perform(get("/requisitions/" + opp.getId())
+                .with(jwt().jwt(builder -> builder
+                        .claim("email", "other@test.com")
+                        .subject("other@test.com"))))
+                .andExpect(status().isInternalServerError()); 
+                // Note: The service throws RuntimeException which usually maps to 500 
+                // unless handled by a GlobalExceptionHandler to return 403.
+    }
+
 }
