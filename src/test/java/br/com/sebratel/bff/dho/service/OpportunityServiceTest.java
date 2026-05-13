@@ -2,6 +2,8 @@ package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.People;
+import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
+import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.*;
 import br.com.sebratel.bff.dho.dto.*;
@@ -228,6 +230,7 @@ public class OpportunityServiceTest {
     }
 
     @Test
+<<<<<<< HEAD
     void finalize_ShouldWork_WhenValidJustification() {
         Opportunity opportunity = new Opportunity();
         opportunity.setId(1);
@@ -264,6 +267,78 @@ public class OpportunityServiceTest {
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.finalize(1, dto));
         assertEquals("Oportunidade não encontrada", ex.getMessage());
+=======
+    void getLogs_ShouldReturnEmptyList_WhenNoLogsFound() {
+        when(logRepository.findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(1))
+                .thenReturn(Collections.emptyList());
+
+        List<RecruitmentProcessLogDTO> result = opportunityService.getLogs(1);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(logRepository).findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(1);
+    }
+
+    @Test
+    void getLogs_ShouldMapLogsCorrectly_WhenAllDataIsPresent() {
+        People candidate = People.builder().name("John Doe").build();
+        RecruitmentProcess process = RecruitmentProcess.builder().candidate(candidate).build();
+        RecruitmentProcessLog log = RecruitmentProcessLog.builder()
+                .id(1)
+                .actionName("TEST_ACTION")
+                .startTime(LocalDateTime.now())
+                .endTime(LocalDateTime.now().plusSeconds(1))
+                .durationMs(1000L)
+                .status("SUCCESS")
+                .errorMessage("No error")
+                .recruitmentProcess(process)
+                .build();
+
+        when(logRepository.findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(1))
+                .thenReturn(List.of(log));
+
+        List<RecruitmentProcessLogDTO> result = opportunityService.getLogs(1);
+
+        assertEquals(1, result.size());
+        RecruitmentProcessLogDTO dto = result.get(0);
+        assertEquals(log.getId(), dto.id());
+        assertEquals(log.getActionName(), dto.actionName());
+        assertEquals(log.getStartTime(), dto.startTime());
+        assertEquals(log.getEndTime(), dto.endTime());
+        assertEquals(log.getDurationMs(), dto.durationMs());
+        assertEquals(log.getStatus(), dto.status());
+        assertEquals(log.getErrorMessage(), dto.errorMessage());
+        assertEquals("John Doe", dto.candidateName());
+    }
+
+    @Test
+    void getLogs_ShouldReturnNullCandidateName_WhenProcessIsNull() {
+        RecruitmentProcessLog log = RecruitmentProcessLog.builder()
+                .recruitmentProcess(null)
+                .build();
+
+        when(logRepository.findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(1))
+                .thenReturn(List.of(log));
+
+        List<RecruitmentProcessLogDTO> result = opportunityService.getLogs(1);
+
+        assertNull(result.get(0).candidateName());
+    }
+
+    @Test
+    void getLogs_ShouldReturnNullCandidateName_WhenCandidateIsNull() {
+        RecruitmentProcess process = RecruitmentProcess.builder().candidate(null).build();
+        RecruitmentProcessLog log = RecruitmentProcessLog.builder()
+                .recruitmentProcess(process)
+                .build();
+
+        when(logRepository.findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(1))
+                .thenReturn(List.of(log));
+
+        List<RecruitmentProcessLogDTO> result = opportunityService.getLogs(1);
+
+        assertNull(result.get(0).candidateName());
+>>>>>>> 71b0cd0 (test: add unit tests for OpportunityService.getLogs to achieve 100% line coverage)
     }
 
     @Test
