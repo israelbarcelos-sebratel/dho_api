@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -107,9 +108,64 @@ public class OpportunityServiceTest {
         assertNotNull(opportunityService.findCandidatesForUser(1, auth));
     }
 
+
     @Test
-    void getLogs_ShouldWork() {
-        when(logRepository.findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(1)).thenReturn(Collections.emptyList());
-        assertNotNull(opportunityService.getLogs(1));
+    void findByIdForUser_ShouldReturnOpportunity_WhenAdmin() {
+        Authentication auth = mock(Authentication.class);
+        doReturn(Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))).when(auth).getAuthorities();
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        opportunity.setOpportunityStatus(new DhoOpportunityStatus());
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        assertNotNull(opportunityService.findByIdForUser(1, auth));
     }
+
+    @Test
+    void findByIdForUser_ShouldReturnOpportunity_WhenOwner() {
+        Authentication auth = mock(Authentication.class);
+        when(auth.getName()).thenReturn("owner@test.com");
+        doReturn(Collections.emptyList()).when(auth).getAuthorities();
+        People requester = new People();
+        requester.setEmail("owner@test.com");
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        opportunity.setRequester(requester);
+        opportunity.setOpportunityStatus(new DhoOpportunityStatus());
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        assertNotNull(opportunityService.findByIdForUser(1, auth));
+    }
+
+    @Test
+    void findByIdForUser_ShouldThrowException_WhenNotFound() {
+        when(opportunityRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> opportunityService.findByIdForUser(1, null));
+    }
+
+    @Test
+    void findByIdForUser_ShouldThrowException_WhenNotAdminAndNotOwner() {
+        Authentication auth = mock(Authentication.class);
+        when(auth.getName()).thenReturn("other@test.com");
+        doReturn(Collections.emptyList()).when(auth).getAuthorities();
+        People requester = new People();
+        requester.setEmail("owner@test.com");
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        opportunity.setRequester(requester);
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.findByIdForUser(1, auth));
+        assertEquals("Acesso negado a esta requisição", ex.getMessage());
+    }
+
+    @Test
+    void findByIdForUser_ShouldThrowException_WhenNotAdminAndRequesterIsNull() {
+        Authentication auth = mock(Authentication.class);
+        doReturn(Collections.emptyList()).when(auth).getAuthorities();
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        opportunity.setRequester(null);
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.findByIdForUser(1, auth));
+        assertEquals("Acesso negado a esta requisição", ex.getMessage());
+    }
+
 }
