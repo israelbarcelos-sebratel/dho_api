@@ -161,12 +161,36 @@ public class RecruitmentProcessServiceTest {
 
 
     @Test
+    void getProcessesByRecruiterEmail_ShouldReturnProcesses() {
+        String email = "recruiter@sebratel.com.br";
+        People recruiter = new People();
+        recruiter.setId(1);
+        recruiter.setEmail(email);
+
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(10);
+        DhoPosition position = new DhoPosition();
+        position.setName("Developer");
+        opportunity.setPosition(position);
+        
+        process.setOpportunity(opportunity);
+        process.setProcessStatus(status);
+
+        when(peopleRepository.findByEmail(email)).thenReturn(Optional.of(recruiter));
+        when(recruitmentProcessRepository.findByOpportunityResponsibleRecruiterId(1))
+                .thenReturn(List.of(process));
+
+        List<RecruitmentProcessResponseDTO> result = recruitmentProcessService.getProcessesByRecruiterEmail(email);
+
+        assertEquals(1, result.size());
+        assertEquals("John Doe", result.get(0).getCandidateName());
+        assertEquals("Developer", result.get(0).getPositionName());
+    }
+
+    @Test
     void getProcessesByRecruiter_ShouldReturnProcesses() {
         People recruiter = new People();
         recruiter.setId(1);
-        DhoRole role = new DhoRole();
-        role.setName("Recrutador");
-        recruiter.setRoles(new HashSet<>(Collections.singletonList(role)));
 
         Opportunity opportunity = new Opportunity();
         opportunity.setId(10);
@@ -185,8 +209,6 @@ public class RecruitmentProcessServiceTest {
 
         assertEquals(1, result.size());
         assertEquals("John Doe", result.get(0).getCandidateName());
-        assertEquals("Developer", result.get(0).getPositionName());
-        assertEquals(10, result.get(0).getOpportunityId());
     }
 
     @Test

@@ -267,28 +267,34 @@ public class RecruitmentProcessService {
                 .collect(Collectors.toList());
     }
 
+    private RecruitmentProcessResponseDTO mapToResponseDTO(RecruitmentProcess process) {
+        return RecruitmentProcessResponseDTO.builder()
+                .id(process.getId())
+                .candidateName(Optional.ofNullable(process.getCandidate()).map(People::getName).orElse(null))
+                .positionName(Optional.ofNullable(process.getOpportunity())
+                        .map(opp -> Optional.ofNullable(opp.getPosition()).map(pos -> pos.getName()).orElse(null))
+                        .orElse(null))
+                .processStatusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse(null))
+                .processStageName(Optional.ofNullable(process.getProcessStage()).map(stage -> stage.getName()).orElse(null))
+                .opportunityId(Optional.ofNullable(process.getOpportunity()).map(opp -> opp.getId()).orElse(null))
+                .build();
+    }
+
+    public List<RecruitmentProcessResponseDTO> getProcessesByRecruiterEmail(String email) {
+        People recruiter = peopleRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Recrutador não encontrado com o e-mail: " + email));
+
+        return recruitmentProcessRepository.findByOpportunityResponsibleRecruiterId(recruiter.getId()).stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<RecruitmentProcessResponseDTO> getProcessesByRecruiter(Integer recruiterId) {
         People recruiter = peopleRepository.findById(recruiterId)
-                .orElseThrow(() -> new RuntimeException("Recrutador não encontrado"));
-
-        if (recruiter.getRoles() != null) {
-            boolean isRecruiter = recruiter.getRoles().stream()
-                    .anyMatch(role -> "Recrutador".equalsIgnoreCase(role.getName()) || "RECRUITER".equalsIgnoreCase(role.getName()));
-            if (!isRecruiter) {
-            }
-        }
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Recrutador não encontrado com o ID: " + recruiterId));
 
         return recruitmentProcessRepository.findByOpportunityResponsibleRecruiterId(recruiterId).stream()
-                .map(process -> RecruitmentProcessResponseDTO.builder()
-                        .id(process.getId())
-                        .candidateName(Optional.ofNullable(process.getCandidate()).map(People::getName).orElse(null))
-                        .positionName(Optional.ofNullable(process.getOpportunity())
-                                .map(opp -> Optional.ofNullable(opp.getPosition()).map(pos -> pos.getName()).orElse(null))
-                                .orElse(null))
-                        .processStatusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse(null))
-                        .processStageName(Optional.ofNullable(process.getProcessStage()).map(stage -> stage.getName()).orElse(null))
-                        .opportunityId(Optional.ofNullable(process.getOpportunity()).map(opp -> opp.getId()).orElse(null))
-                        .build())
+                .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
     public List<RecruitmentProcessLogDTO> getLogs(Integer id) {

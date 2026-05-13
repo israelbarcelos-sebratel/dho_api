@@ -18,6 +18,7 @@ import java.util.List;
 import br.com.sebratel.bff.dho.service.RecruitmentProcessService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -142,9 +143,9 @@ public class RecruitmentProcessController {
 
     @GetMapping("/mine")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).list_linked_processes.name())")
-    @Operation(summary = "Listar meus processos", description = "Retorna os processos vinculados a um recrutador específico.")
-    public ResponseEntity<List<RecruitmentProcessResponseDTO>> getMyProcesses(@RequestParam @Parameter(description = "ID do recrutador") Integer recruiterId) {
-        return ResponseEntity.ok(recruitmentProcessService.getProcessesByRecruiter(recruiterId));
+    @Operation(summary = "Listar meus processos", description = "Retorna os processos vinculados ao recrutador autenticado.")
+    public ResponseEntity<List<RecruitmentProcessResponseDTO>> getMyProcesses(Authentication authentication) {
+        return ResponseEntity.ok(recruitmentProcessService.getProcessesByRecruiterEmail(authentication.getName()));
     }
 
     @GetMapping("/{id}/logs")
