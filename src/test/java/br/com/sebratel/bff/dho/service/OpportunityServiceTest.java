@@ -168,4 +168,28 @@ public class OpportunityServiceTest {
         assertEquals("Acesso negado a esta requisição", ex.getMessage());
     }
 
+
+    @Test
+    void findById_ShouldReturnOpportunity_WhenExists() {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        opportunity.setOpportunityStatus(new DhoOpportunityStatus());
+        
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        
+        OpportunityResponseDTO result = opportunityService.findById(1);
+        
+        assertNotNull(result);
+        assertEquals(1, result.getId());
+        verify(opportunityRepository).findById(1);
+    }
+
+    @Test
+    void findById_ShouldThrowRuntimeException_WhenNotFound() {
+        when(opportunityRepository.findById(1)).thenReturn(Optional.empty());
+        
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.findById(1));
+        assertEquals("Oportunidade não encontrada", ex.getMessage());
+    }
+
 }
