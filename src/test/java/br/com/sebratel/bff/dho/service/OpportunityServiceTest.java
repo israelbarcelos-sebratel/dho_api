@@ -228,10 +228,56 @@ public class OpportunityServiceTest {
     }
 
     @Test
-    void findById_ShouldThrowRuntimeException_WhenNotFound() {
+    void finalize_ShouldWork_WhenValidJustification() {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        DhoOpportunityStatus finalizedStatus = new DhoOpportunityStatus();
+        finalizedStatus.setName("Finalizada");
+        String justification = "A".repeat(200);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(statusRepository.findByName("Finalizada")).thenReturn(Optional.of(finalizedStatus));
+        when(opportunityRepository.save(any(Opportunity.class))).thenReturn(opportunity);
+
+        OpportunityResponseDTO result = opportunityService.finalize(1, dto);
+
+        assertNotNull(result);
+        assertEquals("Finalizada", result.getOpportunityStatusName());
+        assertEquals(justification, result.getFinalizationJustification());
+        verify(opportunityRepository).save(opportunity);
+    }
+
+    @Test
+    void finalize_ShouldThrowException_WhenJustificationIsTooShort() {
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO("Too short");
+        
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.finalize(1, dto));
+        assertEquals("A justificativa de finalização deve ter no mínimo 200 caracteres", ex.getMessage());
+    }
+
+    @Test
+    void finalize_ShouldThrowException_WhenOpportunityNotFound() {
+        String justification = "A".repeat(200);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
         when(opportunityRepository.findById(1)).thenReturn(Optional.empty());
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.findById(1));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.finalize(1, dto));
         assertEquals("Oportunidade não encontrada", ex.getMessage());
+    }
+
+    @Test
+    void finalize_ShouldThrowException_WhenStatusNotFound() {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        String justification = "A".repeat(200);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(statusRepository.findByName("Finalizada")).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.finalize(1, dto));
+        assertEquals("Status 'Finalizada' não encontrado", ex.getMessage());
     }
 
 }
