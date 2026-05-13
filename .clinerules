@@ -3,3 +3,5 @@
 - **Branching Strategy:** NEVER work directly on the `main` branch. All development and task-related changes must be performed on the `staging` branch.
 - **Requirements Analysis:** ALWAYS read the specification files in the `specs/` directory before starting any coding task to ensure alignment with business requirements (RQs).
 - **Commiting:** After completing a task, ensure changes are committed to the `staging` branch.
+- **Commit Hygiene:** DO NOT commit temporary files used for testing or build logs (e.g., `test_results.txt`, `test_output.txt`, `test_output_new.txt`, etc.). These should be ignored or deleted before committing.
+
