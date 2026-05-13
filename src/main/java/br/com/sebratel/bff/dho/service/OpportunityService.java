@@ -286,10 +286,6 @@ public class OpportunityService {
                 .anyMatch(a -> a.equals(permission.name()) || a.equals("ROLE_ADMIN"));
     }
 
-    private <T, ID> T mapReference(ID id, Function<ID, T> builder) {
-        return Optional.ofNullable(id).map(builder).orElse(null);
-    }
-
     private <T, R> R mapName(T entity, Function<T, R> mapper) {
         return Optional.ofNullable(entity).map(mapper).orElse(null);
     }
