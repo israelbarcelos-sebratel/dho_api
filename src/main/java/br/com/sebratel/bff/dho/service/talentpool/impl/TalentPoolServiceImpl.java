@@ -28,13 +28,22 @@ public class TalentPoolServiceImpl implements TalentPoolService {
     private final DhoPositionRepository positionRepository;
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public TalentPoolResponseDTO addToPool(TalentPoolRequestDTO request) {
-        if (talentPoolRepository.existsByPersonId(request.getPeopleId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pessoa já está no banco de talentos");
-        }
+        People person = peopleRepository.findByEmail(request.getEmail())
+                .orElseGet(() -> {
+                    People newPerson = People.builder()
+                            .name(request.getName())
+                            .email(request.getEmail())
+                            .phoneNumber(request.getPhoneNumber())
+                            .externalLink(request.getExternalLink())
+                            .build();
+                    return peopleRepository.save(newPerson);
+                });
 
-        People person = peopleRepository.findById(request.getPeopleId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa não encontrada"));
+        if (talentPoolRepository.existsByPersonId(person.getId())) {
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST, "Pessoa já está no banco de talentos");
+        }
 
         Set<DhoPosition> positions = new HashSet<>(positionRepository.findAllById(request.getPositionIds()));
 

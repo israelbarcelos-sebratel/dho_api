@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Data
@@ -12,7 +14,15 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TalentPoolRequestDTO {
-    private Integer peopleId;
+    @NotBlank(message = "O nome é obrigatório")
+    private String name;
+
+    @NotBlank(message = "O e-mail é obrigatório")
+    @Email(message = "E-mail inválido")
+    private String email;
+
+    private String phoneNumber;
+    private String externalLink;
     private String observations;
     private Set<Integer> positionIds;
 }
