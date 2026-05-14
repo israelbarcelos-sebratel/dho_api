@@ -41,9 +41,9 @@ public class OpportunityController {
     }
     @GetMapping("/approved")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_all_requests.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_job_tracking.name())")
-    @Operation(summary = "Listar oportunidades aprovadas", description = "Retorna uma lista com todas as oportunidades que possuem status 'Aprovada'.")
-    public ResponseEntity<List<OpportunityResponseDTO>> getApprovedOpportunities() {
-        return ResponseEntity.ok(opportunityService.findApprovedOpportunities());
+    @Operation(summary = "Listar oportunidades aprovadas", description = "Retorna uma lista com todas as oportunidades que possuem status 'Aprovada' e estão vinculadas ao recrutador autenticado.")
+    public ResponseEntity<List<OpportunityResponseDTO>> getApprovedOpportunities(Authentication authentication) {
+        return ResponseEntity.ok(opportunityService.findApprovedOpportunities(authentication));
     }
 
 

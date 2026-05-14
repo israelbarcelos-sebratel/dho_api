@@ -91,8 +91,9 @@ public class OpportunityService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-    public List<OpportunityResponseDTO> findApprovedOpportunities() {
-        return opportunityRepository.findByOpportunityStatusName("Aprovada").stream()
+    public List<OpportunityResponseDTO> findApprovedOpportunities(Authentication authentication) {
+        String email = authentication != null ? authentication.getName() : "";
+        return opportunityRepository.findByOpportunityStatusNameAndResponsibleRecruiterEmail("Aprovada", email).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
