@@ -91,6 +91,8 @@ public class TalentPoolServiceImpl implements TalentPoolService {
                 .id(entry.getId())
                 .peopleId(entry.getPerson().getId())
                 .name(entry.getPerson().getName())
+                .email(entry.getPerson().getEmail())
+                .phoneNumber(entry.getPerson().getPhoneNumber())
                 .observations(entry.getObservations())
                 .suggestedPositions(entry.getSuggestedPositions().stream()
                         .map(DhoPosition::getName)

@@ -24,7 +24,7 @@ public class TalentPool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "people_id", nullable = false)
     private People person;
 

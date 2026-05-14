@@ -16,6 +16,8 @@ public class TalentPoolResponseDTO {
     private Integer id;
     private Integer peopleId;
     private String name;
+    private String email;
+    private String phoneNumber;
     private String observations;
     private Set<String> suggestedPositions;
     private LocalDateTime createdAt;
