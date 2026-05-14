@@ -91,6 +91,12 @@ public class OpportunityService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+    public List<OpportunityResponseDTO> findApprovedOpportunities() {
+        return opportunityRepository.findByOpportunityStatusName("Aprovada").stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
 
     public OpportunityResponseDTO findById(Integer id) {
         return opportunityRepository.findById(id)

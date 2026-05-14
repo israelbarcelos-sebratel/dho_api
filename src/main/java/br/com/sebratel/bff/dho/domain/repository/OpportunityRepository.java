@@ -12,4 +12,6 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, Intege
 
     List<Opportunity> findByRequesterEmail(String email);
 
+    List<Opportunity> findByOpportunityStatusName(String statusName);
+
 }

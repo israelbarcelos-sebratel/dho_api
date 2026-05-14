@@ -39,6 +39,13 @@ public class OpportunityController {
     public ResponseEntity<List<OpportunityResponseDTO>> getAllOpportunities() {
         return ResponseEntity.ok(opportunityService.findAll());
     }
+    @GetMapping("/approved")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_all_requests.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_job_tracking.name())")
+    @Operation(summary = "Listar oportunidades aprovadas", description = "Retorna uma lista com todas as oportunidades que possuem status 'Aprovada'.")
+    public ResponseEntity<List<OpportunityResponseDTO>> getApprovedOpportunities() {
+        return ResponseEntity.ok(opportunityService.findApprovedOpportunities());
+    }
+
 
     @PostMapping
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).initiate_contract_process.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
