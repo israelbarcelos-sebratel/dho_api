@@ -153,4 +153,23 @@ public class RecruitmentProcessControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @WithMockUser(roles = "RECRUITER")
+    void moveToScreening_WithRecruiterRole_ShouldReturnOk() throws Exception {
+        doNothing().when(recruitmentProcessService).moveToScreening(1);
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void moveToScreening_WithAdminRole_ShouldReturnOk() throws Exception {
+        doNothing().when(recruitmentProcessService).moveToScreening(1);
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+                .andExpect(status().isOk());
+    }
+
+
 }
