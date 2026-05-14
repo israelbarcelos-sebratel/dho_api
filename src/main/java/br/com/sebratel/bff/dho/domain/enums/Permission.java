@@ -27,7 +27,8 @@ public enum Permission {
     final_decision("Permite o acesso à página de Decisão Final e aprovação final de contratação"),
     manage_settings("Permite o acesso e alteração das configurações globais do sistema"),
     list_linked_processes("Listar processos vinculados (RQ10)"),
-    event_log("Log de Eventos (RQ13)");
+    event_log("Log de Eventos (RQ13)"),
+    view_talent_pool("Permite visualizar o banco de talentos");
 
     private final String description;
 

@@ -72,4 +72,18 @@ class DhoPermissionControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("DEFAULT"));
     }
+
+    @Test
+    void create_WithViewTalentPool_ShouldReturnCreated() throws Exception {
+        PermissionRequestDTO request = new PermissionRequestDTO(Permission.view_talent_pool, "Permite visualizar o banco de talentos");
+        PermissionResponseDTO response = new PermissionResponseDTO(2, Permission.view_talent_pool, "Permite visualizar o banco de talentos");
+        when(permissionService.create(any(PermissionRequestDTO.class))).thenReturn(response);
+
+        mockMvc.perform(post("/api/admin/permissions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(2))
+                .andExpect(jsonPath("$.name").value("view_talent_pool"));
+    }
 }
