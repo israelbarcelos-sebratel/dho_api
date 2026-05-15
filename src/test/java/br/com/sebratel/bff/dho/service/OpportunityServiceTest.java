@@ -38,6 +38,11 @@ public class OpportunityServiceTest {
     @Mock private PeopleRepository peopleRepository;
     @Mock private DhoBaseOriginRepository baseOriginRepository;
     @Mock private RecruitmentProcessLogRepository logRepository;
+    @Mock private DhoPositionRepository positionRepository;
+    @Mock private DhoTeamRepository teamRepository;
+    @Mock private DhoDepartmentRepository departmentRepository;
+    @Mock private DhoOpportunityMotiveRepository opportunityMotiveRepository;
+
 
     @InjectMocks
     private OpportunityService opportunityService;

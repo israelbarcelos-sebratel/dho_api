@@ -107,7 +107,7 @@ public class RecruitmentProcessController {
     @PostMapping("/{id}/manager-decision")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).reject_candidate.name())")
     @Operation(summary = "Decisão do gestor", description = "Registra o feedback/decisão do gestor sobre o candidato. O processo deve estar no estágio de Decisão Final.")
-    public ResponseEntity<Void> managerDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {
+    public ResponseEntity<Void> managerDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {
         recruitmentProcessService.managerDecision(id, dto);
         return ResponseEntity.ok().build();
     }
@@ -123,7 +123,7 @@ public class RecruitmentProcessController {
     @PostMapping("/{id}/candidate-decision")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).initiate_contract_process.name())")
     @Operation(summary = "Decisão do candidato", description = "Registra se o candidato aceitou ou recusou a proposta.")
-    public ResponseEntity<Void> candidateDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody br.com.sebratel.bff.dho.dto.CandidateDecisionDTO dto) {
+    public ResponseEntity<Void> candidateDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid br.com.sebratel.bff.dho.dto.CandidateDecisionDTO dto) {
         recruitmentProcessService.candidateDecision(id, dto);
         return ResponseEntity.ok().build();
     }

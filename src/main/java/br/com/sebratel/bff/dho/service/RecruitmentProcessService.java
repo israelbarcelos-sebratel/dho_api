@@ -106,10 +106,7 @@ public class RecruitmentProcessService {
 
     @Transactional
     public void refuse(Integer id, InterviewDecisionDTO dto) {
-        if (dto.report() == null || dto.report().length() < 200) {
-            throw new RuntimeException("O relato detalhado de recusa deve ter no mínimo 200 caracteres");
-        }
-        updateStatus(id, "Recusado", dto.report());
+        updateStatus(id, "Recusado", dto.reason());
     }
 
     @Transactional
@@ -157,10 +154,7 @@ public class RecruitmentProcessService {
         if (!"Entrevista".equals(process.getProcessStage().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Entrevista para ir para Teste Técnico");
         }
-        if (dto.report() == null || dto.report().length() < 200) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O parecer detalhado da entrevista deve ter no mínimo 200 caracteres");
-        }
-        process.setInterviewReport(dto.report());
+        process.setInterviewReport(dto.reason());
         updateStage(id, "Teste Técnico");
     }
 

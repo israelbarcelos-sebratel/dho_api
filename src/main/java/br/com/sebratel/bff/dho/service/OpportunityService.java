@@ -169,10 +169,6 @@ public class OpportunityService {
 
     @Transactional
     public OpportunityResponseDTO refuse(Integer id, OpportunityApprovalDTO dto) {
-        if (dto.justification() == null || dto.justification().length() < 200) {
-            throw new RuntimeException("A justificativa de recusa deve ter no mínimo 200 caracteres");
-        }
-
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
@@ -180,16 +176,12 @@ public class OpportunityService {
                 .orElseThrow(() -> new RuntimeException("Status 'Recusada' não encontrado"));
 
         opportunity.setOpportunityStatus(refusedStatus);
-        opportunity.setRefusalJustification(dto.justification());
+        opportunity.setRefusalJustification(dto.reason());
         return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 
     @Transactional
     public OpportunityResponseDTO finalize(Integer id, OpportunityApprovalDTO dto) {
-        if (dto.justification() == null || dto.justification().length() < 200) {
-            throw new RuntimeException("A justificativa de finalização deve ter no mínimo 200 caracteres");
-        }
-
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
@@ -197,7 +189,7 @@ public class OpportunityService {
                 .orElseThrow(() -> new RuntimeException("Status 'Finalizada' não encontrado"));
 
         opportunity.setOpportunityStatus(finalizedStatus);
-        opportunity.setFinalizationJustification(dto.justification());
+        opportunity.setFinalizationJustification(dto.reason());
         return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 

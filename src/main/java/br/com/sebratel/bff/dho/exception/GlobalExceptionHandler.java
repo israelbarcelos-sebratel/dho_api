@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         body.put("error", "Bad Request");
         
         String errors = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .map(error -> "Campo " + error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining(", "));
         
         body.put("message", errors);
