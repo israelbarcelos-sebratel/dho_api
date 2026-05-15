@@ -9,6 +9,7 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 - **Triagem**: Quando o recrutador decide iniciar a avaliação do candidato.
 - **Entrevista**: Quando o candidato avança para a fase de entrevistas.
 - **Teste Técnico**: Quando o candidato avança para a fase de avaliação técnica.
+- **Decisão Final**: Quando o candidato está apto para a decisão final do gestor.
 
 ### Status (`DhoProcessStatus`)
 - **Em andamento**: Status padrão durante as fases de avaliação.
@@ -30,9 +31,9 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 4. **Avanço para Triagem**: A recrutadora move o candidato do Banco de Talentos para **Triagem**.
 5. **Avanço para Entrevista**: A recrutadora move o candidato para o estágio de **Entrevista**.
 6. **Avanço para Teste Técnico**: A recrutadora move o candidato para o estágio de **Teste Técnico**.
-7. **Decisão do Gestor**: O gestor revisa o processo e aprova o candidato. O status muda para **Aprovado pelo Gestor**.
-8. **Proposta**: A recrutadora envia a proposta. O status muda para **Enviada Proposta**.
-9. **Decisão do Candidato**: O candidato aceita a proposta. O status muda para **Finalizado**.
+8. **Decisão do Gestor**: O gestor revisa o processo e aprova o candidato. O status muda para **Aprovado pelo Gestor**.
+9. **Proposta**: A recrutadora envia a proposta. O status muda para **Enviada Proposta**.
+10. **Decisão do Candidato**: O candidato aceita a proposta. O status muda para **Finalizado**.
 
 ## Regras de Negócio
 - **Vínculo de Candidato**: Só é permitido vincular um candidato se a oportunidade estiver com status **Aprovada**.

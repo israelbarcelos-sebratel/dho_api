@@ -38,7 +38,7 @@ public class RecruitmentFlowIntegrationTest {
     void setup() {
         String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado pelo Gestor", "Recusado pelo gestor", "Enviada Proposta", "Finalizado", "Recusada pelo candidato"};
         for (String s : statuses) createStatusIfNotExist(s);
-        String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico"};
+        String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Decisão Final"};
         for (String s : stages) createStageIfNotExist(s);
     }
 
@@ -64,6 +64,7 @@ public class RecruitmentFlowIntegrationTest {
 
         mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-interview").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-technical-test").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
+        mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-final-decision").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/recruitment-processes/"+id+"/proposal").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
         mockMvc.perform(post("/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
