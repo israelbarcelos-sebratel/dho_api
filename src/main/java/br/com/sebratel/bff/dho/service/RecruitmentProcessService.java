@@ -151,12 +151,16 @@ public class RecruitmentProcessService {
     }
 
     @Transactional
-    public void moveToTechnicalTest(Integer id) {
+    public void moveToTechnicalTest(Integer id, InterviewDecisionDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
         if (!"Entrevista".equals(process.getProcessStage().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Entrevista para ir para Teste Técnico");
         }
+        if (dto.report() == null || dto.report().length() < 200) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O parecer detalhado da entrevista deve ter no mínimo 200 caracteres");
+        }
+        process.setInterviewReport(dto.report());
         updateStage(id, "Teste Técnico");
     }
 

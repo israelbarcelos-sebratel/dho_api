@@ -81,9 +81,9 @@ public class RecruitmentProcessController {
 
     @PostMapping("/{id}/move-to-technical-test")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
-    @Operation(summary = "Mover para teste técnico", description = "Altera a etapa do processo para Teste Técnico.")
-    public ResponseEntity<Void> moveToTechnicalTest(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
-        recruitmentProcessService.moveToTechnicalTest(id);
+    @Operation(summary = "Mover para teste técnico", description = "Altera a etapa do processo para Teste Técnico. Requer parecer da entrevista.")
+    public ResponseEntity<Void> moveToTechnicalTest(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid InterviewDecisionDTO dto) {
+        recruitmentProcessService.moveToTechnicalTest(id, dto);
         return ResponseEntity.ok().build();
     }
 

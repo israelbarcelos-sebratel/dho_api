@@ -172,4 +172,26 @@ public class RecruitmentProcessControllerTest {
     }
 
 
+    @Test
+    void moveToTechnicalTest_ShouldReturnOk_WhenReportIsValid() throws Exception {
+        String longReport = "A".repeat(200);
+        InterviewDecisionDTO dto = new InterviewDecisionDTO(longReport);
+        doNothing().when(recruitmentProcessService).moveToTechnicalTest(eq(1), any(InterviewDecisionDTO.class));
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-technical-test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void moveToTechnicalTest_ShouldReturnBadRequest_WhenReportIsTooShort() throws Exception {
+        InterviewDecisionDTO dto = new InterviewDecisionDTO("Too short");
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-technical-test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+    }
+
 }
