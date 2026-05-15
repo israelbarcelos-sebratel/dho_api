@@ -96,49 +96,48 @@ public class RecruitmentProcessServiceTest {
         when(recruitmentProcessRepository.countByProcessStatusName(any())).thenReturn(2L);
         assertNotNull(recruitmentProcessService.getIndicators());
     }
-
+}
     @Test
     void managerDecision_ShouldApproveAndMoveStage() {
         ManagerDecisionDTO dto = new ManagerDecisionDTO(true, "A".repeat(200));
-
+        
         DhoProcessStage stage = new DhoProcessStage();
         stage.setName("Decisão Final");
         process.setProcessStage(stage);
-
+        
         Opportunity opp = new Opportunity();
         DhoOpportunityStatus oppStatus = new DhoOpportunityStatus();
         oppStatus.setName("Aprovada");
         opp.setOpportunityStatus(oppStatus);
         process.setOpportunity(opp);
-
+        
         when(recruitmentProcessRepository.findById(1)).thenReturn(Optional.of(process));
         when(processStatusRepository.findByName("Aprovado")).thenReturn(Optional.of(new DhoProcessStatus()));
         when(processStageRepository.findByName("Aprovado")).thenReturn(Optional.of(new DhoProcessStage()));
-
+        
         recruitmentProcessService.managerDecision(1, dto);
-
+        
         verify(recruitmentProcessRepository, times(2)).save(process);
     }
 
     @Test
     void managerDecision_ShouldReprove() {
         ManagerDecisionDTO dto = new ManagerDecisionDTO(false, "A".repeat(200));
-
+        
         DhoProcessStage stage = new DhoProcessStage();
         stage.setName("Decisão Final");
         process.setProcessStage(stage);
-
+        
         Opportunity opp = new Opportunity();
         DhoOpportunityStatus oppStatus = new DhoOpportunityStatus();
         oppStatus.setName("Aprovada");
         opp.setOpportunityStatus(oppStatus);
         process.setOpportunity(opp);
-
+        
         when(recruitmentProcessRepository.findById(1)).thenReturn(Optional.of(process));
         when(processStatusRepository.findByName("Reprovado")).thenReturn(Optional.of(new DhoProcessStatus()));
-
+        
         recruitmentProcessService.managerDecision(1, dto);
-
+        
         verify(recruitmentProcessRepository).save(process);
     }
-}

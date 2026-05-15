@@ -187,15 +187,20 @@ public class RecruitmentProcessService {
         if (!"Decisão Final".equals(process.getProcessStage().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do gestor só pode ser tomada no estágio de Decisão Final");
         }
-        String statusName = dto.isApproved() ? "Aprovado pelo Gestor" : "Recusado pelo gestor";
-        updateStatus(id, statusName, dto.getReason());
+        
+        if (dto.isApproved()) {
+            updateStatus(id, "Aprovado", dto.getReason());
+            updateStage(id, "Aprovado");
+        } else {
+            updateStatus(id, "Reprovado", dto.getReason());
+        }
     }
 
     @Transactional
     public void sendProposal(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Aprovado pelo Gestor".equals(process.getProcessStatus().getName())) {
+        if (!"Aprovado".equals(process.getProcessStatus().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proposta só pode ser enviada após aprovação do gestor");
         }
         updateStatus(id, "Enviada Proposta", null);
@@ -379,7 +384,8 @@ public class RecruitmentProcessService {
                 "Triagem",
                 "Entrevista",
                 "Teste Técnico",
-                "Decisão Final"
+                "Decisão Final",
+                "Aprovado"
         );
 
         String currentStageName = process.getProcessStage().getName();
@@ -402,7 +408,7 @@ public class RecruitmentProcessService {
                 } else {
                     stageStatus = "PENDENTE";
                 }
-            } else if (currentStatusName.toLowerCase().contains("recusado")) {
+            } else if (currentStatusName.toLowerCase().contains("recusado") || "Reprovado".equals(currentStatusName)) {
                 if (i < currentStageIndex) {
                     stageStatus = "CONCLUIDO";
                 } else if (i == currentStageIndex) {
