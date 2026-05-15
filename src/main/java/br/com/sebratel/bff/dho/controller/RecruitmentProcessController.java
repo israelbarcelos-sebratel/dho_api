@@ -9,6 +9,8 @@ import br.com.sebratel.bff.dho.dto.RecruitmentIndicatorsDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessRequestDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageResponseDTO;
+
 
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -169,5 +171,12 @@ public class RecruitmentProcessController {
     @Operation(summary = "Obter indicadores de recrutamento", description = "Retorna estatísticas gerais sobre os processos de recrutamento.")
     public ResponseEntity<RecruitmentIndicatorsDTO> getIndicators() {
         return ResponseEntity.ok(recruitmentProcessService.getIndicators());
+    }
+
+    @GetMapping("/{id}/stages")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_job_tracking.name())")
+    @Operation(summary = "Recuperar estágios do processo", description = "Retorna todos os estágios do processo de seleção com seus respectivos status para um candidato específico.")
+    public ResponseEntity<List<RecruitmentProcessStageResponseDTO>> getProcessStages(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        return ResponseEntity.ok(recruitmentProcessService.getProcessStages(id));
     }
 }

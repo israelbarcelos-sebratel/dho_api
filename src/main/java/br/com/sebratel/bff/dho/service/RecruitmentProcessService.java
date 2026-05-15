@@ -24,6 +24,9 @@ import br.com.sebratel.bff.dho.dto.RecruitmentProcessRequestDTO;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageResponseDTO;
+import java.util.ArrayList;
+
 
 
 import java.util.List;
@@ -367,5 +370,61 @@ public class RecruitmentProcessService {
                 .pendingApprovals(pendingApprovals)
                 .averageHiringTimeLastYear(averageHiringTime)
                 .build();
+    }
+
+    public List<RecruitmentProcessStageResponseDTO> getProcessStages(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+
+        List<String> orderedStages = List.of(
+                "Banco de Talentos",
+                "Triagem",
+                "Entrevista",
+                "Teste Técnico",
+                "Decisão Final"
+        );
+
+        String currentStageName = process.getProcessStage().getName();
+        String currentStatusName = process.getProcessStatus().getName();
+        
+        int currentStageIndex = orderedStages.indexOf(currentStageName);
+        List<RecruitmentProcessStageResponseDTO> stagesResponse = new ArrayList<>();
+
+        for (int i = 0; i < orderedStages.size(); i++) {
+            String stageName = orderedStages.get(i);
+            String stageStatus;
+
+            if ("Finalizado".equals(currentStatusName) || "Contratado".equals(currentStatusName)) {
+                stageStatus = "CONCLUIDO";
+            } else if ("Desistência".equals(currentStatusName)) {
+                if (i < currentStageIndex) {
+                    stageStatus = "CONCLUIDO";
+                } else if (i == currentStageIndex) {
+                    stageStatus = "DESISTENCIA";
+                } else {
+                    stageStatus = "PENDENTE";
+                }
+            } else if (currentStatusName.toLowerCase().contains("recusado")) {
+                if (i < currentStageIndex) {
+                    stageStatus = "CONCLUIDO";
+                } else if (i == currentStageIndex) {
+                    stageStatus = "RECUSADO";
+                } else {
+                    stageStatus = "PENDENTE";
+                }
+            } else {
+                if (i < currentStageIndex) {
+                    stageStatus = "CONCLUIDO";
+                } else if (i == currentStageIndex) {
+                    stageStatus = "EM_ANDAMENTO";
+                } else {
+                    stageStatus = "PENDENTE";
+                }
+            }
+
+            stagesResponse.add(new RecruitmentProcessStageResponseDTO(stageName, stageStatus));
+        }
+
+        return stagesResponse;
     }
 }
