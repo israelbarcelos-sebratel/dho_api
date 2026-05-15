@@ -52,6 +52,23 @@ public class DhoRoleServiceImpl implements DhoRoleService {
         return mapToResponse(roleRepository.save(role));
     }
 
+    @Override
+    @Transactional
+    public RoleResponseDTO addPermission(Integer roleId, Integer permissionId) {
+        DhoRole role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new RuntimeException("Papel não encontrado"));
+
+        DhoPermission permission = permissionRepository.findById(permissionId)
+                .orElseThrow(() -> new RuntimeException("Permissão não encontrada"));
+
+        if (role.getPermissions() == null) {
+            role.setPermissions(new HashSet<>());
+        }
+        role.getPermissions().add(permission);
+
+        return mapToResponse(roleRepository.save(role));
+    }
+
     private RoleResponseDTO mapToResponse(DhoRole role) {
         Set<PermissionResponseDTO> permissionDTOs = null;
         if (role.getPermissions() != null) {

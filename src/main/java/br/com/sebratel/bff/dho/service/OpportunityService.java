@@ -1,7 +1,15 @@
 package br.com.sebratel.bff.dho.service;
 
+import br.com.sebratel.bff.dho.domain.repository.DhoBaseOriginRepository;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
+import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
+import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
+
+import br.com.sebratel.bff.dho.domain.repository.*;
+
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.People;
+
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
@@ -41,6 +49,13 @@ public class OpportunityService {
     private final DhoOpportunityStatusRepository statusRepository;
     private final RecruitmentProcessRepository recruitmentProcessRepository;
     private final PeopleRepository peopleRepository;
+    private final DhoBaseOriginRepository baseOriginRepository;
+    private final DhoPositionRepository positionRepository;
+    private final DhoTeamRepository teamRepository;
+    private final DhoDepartmentRepository departmentRepository;
+    private final RecruitmentProcessLogRepository logRepository;
+
+    private final DhoOpportunityMotiveRepository opportunityMotiveRepository;
 
     public List<CandidateResponseDTO> findCandidatesForUser(Integer id, Authentication authentication) {
         Opportunity opportunity = opportunityRepository.findById(id)
@@ -73,13 +88,20 @@ public class OpportunityService {
 
     public List<OpportunityResponseDTO> findAll() {
         return opportunityRepository.findAll().stream()
-                .map(this::convertToDTO)
+                .map(opp -> convertToDTO(opp, false))
+                .collect(Collectors.toList());
+    }
+    public List<OpportunityResponseDTO> findApprovedOpportunities(Authentication authentication) {
+        String email = authentication != null ? authentication.getName() : "";
+        return opportunityRepository.findByOpportunityStatusNameAndResponsibleRecruiterEmail("Aprovada", email).stream()
+                .map(opp -> convertToDTO(opp, false))
                 .collect(Collectors.toList());
     }
 
+
     public OpportunityResponseDTO findById(Integer id) {
         return opportunityRepository.findById(id)
-                .map(this::convertToDTO)
+                .map(opp -> convertToDTO(opp, false))
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
     }
 
@@ -88,33 +110,43 @@ public class OpportunityService {
         DhoOpportunityStatus pendingStatus = statusRepository.findByName("Pendente")
                 .orElseThrow(() -> new RuntimeException("Status 'Pendente' não encontrado"));
 
-        People requester = null;
-        if (authentication != null) {
-            requester = peopleRepository.findByEmail(authentication.getName()).orElse(null);
-        }
+        People requester = Optional.ofNullable(authentication)
+                .map(Authentication::getName)
+                .flatMap(peopleRepository::findByEmail)
+                .orElse(null);
+
+        DhoBaseOrigin baseOrigin = Optional.ofNullable(dto.baseOriginId())
+                .flatMap(baseOriginRepository::findById)
+                .or(() -> baseOriginRepository.findByName("Porto Alegre"))
+                .orElseThrow(() -> new RuntimeException("Base de origem padrão não encontrada"));
 
         Opportunity opportunity = Opportunity.builder()
                 .openOpportunityDate(Optional.ofNullable(dto.openOpportunityDate()).orElse(LocalDateTime.now()))
                 .requester(requester)
-                .candidate(mapReference(dto.candidateId(), id -> People.builder().id(id).build()))
-                .position(mapReference(dto.positionId(), id -> DhoPosition.builder().id(id).build()))
-                .team(mapReference(dto.teamId(), id -> DhoTeam.builder().id(id).build()))
-                .department(mapReference(dto.departmentId(), id -> DhoDepartment.builder().id(id).build()))
-                .opportunityMotive(mapReference(dto.opportunityMotiveId(), id -> DhoOpportunityMotive.builder().id(id).build()))
-                .replacedPerson(mapReference(dto.replacedPersonId(), id -> People.builder().id(id).build()))
-                .baseOrigin(mapReference(dto.baseOriginId(), id -> DhoBaseOrigin.builder().id(id).build()))
+                .candidate(findOptionalEntity(dto.candidateId(), peopleRepository))
+                .position(findOptionalEntity(dto.positionId(), positionRepository))
+                .team(findOptionalEntity(dto.teamId(), teamRepository))
+                .department(findOptionalEntity(dto.departmentId(), departmentRepository))
+                .opportunityMotive(findOptionalEntity(dto.opportunityMotiveId(), opportunityMotiveRepository))
+                .replacedPerson(findOptionalEntity(dto.replacedPersonId(), peopleRepository))
+                .responsibleRecruiter(findOptionalEntity(dto.responsibleRecruiterId(), peopleRepository))
+                .baseOrigin(baseOrigin)
                 .opportunityStatus(pendingStatus)
                 .deadlineSlaDays(dto.deadlineSlaDays())
                 .acceptDate(dto.acceptDate())
-                .responsibleRecruiter(mapReference(dto.responsibleRecruiterId(), id -> People.builder().id(id).build()))
                 .observations(dto.observations())
                 .workSchedule(dto.workSchedule())
                 .hardSkills(dto.hardSkills())
                 .softSkills(dto.softSkills())
                 .build();
 
-        Opportunity saved = opportunityRepository.save(opportunity);
-        return convertToDTO(saved);
+        return convertToDTO(opportunityRepository.save(opportunity), false);
+    }
+
+    private <T, ID> T findOptionalEntity(ID id, org.springframework.data.repository.CrudRepository<T, ID> repository) {
+        return Optional.ofNullable(id)
+                .flatMap(repository::findById)
+                .orElse(null);
     }
 
     @Transactional
@@ -130,15 +162,13 @@ public class OpportunityService {
                 .orElseThrow(() -> new RuntimeException("Status 'Aprovada' não encontrado"));
 
         opportunity.setOpportunityStatus(approvedStatus);
-        return convertToDTO(opportunityRepository.save(opportunity));
+        opportunity.setDeadlineSlaDays(30);
+        
+        return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 
     @Transactional
     public OpportunityResponseDTO refuse(Integer id, OpportunityApprovalDTO dto) {
-        if (dto.justification() == null || dto.justification().length() < 200) {
-            throw new RuntimeException("A justificativa de recusa deve ter no mínimo 200 caracteres");
-        }
-
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
@@ -146,16 +176,12 @@ public class OpportunityService {
                 .orElseThrow(() -> new RuntimeException("Status 'Recusada' não encontrado"));
 
         opportunity.setOpportunityStatus(refusedStatus);
-        opportunity.setRefusalJustification(dto.justification());
-        return convertToDTO(opportunityRepository.save(opportunity));
+        opportunity.setRefusalJustification(dto.reason());
+        return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 
     @Transactional
     public OpportunityResponseDTO finalize(Integer id, OpportunityApprovalDTO dto) {
-        if (dto.justification() == null || dto.justification().length() < 200) {
-            throw new RuntimeException("A justificativa de finalização deve ter no mínimo 200 caracteres");
-        }
-
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
@@ -163,11 +189,11 @@ public class OpportunityService {
                 .orElseThrow(() -> new RuntimeException("Status 'Finalizada' não encontrado"));
 
         opportunity.setOpportunityStatus(finalizedStatus);
-        opportunity.setFinalizationJustification(dto.justification());
-        return convertToDTO(opportunityRepository.save(opportunity));
+        opportunity.setFinalizationJustification(dto.reason());
+        return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 
-    private OpportunityResponseDTO convertToDTO(Opportunity opportunity) {
+    private OpportunityResponseDTO convertToDTO(Opportunity opportunity, boolean includeCandidates) {
         String statusName = mapName(opportunity.getOpportunityStatus(), DhoOpportunityStatus::getName);
         String uiStatus = "Pendente".equals(statusName) ? "Enviado para aprovação" : statusName;
         
@@ -189,15 +215,17 @@ public class OpportunityService {
                     .build();
         }
 
+        List<CandidateResponseDTO> candidates = includeCandidates 
+            ? findCandidatesByOpportunityId(opportunity.getId()) 
+            : null;
+
         return OpportunityResponseDTO.builder()
                 .id(opportunity.getId())
                 .openOpportunityDate(opportunity.getOpenOpportunityDate())
-                .candidateName(mapName(opportunity.getCandidate(), People::getName))
                 .positionName(mapName(opportunity.getPosition(), DhoPosition::getName))
                 .teamName(mapName(opportunity.getTeam(), DhoTeam::getName))
                 .departmentName(mapName(opportunity.getDepartment(), DhoDepartment::getName))
                 .opportunityMotiveName(mapName(opportunity.getOpportunityMotive(), DhoOpportunityMotive::getName))
-                .replacedPersonName(mapName(opportunity.getReplacedPerson(), People::getName))
                 .baseOriginName(mapName(opportunity.getBaseOrigin(), DhoBaseOrigin::getName))
                 .opportunityStatusName(statusName)
                 .processStageName(null)
@@ -218,6 +246,7 @@ public class OpportunityService {
                 .date(formattedDate)
                 .statusVariant(statusVariant)
                 .requester(requesterDTO)
+                .candidates(candidates)
                 .build();
     }
 
@@ -226,11 +255,13 @@ public class OpportunityService {
         boolean wantViewAll = searchDTO != null && Boolean.TRUE.equals(searchDTO.getShowAllRequisitions());
 
         if (canViewAll && wantViewAll) {
-            return findAll();
+            return opportunityRepository.findAll().stream()
+                .map(opp -> convertToDTO(opp, true))
+                .collect(Collectors.toList());
         }
         String email = authentication != null ? authentication.getName() : "";
         return opportunityRepository.findByRequesterEmail(email).stream()
-                .map(this::convertToDTO)
+                .map(opp -> convertToDTO(opp, true))
                 .collect(Collectors.toList());
     }
 
@@ -238,13 +269,17 @@ public class OpportunityService {
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
+        if (authentication == null) {
+            throw new RuntimeException("Usuário não autenticado");
+        }
+
         if (!hasPermission(authentication, Permission.view_all_requests)) {
             if (opportunity.getRequester() == null || !opportunity.getRequester().getEmail().equals(authentication.getName())) {
                 throw new RuntimeException("Acesso negado a esta requisição");
             }
         }
 
-        return convertToDTO(opportunity);
+        return convertToDTO(opportunity, true);
     }
 
     private boolean hasPermission(Authentication authentication, Permission permission) {
@@ -254,11 +289,23 @@ public class OpportunityService {
                 .anyMatch(a -> a.equals(permission.name()) || a.equals("ROLE_ADMIN"));
     }
 
-    private <T, ID> T mapReference(ID id, Function<ID, T> builder) {
-        return Optional.ofNullable(id).map(builder).orElse(null);
-    }
-
     private <T, R> R mapName(T entity, Function<T, R> mapper) {
         return Optional.ofNullable(entity).map(mapper).orElse(null);
+    }
+
+    public List<RecruitmentProcessLogDTO> getLogs(Integer id) {
+        return logRepository.findByRecruitmentProcessOpportunityIdOrderByStartTimeDesc(id).stream()
+                .map(log -> RecruitmentProcessLogDTO.builder()
+                        .id(log.getId())
+                        .actionName(log.getActionName())
+                        .startTime(log.getStartTime())
+                        .endTime(log.getEndTime())
+                        .durationMs(log.getDurationMs())
+                        .status(log.getStatus())
+                        .errorMessage(log.getErrorMessage())
+                        .candidateName(log.getRecruitmentProcess() != null && log.getRecruitmentProcess().getCandidate() != null 
+                                ? log.getRecruitmentProcess().getCandidate().getName() : null)
+                        .build())
+                .collect(Collectors.toList());
     }
 }

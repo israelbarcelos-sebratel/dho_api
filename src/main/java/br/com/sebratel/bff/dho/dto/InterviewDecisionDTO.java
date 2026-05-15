@@ -1,9 +1,11 @@
 package br.com.sebratel.bff.dho.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record InterviewDecisionDTO(
-    @Size(min = 200, message = "O relato detalhado deve ter no mínimo 200 caracteres")
-    String report
+    @NotBlank(message = "O motivo é obrigatório")
+    @Size(min = 200, message = "deve ter no mínimo 200 caracteres")
+    String reason
 ) {
 }

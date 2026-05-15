@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -27,10 +28,7 @@ import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = RecruitmentProcessController.class, excludeAutoConfiguration = {
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-        org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration.class
-})
+@WebMvcTest(controllers = RecruitmentProcessController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class RecruitmentProcessControllerTest {
 
@@ -51,6 +49,9 @@ public class RecruitmentProcessControllerTest {
 
     @MockitoBean
     private DhoPermissionRepository permissionRepository;
+
+    @MockitoBean
+    private org.springframework.security.oauth2.jwt.JwtDecoder jwtDecoder;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -108,9 +109,9 @@ public class RecruitmentProcessControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "recruiter@sebratel.com.br")
     void getMyProcesses_ShouldReturnOk() throws Exception {
-        mockMvc.perform(get("/recruitment-processes/mine")
-                        .param("recruiterId", "1"))
+        mockMvc.perform(get("/recruitment-processes/mine"))
                 .andExpect(status().isOk());
     }
 
@@ -142,5 +143,55 @@ public class RecruitmentProcessControllerTest {
                 .andExpect(status().isOk());
     }
 
+
+
+    @Test
+    void moveToScreening_ShouldReturnOk() throws Exception {
+        doNothing().when(recruitmentProcessService).moveToScreening(1);
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "RECRUITER")
+    void moveToScreening_WithRecruiterRole_ShouldReturnOk() throws Exception {
+        doNothing().when(recruitmentProcessService).moveToScreening(1);
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void moveToScreening_WithAdminRole_ShouldReturnOk() throws Exception {
+        doNothing().when(recruitmentProcessService).moveToScreening(1);
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    void moveToTechnicalTest_ShouldReturnOk_WhenReportIsValid() throws Exception {
+        String longReport = "A".repeat(200);
+        InterviewDecisionDTO dto = new InterviewDecisionDTO(longReport);
+        doNothing().when(recruitmentProcessService).moveToTechnicalTest(eq(1), any(InterviewDecisionDTO.class));
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-technical-test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void moveToTechnicalTest_ShouldReturnBadRequest_WhenReportIsTooShort() throws Exception {
+        InterviewDecisionDTO dto = new InterviewDecisionDTO("Too short");
+
+        mockMvc.perform(post("/recruitment-processes/1/move-to-technical-test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+    }
 
 }

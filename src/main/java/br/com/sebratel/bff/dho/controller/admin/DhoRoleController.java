@@ -40,4 +40,10 @@ public class DhoRoleController {
     public ResponseEntity<RoleResponseDTO> assignPermissions(@PathVariable Integer id, @RequestBody Set<Integer> permissionIds) {
         return ResponseEntity.ok(roleService.assignPermissions(id, permissionIds));
     }
+
+    @PostMapping("/{id}/permissions/{permissionId}")
+    @Operation(summary = "Adicionar uma permissão a um papel")
+    public ResponseEntity<RoleResponseDTO> addPermission(@PathVariable Integer id, @PathVariable Integer permissionId) {
+        return ResponseEntity.ok(roleService.addPermission(id, permissionId));
+    }
 }

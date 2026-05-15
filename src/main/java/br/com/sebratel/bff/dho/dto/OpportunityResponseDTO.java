@@ -14,12 +14,10 @@ import java.time.LocalDateTime;
 public class OpportunityResponseDTO {
     private Integer id;
     private LocalDateTime openOpportunityDate;
-    private String candidateName;
     private String positionName;
     private String teamName;
     private String departmentName;
     private String opportunityMotiveName;
-    private String replacedPersonName;
     private String baseOriginName;
     private String opportunityStatusName;
     private String processStageName;
@@ -42,4 +40,5 @@ public class OpportunityResponseDTO {
     private String date;
     private String statusVariant;
     private UserResponseDTO requester;
+    private java.util.List<CandidateResponseDTO> candidates;
 }

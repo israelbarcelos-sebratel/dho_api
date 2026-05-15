@@ -13,7 +13,7 @@
 [INFO] Copying 1 resource from src/main/resources to target/classes
 [INFO] 
 [INFO] --- compiler:3.13.0:compile (default-compile) @ dho-api ---
-[INFO] Recompiling the module because of changed source code.
+[INFO] Recompiling the module because of added or removed source files.
 [INFO] Compiling 120 source files with javac [debug parameters release 21] to target/classes
 [INFO] Annotation processing is enabled because one or more processors were found
   on the class path. A future release of javac may disable annotation processing
@@ -88,64 +88,63 @@
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
-[INFO] Running br.com.sebratel.bff.dho.service.OpportunityServiceTest
+[INFO] Running br.com.sebratel.bff.dho.controller.RecruitmentFlowIntegrationTest
+14:33:00.200 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [br.com.sebratel.bff.dho.controller.RecruitmentFlowIntegrationTest]: RecruitmentFlowIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:33:00.451 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration br.com.sebratel.bff.dho.DhoApiApplication for test class br.com.sebratel.bff.dho.controller.RecruitmentFlowIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.3)
+
+2026-05-15T14:33:00.935-03:00  INFO 1694721 --- [           main] c.s.b.d.c.RecruitmentFlowIntegrationTest : Starting RecruitmentFlowIntegrationTest using Java 21.0.10 with PID 1694721 (started by israelbarcelos in /home/israelbarcelos/.cline/worktrees/2614c/dho-api)
+2026-05-15T14:33:00.936-03:00  INFO 1694721 --- [           main] c.s.b.d.c.RecruitmentFlowIntegrationTest : No active profile set, falling back to 1 default profile: "default"
+2026-05-15T14:33:01.906-03:00  INFO 1694721 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-15T14:33:02.013-03:00  INFO 1694721 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96 ms. Found 20 JPA repository interfaces.
+2026-05-15T14:33:02.738-03:00  INFO 1694721 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-15T14:33:02.785-03:00  INFO 1694721 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.8.Final
+2026-05-15T14:33:02.816-03:00  INFO 1694721 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-05-15T14:33:03.057-03:00  INFO 1694721 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-15T14:33:03.081-03:00  INFO 1694721 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-05-15T14:33:03.326-03:00  INFO 1694721 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-05-15T14:33:03.328-03:00  INFO 1694721 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-05-15T14:33:03.356-03:00  WARN 1694721 --- [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-15T14:33:03.375-03:00  INFO 1694721 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-05-15T14:33:04.761-03:00  INFO 1694721 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-15T14:33:04.883-03:00  INFO 1694721 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-15T14:33:05.234-03:00  INFO 1694721 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-05-15T14:33:06.212-03:00  WARN 1694721 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-15T14:33:06.970-03:00  INFO 1694721 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-05-15T14:33:06.971-03:00  INFO 1694721 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-05-15T14:33:06.973-03:00  INFO 1694721 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-05-15T14:33:07.007-03:00  INFO 1694721 --- [           main] c.s.b.d.c.RecruitmentFlowIntegrationTest : Started RecruitmentFlowIntegrationTest in 6.37 seconds (process running for 7.756)
 Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
 WARNING: A Java agent has been loaded dynamically (/home/israelbarcelos/.m2/repository/net/bytebuddy/byte-buddy-agent/1.15.11/byte-buddy-agent-1.15.11.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
 WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
-OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
-[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.525 s -- in br.com.sebratel.bff.dho.service.OpportunityServiceTest
-[INFO] Running br.com.sebratel.bff.dho.service.RecruitmentProcessServiceTest
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.142 s -- in br.com.sebratel.bff.dho.service.RecruitmentProcessServiceTest
-[INFO] Running br.com.sebratel.bff.dho.controller.OpportunityControllerTest
-14:25:40.291 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [br.com.sebratel.bff.dho.controller.OpportunityControllerTest]: OpportunityControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-14:25:40.533 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration br.com.sebratel.bff.dho.DhoApiApplication for test class br.com.sebratel.bff.dho.controller.OpportunityControllerTest
-
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
-
- :: Spring Boot ::                (v3.4.3)
-
-2026-05-15T14:25:41.076-03:00  INFO 1678641 --- [           main] b.c.s.b.d.c.OpportunityControllerTest    : Starting OpportunityControllerTest using Java 21.0.10 with PID 1678641 (started by israelbarcelos in /home/israelbarcelos/.cline/worktrees/2614c/dho-api)
-2026-05-15T14:25:41.078-03:00  INFO 1678641 --- [           main] b.c.s.b.d.c.OpportunityControllerTest    : No active profile set, falling back to 1 default profile: "default"
-2026-05-15T14:25:43.304-03:00  INFO 1678641 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-05-15T14:25:43.305-03:00  INFO 1678641 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-05-15T14:25:43.306-03:00  INFO 1678641 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2026-05-15T14:25:43.353-03:00  INFO 1678641 --- [           main] b.c.s.b.d.c.OpportunityControllerTest    : Started OpportunityControllerTest in 2.744 seconds (process running for 6.807)
-2026-05-15T14:25:43.707-03:00 ERROR 1678641 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de validação: Validation failed for argument [1] in public org.springframework.http.ResponseEntity<br.com.sebratel.bff.dho.dto.OpportunityResponseDTO> br.com.sebratel.bff.dho.controller.OpportunityController.finalizeOpportunity(java.lang.Integer,br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO): [Field error in object 'opportunityApprovalDTO' on field 'reason': rejected value [Short justification]; codes [Size.opportunityApprovalDTO.reason,Size.reason,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [opportunityApprovalDTO.reason,reason]; arguments []; default message [reason],2147483647,200]; default message [deve ter no mínimo 200 caracteres]] 
-2026-05-15T14:25:43.759-03:00 ERROR 1678641 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de validação: Validation failed for argument [1] in public org.springframework.http.ResponseEntity<br.com.sebratel.bff.dho.dto.OpportunityResponseDTO> br.com.sebratel.bff.dho.controller.OpportunityController.refuseOpportunity(java.lang.Integer,br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO): [Field error in object 'opportunityApprovalDTO' on field 'reason': rejected value [Short justification]; codes [Size.opportunityApprovalDTO.reason,Size.reason,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [opportunityApprovalDTO.reason,reason]; arguments []; default message [reason],2147483647,200]; default message [deve ter no mínimo 200 caracteres]] 
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.720 s -- in br.com.sebratel.bff.dho.controller.OpportunityControllerTest
-[INFO] Running br.com.sebratel.bff.dho.controller.RecruitmentProcessControllerTest
-2026-05-15T14:25:43.808-03:00  INFO 1678641 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [br.com.sebratel.bff.dho.controller.RecruitmentProcessControllerTest]: RecruitmentProcessControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-05-15T14:25:43.841-03:00  INFO 1678641 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration br.com.sebratel.bff.dho.DhoApiApplication for test class br.com.sebratel.bff.dho.controller.RecruitmentProcessControllerTest
-
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
-
- :: Spring Boot ::                (v3.4.3)
-
-2026-05-15T14:25:43.900-03:00  INFO 1678641 --- [           main] s.b.d.c.RecruitmentProcessControllerTest : Starting RecruitmentProcessControllerTest using Java 21.0.10 with PID 1678641 (started by israelbarcelos in /home/israelbarcelos/.cline/worktrees/2614c/dho-api)
-2026-05-15T14:25:43.906-03:00  INFO 1678641 --- [           main] s.b.d.c.RecruitmentProcessControllerTest : No active profile set, falling back to 1 default profile: "default"
-2026-05-15T14:25:44.594-03:00  INFO 1678641 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-05-15T14:25:44.594-03:00  INFO 1678641 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-05-15T14:25:44.595-03:00  INFO 1678641 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2026-05-15T14:25:44.603-03:00  INFO 1678641 --- [           main] s.b.d.c.RecruitmentProcessControllerTest : Started RecruitmentProcessControllerTest in 0.751 seconds (process running for 8.057)
-2026-05-15T14:25:44.633-03:00 ERROR 1678641 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de validação: Validation failed for argument [1] in public org.springframework.http.ResponseEntity<java.lang.Void> br.com.sebratel.bff.dho.controller.RecruitmentProcessController.refuse(java.lang.Integer,br.com.sebratel.bff.dho.dto.InterviewDecisionDTO): [Field error in object 'interviewDecisionDTO' on field 'reason': rejected value [Too short]; codes [Size.interviewDecisionDTO.reason,Size.reason,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [interviewDecisionDTO.reason,reason]; arguments []; default message [reason],2147483647,200]; default message [deve ter no mínimo 200 caracteres]] 
-2026-05-15T14:25:44.735-03:00 ERROR 1678641 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de validação: Validation failed for argument [1] in public org.springframework.http.ResponseEntity<java.lang.Void> br.com.sebratel.bff.dho.controller.RecruitmentProcessController.moveToTechnicalTest(java.lang.Integer,br.com.sebratel.bff.dho.dto.InterviewDecisionDTO): [Field error in object 'interviewDecisionDTO' on field 'reason': rejected value [Too short]; codes [Size.interviewDecisionDTO.reason,Size.reason,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [interviewDecisionDTO.reason,reason]; arguments []; default message [reason],2147483647,200]; default message [deve ter no mínimo 200 caracteres]] 
-[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.980 s -- in br.com.sebratel.bff.dho.controller.RecruitmentProcessControllerTest
+2026-05-15T14:33:07.808-03:00 ERROR 1694721 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de validação: Validation failed for argument [1] in public org.springframework.http.ResponseEntity<java.lang.Void> br.com.sebratel.bff.dho.controller.RecruitmentProcessController.managerDecision(java.lang.Integer,br.com.sebratel.bff.dho.dto.ManagerDecisionDTO): [Field error in object 'managerDecisionDTO' on field 'reason': rejected value [null]; codes [NotBlank.managerDecisionDTO.reason,NotBlank.reason,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [managerDecisionDTO.reason,reason]; arguments []; default message [reason]]; default message [O motivo é obrigatório]] 
+2026-05-15T14:33:07.827-03:00 ERROR 1694721 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de status de resposta: 400 BAD_REQUEST - Proposta só pode ser enviada após aprovação do gestor
+2026-05-15T14:33:07.899-03:00 ERROR 1694721 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de acesso negado: Access Denied
+2026-05-15T14:33:07.905-03:00 ERROR 1694721 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de acesso negado: Access Denied
+2026-05-15T14:33:07.912-03:00 ERROR 1694721 --- [           main] b.c.s.b.d.e.GlobalExceptionHandler       : Erro de acesso negado: Access Denied
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.088 s -- in br.com.sebratel.bff.dho.controller.RecruitmentFlowIntegrationTest
 [INFO] 
 [INFO] Results:
 [INFO] 
-[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
 [INFO] 
 [INFO] 
 [INFO] --- jacoco:0.8.12:report (report) @ dho-api ---
@@ -154,6 +153,6 @@ OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader clas
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  14.267 s
-[INFO] Finished at: 2026-05-15T14:25:45-03:00
+[INFO] Total time:  14.663 s
+[INFO] Finished at: 2026-05-15T14:33:08-03:00
 [INFO] ------------------------------------------------------------------------

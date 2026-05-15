@@ -11,5 +11,6 @@ public record RecruitmentProcessLogDTO(
     LocalDateTime endTime,
     Long durationMs,
     String status,
-    String errorMessage
+    String errorMessage,
+    String candidateName
 ) {}

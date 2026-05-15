@@ -4,6 +4,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 
 import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
+
 
 
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
@@ -37,6 +39,13 @@ public class OpportunityController {
     public ResponseEntity<List<OpportunityResponseDTO>> getAllOpportunities() {
         return ResponseEntity.ok(opportunityService.findAll());
     }
+    @GetMapping("/approved")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_all_requests.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_job_tracking.name())")
+    @Operation(summary = "Listar oportunidades aprovadas", description = "Retorna uma lista com todas as oportunidades que possuem status 'Aprovada' e estão vinculadas ao recrutador autenticado.")
+    public ResponseEntity<List<OpportunityResponseDTO>> getApprovedOpportunities(Authentication authentication) {
+        return ResponseEntity.ok(opportunityService.findApprovedOpportunities(authentication));
+    }
+
 
     @PostMapping
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).initiate_contract_process.name()) or hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
@@ -81,4 +90,10 @@ public class OpportunityController {
         return ResponseEntity.ok(opportunityService.findCandidatesByOpportunityId(id));
     }
 
+    @GetMapping("/{id}/logs")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
+    @Operation(summary = "Listar logs de uma oportunidade", description = "Retorna o histórico completo de eventos de uma oportunidade e seus candidatos.")
+    public ResponseEntity<List<RecruitmentProcessLogDTO>> getLogs(@PathVariable Integer id) {
+        return ResponseEntity.ok(opportunityService.getLogs(id));
+    }
 }
