@@ -88,20 +88,20 @@ public class OpportunityService {
 
     public List<OpportunityResponseDTO> findAll() {
         return opportunityRepository.findAll().stream()
-                .map(this::convertToDTO)
+                .map(opp -> convertToDTO(opp, false))
                 .collect(Collectors.toList());
     }
     public List<OpportunityResponseDTO> findApprovedOpportunities(Authentication authentication) {
         String email = authentication != null ? authentication.getName() : "";
         return opportunityRepository.findByOpportunityStatusNameAndResponsibleRecruiterEmail("Aprovada", email).stream()
-                .map(this::convertToDTO)
+                .map(opp -> convertToDTO(opp, false))
                 .collect(Collectors.toList());
     }
 
 
     public OpportunityResponseDTO findById(Integer id) {
         return opportunityRepository.findById(id)
-                .map(this::convertToDTO)
+                .map(opp -> convertToDTO(opp, false))
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
     }
 
@@ -140,7 +140,7 @@ public class OpportunityService {
                 .softSkills(dto.softSkills())
                 .build();
 
-        return convertToDTO(opportunityRepository.save(opportunity));
+        return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 
     private <T, ID> T findOptionalEntity(ID id, org.springframework.data.repository.CrudRepository<T, ID> repository) {
@@ -164,7 +164,7 @@ public class OpportunityService {
         opportunity.setOpportunityStatus(approvedStatus);
         opportunity.setDeadlineSlaDays(30);
         
-        return convertToDTO(opportunityRepository.save(opportunity));
+        return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 
     @Transactional
@@ -181,7 +181,7 @@ public class OpportunityService {
 
         opportunity.setOpportunityStatus(refusedStatus);
         opportunity.setRefusalJustification(dto.justification());
-        return convertToDTO(opportunityRepository.save(opportunity));
+        return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 
     @Transactional
@@ -198,10 +198,10 @@ public class OpportunityService {
 
         opportunity.setOpportunityStatus(finalizedStatus);
         opportunity.setFinalizationJustification(dto.justification());
-        return convertToDTO(opportunityRepository.save(opportunity));
+        return convertToDTO(opportunityRepository.save(opportunity), false);
     }
 
-    private OpportunityResponseDTO convertToDTO(Opportunity opportunity) {
+    private OpportunityResponseDTO convertToDTO(Opportunity opportunity, boolean includeCandidates) {
         String statusName = mapName(opportunity.getOpportunityStatus(), DhoOpportunityStatus::getName);
         String uiStatus = "Pendente".equals(statusName) ? "Enviado para aprovação" : statusName;
         
@@ -222,6 +222,10 @@ public class OpportunityService {
                     .email(opportunity.getRequester().getEmail())
                     .build();
         }
+
+        List<CandidateResponseDTO> candidates = includeCandidates 
+            ? findCandidatesByOpportunityId(opportunity.getId()) 
+            : null;
 
         return OpportunityResponseDTO.builder()
                 .id(opportunity.getId())
@@ -250,6 +254,7 @@ public class OpportunityService {
                 .date(formattedDate)
                 .statusVariant(statusVariant)
                 .requester(requesterDTO)
+                .candidates(candidates)
                 .build();
     }
 
@@ -258,11 +263,13 @@ public class OpportunityService {
         boolean wantViewAll = searchDTO != null && Boolean.TRUE.equals(searchDTO.getShowAllRequisitions());
 
         if (canViewAll && wantViewAll) {
-            return findAll();
+            return opportunityRepository.findAll().stream()
+                .map(opp -> convertToDTO(opp, true))
+                .collect(Collectors.toList());
         }
         String email = authentication != null ? authentication.getName() : "";
         return opportunityRepository.findByRequesterEmail(email).stream()
-                .map(this::convertToDTO)
+                .map(opp -> convertToDTO(opp, true))
                 .collect(Collectors.toList());
     }
 
@@ -280,7 +287,7 @@ public class OpportunityService {
             }
         }
 
-        return convertToDTO(opportunity);
+        return convertToDTO(opportunity, true);
     }
 
     private boolean hasPermission(Authentication authentication, Permission permission) {
