@@ -105,9 +105,9 @@ public class OpportunityController {
     public ResponseEntity<OpportunityResponseDTO> assignRecruiter(
             @PathVariable Integer id,
             @RequestBody @Valid OpportunityAssignRecruiterDTO dto) {
-        log.info("Recebida requisição para atribuir recrutador {} à oportunidade {}", dto.recruiterId(), id);
+        log.info("[CONTROLLER ENTRY] POST /opportunities/{}/assign-recruiter - recruiterId: {}", id, dto.recruiterId());
         OpportunityResponseDTO response = opportunityService.assignRecruiter(id, dto);
-        log.info("Recrutador atribuído com sucesso à oportunidade {}", id);
+        log.info("[CONTROLLER EXIT] Recrutador atribuído com sucesso à oportunidade {}", id);
         return ResponseEntity.ok(response);
     }
 

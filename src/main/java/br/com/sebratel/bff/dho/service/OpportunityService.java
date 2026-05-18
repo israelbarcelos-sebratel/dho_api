@@ -221,30 +221,34 @@ public class OpportunityService {
 
     @Transactional
     public OpportunityResponseDTO assignRecruiter(Integer id, OpportunityAssignRecruiterDTO dto) {
-        log.info("Iniciando processo de atribuição de recrutador para oportunidade ID: {}", id);
+        log.info("[SERVICE ENTRY] assignRecruiter - id: {}, recruiterId: {}", id, dto.recruiterId());
         
-        log.debug("Buscando oportunidade ID: {}", id);
+        log.info("[REPO CALL] opportunityRepository.findById - id: {}", id);
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> {
-                    log.error("Oportunidade não encontrada com ID: {}", id);
+                    log.error("[REPO RESULT] Oportunidade não encontrada com ID: {}", id);
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, "Oportunidade não encontrada");
                 });
+        log.info("[REPO RESULT] Oportunidade encontrada: {}", opportunity.getId());
 
-        log.debug("Buscando recrutador ID: {}", dto.recruiterId());
+        log.info("[REPO CALL] peopleRepository.findById - id: {}", dto.recruiterId());
         People recruiter = peopleRepository.findById(dto.recruiterId())
                 .orElseThrow(() -> {
-                    log.error("Recrutador não encontrado com ID: {}", dto.recruiterId());
+                    log.error("[REPO RESULT] Recrutador não encontrado com ID: {}", dto.recruiterId());
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, "Recrutador não encontrado");
                 });
+        log.info("[REPO RESULT] Recrutador encontrado: {}", recruiter.getName());
 
-        log.info("Atribuindo recrutador {} à oportunidade {}", recruiter.getName(), opportunity.getId());
+        log.info("[ACTION] Atribuindo recrutador {} à oportunidade {}", recruiter.getName(), opportunity.getId());
         opportunity.setResponsibleRecruiter(recruiter);
         
-        log.debug("Salvando oportunidade atualizada");
+        log.info("[REPO CALL] opportunityRepository.save");
         Opportunity savedOpportunity = opportunityRepository.save(opportunity);
+        log.info("[REPO RESULT] Oportunidade salva com sucesso");
         
-        log.info("Oportunidade ID: {} atualizada com sucesso com o recrutador ID: {}", id, dto.recruiterId());
-        return convertToDTO(savedOpportunity, false);
+        OpportunityResponseDTO response = convertToDTO(savedOpportunity, false);
+        log.info("[SERVICE EXIT] assignRecruiter finalizado para oportunidade {}", id);
+        return response;
     }
 
     private OpportunityResponseDTO convertToDTO(Opportunity opportunity, boolean includeCandidates) {
