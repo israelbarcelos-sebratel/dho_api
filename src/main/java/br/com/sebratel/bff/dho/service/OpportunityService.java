@@ -30,6 +30,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Collections;
+
 
 import br.com.sebratel.bff.dho.domain.enums.Permission;
 import br.com.sebratel.bff.dho.dto.UserResponseDTO;
@@ -210,10 +212,18 @@ public class OpportunityService {
 
         UserResponseDTO requesterDTO = null;
         if (opportunity.getRequester() != null) {
+            List<String> roles = Collections.emptyList();
+            if (opportunity.getRequester().getRoles() != null) {
+                roles = opportunity.getRequester().getRoles().stream()
+                        .map(DhoRole::getName)
+                        .collect(Collectors.toList());
+            }
+
             requesterDTO = UserResponseDTO.builder()
                     .id(opportunity.getRequester().getId())
                     .name(opportunity.getRequester().getName())
                     .email(opportunity.getRequester().getEmail())
+                    .roles(roles)
                     .build();
         }
 

@@ -8,6 +8,6 @@ public record UserResponseDTO(
     Integer id,
     String name,
     String email,
-    String role,
+    List<String> roles,
     List<String> permissions
 ) {}

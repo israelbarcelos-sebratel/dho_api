@@ -37,7 +37,7 @@ public class AuthController {
                 .orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
 
         List<String> permissions = Collections.emptyList();
-        String roles = null;
+        List<String> rolesList = Collections.emptyList();
         if (person.getRoles() != null && !person.getRoles().isEmpty()) {
             permissions = person.getRoles().stream()
                     .filter(role -> role.getPermissions() != null)
@@ -47,16 +47,16 @@ public class AuthController {
                     .distinct()
                     .collect(Collectors.toList());
             
-            roles = person.getRoles().stream()
+            rolesList = person.getRoles().stream()
                     .map(DhoRole::getName)
-                    .collect(Collectors.joining(", "));
+                    .collect(Collectors.toList());
         }
 
         return ResponseEntity.ok(UserResponseDTO.builder()
                 .id(person.getId())
                 .name(person.getName())
                 .email(person.getEmail())
-                .role(roles)
+                .roles(rolesList)
                 .permissions(permissions)
                 .build());
     }
