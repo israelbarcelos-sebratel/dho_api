@@ -217,10 +217,6 @@ public class OpportunityService {
                     .build();
         }
 
-        List<CandidateResponseDTO> candidates = includeCandidates 
-            ? findCandidatesByOpportunityId(opportunity.getId()) 
-            : null;
-
         List<RecruitmentProcessResponseDTO> recruitmentProcesses = includeCandidates
             ? recruitmentProcessRepository.findByOpportunityId(opportunity.getId()).stream()
                 .map(recruitmentProcessService::mapToResponseDTO)
@@ -254,7 +250,6 @@ public class OpportunityService {
                 .date(formattedDate)
                 .statusVariant(statusVariant)
                 .requester(requesterDTO)
-                .candidates(candidates)
                 .recruitmentProcesses(recruitmentProcesses)
                 .build();
     }
