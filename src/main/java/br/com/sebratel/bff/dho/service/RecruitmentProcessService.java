@@ -283,7 +283,7 @@ public class RecruitmentProcessService {
                 .collect(Collectors.toList());
     }
 
-    private RecruitmentProcessResponseDTO mapToResponseDTO(RecruitmentProcess process) {
+    public RecruitmentProcessResponseDTO mapToResponseDTO(RecruitmentProcess process) {
         return RecruitmentProcessResponseDTO.builder()
                 .id(process.getId())
                 .candidateName(Optional.ofNullable(process.getCandidate()).map(People::getName).orElse(null))

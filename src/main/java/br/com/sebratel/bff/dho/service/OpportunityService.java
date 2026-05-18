@@ -20,6 +20,7 @@ import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,7 @@ public class OpportunityService {
     private final RecruitmentProcessLogRepository logRepository;
 
     private final DhoOpportunityMotiveRepository opportunityMotiveRepository;
+    private final RecruitmentProcessService recruitmentProcessService;
 
     public List<CandidateResponseDTO> findCandidatesForUser(Integer id, Authentication authentication) {
         Opportunity opportunity = opportunityRepository.findById(id)
@@ -219,6 +221,12 @@ public class OpportunityService {
             ? findCandidatesByOpportunityId(opportunity.getId()) 
             : null;
 
+        List<RecruitmentProcessResponseDTO> recruitmentProcesses = includeCandidates
+            ? recruitmentProcessRepository.findByOpportunityId(opportunity.getId()).stream()
+                .map(recruitmentProcessService::mapToResponseDTO)
+                .collect(Collectors.toList())
+            : null;
+
         return OpportunityResponseDTO.builder()
                 .id(opportunity.getId())
                 .openOpportunityDate(opportunity.getOpenOpportunityDate())
@@ -247,6 +255,7 @@ public class OpportunityService {
                 .statusVariant(statusVariant)
                 .requester(requesterDTO)
                 .candidates(candidates)
+                .recruitmentProcesses(recruitmentProcesses)
                 .build();
     }
 

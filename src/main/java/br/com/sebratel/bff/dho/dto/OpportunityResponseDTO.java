@@ -41,4 +41,5 @@ public class OpportunityResponseDTO {
     private String statusVariant;
     private UserResponseDTO requester;
     private java.util.List<CandidateResponseDTO> candidates;
+    private java.util.List<RecruitmentProcessResponseDTO> recruitmentProcesses;
 }
