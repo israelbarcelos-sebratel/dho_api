@@ -55,7 +55,7 @@ Define permissões granulares para funcionalidades do sistema.
 | `description` | String | O que a permissão permite fazer. |
 
 ### 1.4. `people_roles` (Tabela de Ligação)
-Relaciona pessoas a papéis (roles).
+Relaciona pessoas a papéis (roles) - Muitos-para-Muitos.
 
 | Campo | Tipo | Descrição |
 |-------|------|-------------|

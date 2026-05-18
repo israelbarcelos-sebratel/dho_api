@@ -5,7 +5,7 @@ Este documento descreve os endpoints e regras de negócio para o gerenciamento d
 ## 1. Regras de Acesso
 - Todos os endpoints descritos aqui são restritos a usuários com a role `ADMIN`.
 - A autenticação é baseada em JWT (Google OAuth2).
-- **Regra de Unicidade**: Cada usuário (`People`) pode possuir **apenas um papel** (`Role`) atribuído por vez.
+- **Múltiplos Papéis**: Um usuário (`People`) pode possuir múltiplos papéis (`Role`) simultaneamente.
 
 ## 2. Endpoints de Permissões (Permissions)
 
@@ -60,9 +60,9 @@ Este documento descreve os endpoints e regras de negócio para o gerenciamento d
 - **PUT** `/api/admin/people/{peopleId}/roles`
 - **Body**:
 ```json
-[1] // ID da role (apenas um ID é permitido devido à regra de negócio)
+[1, 2, 3] // IDs das roles
 ```
-- **Regra**: Caso a pessoa já possua um papel, ele será substituído pelo novo papel informado.
+- **Regra**: Os papéis atuais da pessoa serão substituídos pela nova lista de papéis informada.
 
 
 ## 5. Endpoints de Solicitação de Papéis (Role Requests)
