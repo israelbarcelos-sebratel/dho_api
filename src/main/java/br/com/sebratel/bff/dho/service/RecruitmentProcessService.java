@@ -1,5 +1,6 @@
 package br.com.sebratel.bff.dho.service;
 
+import lombok.extern.slf4j.Slf4j;
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
@@ -44,6 +45,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Function;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecruitmentProcessService {
@@ -439,8 +441,5 @@ public class RecruitmentProcessService {
         }
 
         return stagesResponse;
-    }
-}
-se;
     }
 }

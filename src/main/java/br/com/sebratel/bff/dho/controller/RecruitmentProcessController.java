@@ -1,5 +1,6 @@
 package br.com.sebratel.bff.dho.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
@@ -24,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/recruitment-processes")
 @RequiredArgsConstructor
