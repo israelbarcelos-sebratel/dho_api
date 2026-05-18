@@ -44,6 +44,7 @@ public class OpportunityServiceTest {
     @Mock private RecruitmentProcessService recruitmentProcessService;
 
     @Mock private DhoOpportunityMotiveRepository opportunityMotiveRepository;
+    @Mock private RecruitmentProcessService recruitmentProcessService;
 
 
     @InjectMocks
@@ -91,6 +92,20 @@ public class OpportunityServiceTest {
         assertNotNull(result);
         assertEquals("Recusada", result.getOpportunityStatusName());
     }
+    @Test
+    void refuse_ShouldThrowException_WhenStatusNotFound() {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        String justification = "A".repeat(200);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(statusRepository.findByName("Recusada")).thenReturn(Optional.empty());
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.refuse(1, dto));
+        assertEquals("Status 'Recusada' não encontrado", ex.getMessage());
+    }
+
 
     @Test
     void create_ShouldWork() {

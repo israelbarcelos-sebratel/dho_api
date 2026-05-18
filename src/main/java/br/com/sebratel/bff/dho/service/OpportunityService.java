@@ -25,6 +25,8 @@ import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
@@ -47,10 +49,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.function.Function;
 
-@Slf4j
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OpportunityService {
 
     private final OpportunityRepository opportunityRepository;

@@ -1,6 +1,5 @@
 package br.com.sebratel.bff.dho.controller;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
@@ -29,7 +28,6 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 
-@Slf4j
 @RestController
 @RequestMapping("/opportunities")
 @RequiredArgsConstructor
@@ -80,6 +78,18 @@ public class OpportunityController {
         return ResponseEntity.ok(opportunityService.refuse(id, approvalDTO));
     }
 
+    @PostMapping("/{id}/reprove")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
+    @Operation(summary = "Reprovar oportunidade", description = "Altera o status da oportunidade para recusada.")
+    public ResponseEntity<OpportunityResponseDTO> reproveOpportunity(
+            @PathVariable Integer id,
+            @RequestBody @Valid OpportunityApprovalDTO approvalDTO) {
+        log.info("[OpportunityController] reproveOpportunity - Request received to reprove opportunity ID: {}", id);
+        OpportunityResponseDTO response = opportunityService.refuse(id, approvalDTO);
+        log.info("[OpportunityController] reproveOpportunity - Opportunity ID: {} successfully reproved", id);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/{id}/finalize")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).final_decision.name())")
     @Operation(summary = "Finalizar oportunidade", description = "Marca a oportunidade como finalizada.")
@@ -104,21 +114,6 @@ public class OpportunityController {
     @GetMapping("/{id}/candidates")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
     @Operation(summary = "Listar candidatos de uma oportunidade", description = "Retorna os candidatos associados a uma oportunidade específica.")
-    public ResponseEntity<List<CandidateResponseDTO>> getCandidatesByOpportunity(@PathVariable Integer id) {
-        return ResponseEntity.ok(opportunityService.findCandidatesByOpportunityId(id));
-    }
-
-    @GetMapping("/{id}/logs")
-    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
-    @Operation(summary = "Listar logs de uma oportunidade", description = "Retorna o histórico completo de eventos de uma oportunidade e seus candidatos.")
-    public ResponseEntity<List<RecruitmentProcessLogDTO>> getLogs(@PathVariable Integer id) {
-        return ResponseEntity.ok(opportunityService.getLogs(id));
-    }
-}
-vice.getLogs(id));
-    }
-}
-datos de uma oportunidade", description = "Retorna os candidatos associados a uma oportunidade específica.")
     public ResponseEntity<List<CandidateResponseDTO>> getCandidatesByOpportunity(@PathVariable Integer id) {
         return ResponseEntity.ok(opportunityService.findCandidatesByOpportunityId(id));
     }

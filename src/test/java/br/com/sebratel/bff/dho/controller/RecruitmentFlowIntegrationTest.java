@@ -4,6 +4,8 @@ import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.*;
 import br.com.sebratel.bff.dho.domain.repository.*;
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +38,7 @@ public class RecruitmentFlowIntegrationTest {
 
     @BeforeEach
     void setup() {
-        String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado", "Reprovado", "Enviada Proposta", "Finalizado", "Recusada pelo candidato"};
+        String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado", "Reprovado", "Enviada Proposta", "Finalizado", "Recusada pelo candidato", "Recusada"};
         for (String s : statuses) createStatusIfNotExist(s);
         String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Decisão Final", "Aprovado"};
         for (String s : stages) createStageIfNotExist(s);
@@ -73,6 +75,34 @@ public class RecruitmentFlowIntegrationTest {
         mockMvc.perform(post("/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
         validateStatus(id, "Finalizado");
     }
+    @Test
+    void testReproveOpportunityFlow() throws Exception {
+        Integer oppId = createPendingOpportunity();
+        
+        String justification = "A".repeat(200);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        mockMvc.perform(post("/opportunities/" + oppId + "/reprove")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto))
+                .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_contract_process"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.opportunityStatusName").value("Recusada"))
+                .andExpect(jsonPath("$.refusalJustification").value(justification));
+    }
+
+    private Integer createPendingOpportunity() {
+        DhoPosition pos = DhoPosition.builder().name("Dev Pending").build(); 
+        entityManager.persist(pos);
+        DhoOpportunityStatus status = (DhoOpportunityStatus) entityManager.createQuery("SELECT s FROM DhoOpportunityStatus s WHERE s.name = 'Pendente'").getSingleResult();
+        Opportunity opp = Opportunity.builder()
+                .position(pos)
+                .opportunityStatus(status)
+                .openOpportunityDate(LocalDateTime.now())
+                .build();
+        return opportunityRepository.save(opp).getId();
+    }
+
 
     @Test
     void testSecurityResistances() throws Exception {

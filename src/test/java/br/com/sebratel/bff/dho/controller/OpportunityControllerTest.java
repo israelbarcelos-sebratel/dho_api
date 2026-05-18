@@ -66,6 +66,31 @@ public class OpportunityControllerTest {
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
     }
+    @Test
+    void shouldReproveOpportunityWithValidJustification() throws Exception {
+        String justification = "A".repeat(200);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+        
+        when(opportunityService.refuse(eq(1), any(OpportunityApprovalDTO.class)))
+                .thenReturn(new OpportunityResponseDTO());
+
+        mockMvc.perform(post("/opportunities/1/reprove")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenReprovingWithShortJustification() throws Exception {
+        String justification = "Short justification";
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+
+        mockMvc.perform(post("/opportunities/1/reprove")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @Test
     void shouldReturnBadRequestWhenRefusingWithShortJustification() throws Exception {
