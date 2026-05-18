@@ -173,15 +173,31 @@ public class OpportunityService {
 
     @Transactional
     public OpportunityResponseDTO refuse(Integer id, OpportunityApprovalDTO dto) {
+        log.info("[OpportunityService] refuse - Starting reproval process for opportunity ID: {}", id);
+        
+        log.debug("[OpportunityService] refuse - Fetching opportunity from database for ID: {}", id);
         Opportunity opportunity = opportunityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
+                .orElseThrow(() -> {
+                    log.error("[OpportunityService] refuse - Opportunity not found with ID: {}", id);
+                    return new RuntimeException("Oportunidade não encontrada");
+                });
+        log.debug("[OpportunityService] refuse - Opportunity found: {}", opportunity.getPosition() != null ? opportunity.getPosition().getName() : "Unknown");
 
+        log.debug("[OpportunityService] refuse - Fetching 'Recusada' status from database");
         DhoOpportunityStatus refusedStatus = statusRepository.findByName("Recusada")
-                .orElseThrow(() -> new RuntimeException("Status 'Recusada' não encontrado"));
+                .orElseThrow(() -> {
+                    log.error("[OpportunityService] refuse - Status 'Recusada' not found in database");
+                    return new RuntimeException("Status 'Recusada' não encontrado");
+                });
 
         opportunity.setOpportunityStatus(refusedStatus);
         opportunity.setRefusalJustification(dto.reason());
-        return convertToDTO(opportunityRepository.save(opportunity), false);
+        
+        log.info("[OpportunityService] refuse - Saving updated opportunity ID: {} with status 'Recusada'", id);
+        Opportunity savedOpportunity = opportunityRepository.save(opportunity);
+        
+        log.info("[OpportunityService] refuse - Opportunity ID: {} successfully reproved and saved", id);
+        return convertToDTO(savedOpportunity, false);
     }
 
     @Transactional
