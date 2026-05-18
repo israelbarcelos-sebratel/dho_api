@@ -16,4 +16,6 @@ public class RecruitmentProcessResponseDTO {
     private String processStatusName;
     private String processStageName;
     private Integer opportunityId;
+    private String recruiterReport;
+    private String interviewReport;
 }

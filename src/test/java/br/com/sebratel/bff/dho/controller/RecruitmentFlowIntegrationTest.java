@@ -36,9 +36,9 @@ public class RecruitmentFlowIntegrationTest {
 
     @BeforeEach
     void setup() {
-        String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado pelo Gestor", "Recusado pelo gestor", "Enviada Proposta", "Finalizado", "Recusada pelo candidato"};
+        String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado", "Reprovado", "Enviada Proposta", "Finalizado", "Recusada pelo candidato"};
         for (String s : statuses) createStatusIfNotExist(s);
-        String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Decisão Final"};
+        String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Decisão Final", "Aprovado"};
         for (String s : stages) createStageIfNotExist(s);
     }
 

@@ -1,5 +1,6 @@
 package br.com.sebratel.bff.dho.service;
 
+import lombok.extern.slf4j.Slf4j;
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
@@ -44,6 +45,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Function;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecruitmentProcessService {
@@ -154,7 +156,7 @@ public class RecruitmentProcessService {
         if (!"Entrevista".equals(process.getProcessStage().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Entrevista para ir para Teste Técnico");
         }
-        process.setInterviewReport(dto.reason());
+        process.setRecruiterReport(dto.reason());
         updateStage(id, "Teste Técnico");
     }
 
@@ -187,15 +189,20 @@ public class RecruitmentProcessService {
         if (!"Decisão Final".equals(process.getProcessStage().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do gestor só pode ser tomada no estágio de Decisão Final");
         }
-        String statusName = dto.isApproved() ? "Aprovado pelo Gestor" : "Recusado pelo gestor";
-        updateStatus(id, statusName, dto.getReason());
+        
+        if (dto.isApproved()) {
+            updateStatus(id, "Aprovado", dto.getReason());
+            updateStage(id, "Aprovado");
+        } else {
+            updateStatus(id, "Reprovado", dto.getReason());
+        }
     }
 
     @Transactional
     public void sendProposal(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Aprovado pelo Gestor".equals(process.getProcessStatus().getName())) {
+        if (!"Aprovado".equals(process.getProcessStatus().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proposta só pode ser enviada após aprovação do gestor");
         }
         updateStatus(id, "Enviada Proposta", null);
@@ -247,20 +254,29 @@ public class RecruitmentProcessService {
     }
 
     private void updateStatus(Integer id, String statusName, String report) {
+        log.info("Iniciando atualização de status para '{}' no processo ID: {}", statusName, id);
+        
+        log.info("Buscando processo ID: {} para atualizar status", id);
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+        log.info("Processo encontrado para atualização de status");
+
         if (process.getOpportunity() != null && !"Aprovada".equals(process.getOpportunity().getOpportunityStatus().getName())) {
+            log.warn("Falha ao atualizar status: Oportunidade não aprovada para o processo ID: {}", id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível alterar o status de um processo cuja oportunidade não está aprovada");
         }
 
-
-
+        log.info("Buscando status pelo nome: '{}'", statusName);
         DhoProcessStatus status = processStatusRepository.findByName(statusName)
                 .orElseThrow(() -> new RuntimeException("Status '" + statusName + "' não encontrado"));
+        log.info("Status '{}' encontrado", statusName);
 
         process.setProcessStatus(status);
         process.setInterviewReport(report);
+        
+        log.info("Salvando alteração de status no banco para o processo ID: {}", id);
         recruitmentProcessRepository.save(process);
+        log.info("Status do processo ID: {} atualizado com sucesso para '{}'", id, statusName);
     }
 
     public List<RecruitmentProcessHistoryDTO> getFinalizedProcesses() {
@@ -278,7 +294,7 @@ public class RecruitmentProcessService {
                 .collect(Collectors.toList());
     }
 
-    private RecruitmentProcessResponseDTO mapToResponseDTO(RecruitmentProcess process) {
+    public RecruitmentProcessResponseDTO mapToResponseDTO(RecruitmentProcess process) {
         return RecruitmentProcessResponseDTO.builder()
                 .id(process.getId())
                 .candidateName(Optional.ofNullable(process.getCandidate()).map(People::getName).orElse(null))
@@ -288,6 +304,9 @@ public class RecruitmentProcessService {
                 .processStatusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse(null))
                 .processStageName(Optional.ofNullable(process.getProcessStage()).map(stage -> stage.getName()).orElse(null))
                 .opportunityId(Optional.ofNullable(process.getOpportunity()).map(opp -> opp.getId()).orElse(null))
+                .recruiterReport(process.getRecruiterReport())
+                .interviewReport(process.getInterviewReport())
+
                 .build();
     }
 
@@ -379,7 +398,8 @@ public class RecruitmentProcessService {
                 "Triagem",
                 "Entrevista",
                 "Teste Técnico",
-                "Decisão Final"
+                "Decisão Final",
+                "Aprovado"
         );
 
         String currentStageName = process.getProcessStage().getName();
@@ -402,7 +422,7 @@ public class RecruitmentProcessService {
                 } else {
                     stageStatus = "PENDENTE";
                 }
-            } else if (currentStatusName.toLowerCase().contains("recusado")) {
+            } else if (currentStatusName.toLowerCase().contains("recusado") || "Reprovado".equals(currentStatusName)) {
                 if (i < currentStageIndex) {
                     stageStatus = "CONCLUIDO";
                 } else if (i == currentStageIndex) {

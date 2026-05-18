@@ -53,6 +53,9 @@ public class RecruitmentProcess {
     @JoinColumn(name = "situation_id")
     private DhoSituation situation;
 
+    @Column(name = "recruiter_report", length = 2000)
+    private String recruiterReport;
+
     @Column(name = "interview_report", length = 1000)
     private String interviewReport;
 }

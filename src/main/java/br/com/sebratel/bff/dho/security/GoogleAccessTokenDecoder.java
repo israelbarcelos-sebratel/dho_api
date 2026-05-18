@@ -8,9 +8,13 @@ import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jwt.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,15 +29,28 @@ public class GoogleAccessTokenDecoder implements JwtDecoder {
         // Tenta decodificar como JWT primeiro
         try {
             if (delegate == null) {
-                delegate = NimbusJwtDecoder.withIssuerLocation(issuerUri).build();
+                log.info("Inicializando NimbusJwtDecoder com issuer: {} e clock skew de 60s", issuerUri);
+                NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withIssuerLocation(issuerUri).build();
+                
+                OAuth2TokenValidator<Jwt> withClockSkew = new DelegatingOAuth2TokenValidator<>(
+                    new JwtTimestampValidator(Duration.ofSeconds(60)),
+                    new JwtIssuerValidator(issuerUri)
+                );
+                
+                jwtDecoder.setJwtValidator(withClockSkew);
+                delegate = jwtDecoder;
             }
             return delegate.decode(token);
         } catch (Exception e) {
+            log.warn("Falha ao decodificar como JWT: {}. Mensagem: {}", 
+                token.substring(0, Math.min(token.length(), 15)) + "...", e.getMessage());
+            
             // Se falhar e parecer um token do Google (ya29.), tenta validar como Access Token
             if (token.startsWith("ya29.")) {
+                log.info("Token identificado como Google Access Token (ya29.), tentando validação via UserInfo API");
                 return decodeAccessToken(token);
             }
-            throw new JwtException("Token inválido e não identificado como Google Access Token", e);
+            throw new JwtException("Token inválido: " + e.getMessage(), e);
         }
     }
 

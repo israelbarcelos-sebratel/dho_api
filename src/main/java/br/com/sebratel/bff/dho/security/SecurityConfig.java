@@ -71,8 +71,12 @@ public class SecurityConfig {
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) 
                 throws IOException {
-            log.error("401 Unauthorized - Path: {} | Remote Addr: {} | Error: {}", 
-                request.getRequestURI(), request.getRemoteAddr(), authException.getMessage());
+            log.error("401 Unauthorized - Path: {} | Remote Addr: {} | Exception Type: {} | Message: {}", 
+                request.getRequestURI(), request.getRemoteAddr(), authException.getClass().getName(), authException.getMessage());
+            
+            if (authException.getCause() != null) {
+                log.error("Caused by: {} - {}", authException.getCause().getClass().getName(), authException.getCause().getMessage());
+            }
             
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");

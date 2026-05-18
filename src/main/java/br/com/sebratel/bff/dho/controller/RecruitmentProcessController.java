@@ -1,5 +1,6 @@
 package br.com.sebratel.bff.dho.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
@@ -24,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/recruitment-processes")
 @RequiredArgsConstructor
@@ -108,7 +110,9 @@ public class RecruitmentProcessController {
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).reject_candidate.name())")
     @Operation(summary = "Decisão do gestor", description = "Registra o feedback/decisão do gestor sobre o candidato. O processo deve estar no estágio de Decisão Final.")
     public ResponseEntity<Void> managerDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {
+        log.info("Recebida requisição de decisão do gestor para o processo ID: {}. Dados: {}", id, dto);
         recruitmentProcessService.managerDecision(id, dto);
+        log.info("Decisão do gestor processada com sucesso para o processo ID: {}", id);
         return ResponseEntity.ok().build();
     }
 

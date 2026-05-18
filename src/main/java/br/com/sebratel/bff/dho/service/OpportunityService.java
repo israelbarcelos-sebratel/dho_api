@@ -20,6 +20,7 @@ import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Collections;
+
 
 import br.com.sebratel.bff.dho.domain.enums.Permission;
 import br.com.sebratel.bff.dho.dto.UserResponseDTO;
@@ -56,6 +59,7 @@ public class OpportunityService {
     private final RecruitmentProcessLogRepository logRepository;
 
     private final DhoOpportunityMotiveRepository opportunityMotiveRepository;
+    private final RecruitmentProcessService recruitmentProcessService;
 
     public List<CandidateResponseDTO> findCandidatesForUser(Integer id, Authentication authentication) {
         Opportunity opportunity = opportunityRepository.findById(id)
@@ -208,15 +212,25 @@ public class OpportunityService {
 
         UserResponseDTO requesterDTO = null;
         if (opportunity.getRequester() != null) {
+            List<String> roles = Collections.emptyList();
+            if (opportunity.getRequester().getRoles() != null) {
+                roles = opportunity.getRequester().getRoles().stream()
+                        .map(DhoRole::getName)
+                        .collect(Collectors.toList());
+            }
+
             requesterDTO = UserResponseDTO.builder()
                     .id(opportunity.getRequester().getId())
                     .name(opportunity.getRequester().getName())
                     .email(opportunity.getRequester().getEmail())
+                    .roles(roles)
                     .build();
         }
 
-        List<CandidateResponseDTO> candidates = includeCandidates 
-            ? findCandidatesByOpportunityId(opportunity.getId()) 
+        List<RecruitmentProcessResponseDTO> recruitmentProcesses = includeCandidates
+            ? recruitmentProcessRepository.findByOpportunityId(opportunity.getId()).stream()
+                .map(recruitmentProcessService::mapToResponseDTO)
+                .collect(Collectors.toList())
             : null;
 
         return OpportunityResponseDTO.builder()
@@ -246,7 +260,7 @@ public class OpportunityService {
                 .date(formattedDate)
                 .statusVariant(statusVariant)
                 .requester(requesterDTO)
-                .candidates(candidates)
+                .recruitmentProcesses(recruitmentProcesses)
                 .build();
     }
 
