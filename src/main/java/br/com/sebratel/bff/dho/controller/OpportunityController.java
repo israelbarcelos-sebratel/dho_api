@@ -1,7 +1,11 @@
 package br.com.sebratel.bff.dho.controller;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+import br.com.sebratel.bff.dho.dto.OpportunityAssignRecruiterDTO;
+
 
 import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
@@ -25,6 +29,7 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 
+@Slf4j
 @RestController
 @RequestMapping("/opportunities")
 @RequiredArgsConstructor
@@ -82,6 +87,18 @@ public class OpportunityController {
             @PathVariable Integer id,
             @RequestBody @Valid OpportunityApprovalDTO approvalDTO) {
         return ResponseEntity.ok(opportunityService.finalize(id, approvalDTO));
+    }
+
+    @PostMapping("/{id}/assign-recruiter")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).assign_recruiter.name())")
+    @Operation(summary = "Atribuir recrutador", description = "Vincular ou trocar a recrutadora responsável por uma oportunidade.")
+    public ResponseEntity<OpportunityResponseDTO> assignRecruiter(
+            @PathVariable Integer id,
+            @RequestBody @Valid OpportunityAssignRecruiterDTO dto) {
+        log.info("Recebida requisição para atribuir recrutador {} à oportunidade {}", dto.recruiterId(), id);
+        OpportunityResponseDTO response = opportunityService.assignRecruiter(id, dto);
+        log.info("Recrutador atribuído com sucesso à oportunidade {}", id);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}/candidates")

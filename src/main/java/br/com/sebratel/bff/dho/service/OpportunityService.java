@@ -1,6 +1,8 @@
 package br.com.sebratel.bff.dho.service;
 
 import br.com.sebratel.bff.dho.domain.repository.DhoBaseOriginRepository;
+import lombok.extern.slf4j.Slf4j;
+
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
@@ -15,6 +17,7 @@ import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoOpportunityStatusRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
+import br.com.sebratel.bff.dho.dto.OpportunityAssignRecruiterDTO;
 import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
@@ -43,6 +46,8 @@ import br.com.sebratel.bff.dho.dto.RequisitionSearchDTO;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.function.Function;
+
+@Slf4j
 
 @Service
 @RequiredArgsConstructor
@@ -211,6 +216,34 @@ public class OpportunityService {
         opportunity.setOpportunityStatus(finalizedStatus);
         opportunity.setFinalizationJustification(dto.reason());
         return convertToDTO(opportunityRepository.save(opportunity), false);
+    }
+
+    @Transactional
+    public OpportunityResponseDTO assignRecruiter(Integer id, OpportunityAssignRecruiterDTO dto) {
+        log.info("Iniciando processo de atribuição de recrutador para oportunidade ID: {}", id);
+        
+        log.debug("Buscando oportunidade ID: {}", id);
+        Opportunity opportunity = opportunityRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Oportunidade não encontrada com ID: {}", id);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Oportunidade não encontrada");
+                });
+
+        log.debug("Buscando recrutador ID: {}", dto.recruiterId());
+        People recruiter = peopleRepository.findById(dto.recruiterId())
+                .orElseThrow(() -> {
+                    log.error("Recrutador não encontrado com ID: {}", dto.recruiterId());
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Recrutador não encontrado");
+                });
+
+        log.info("Atribuindo recrutador {} à oportunidade {}", recruiter.getName(), opportunity.getId());
+        opportunity.setResponsibleRecruiter(recruiter);
+        
+        log.debug("Salvando oportunidade atualizada");
+        Opportunity savedOpportunity = opportunityRepository.save(opportunity);
+        
+        log.info("Oportunidade ID: {} atualizada com sucesso com o recrutador ID: {}", id, dto.recruiterId());
+        return convertToDTO(savedOpportunity, false);
     }
 
     private OpportunityResponseDTO convertToDTO(Opportunity opportunity, boolean includeCandidates) {
