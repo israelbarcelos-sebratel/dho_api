@@ -55,9 +55,15 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
                     });
 
             Collection<GrantedAuthority> authorities = extractAuthorities(person);
-            log.info("Usuário {} autenticado com sucesso. Autoridades: {}", 
+            log.info("Usuário {} autenticado com sucesso. ID no banco: {}. Authorities extraídas ({}): {}", 
                 email, 
-                authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(", ")));
+                person.getId(),
+                authorities.size(),
+                authorities.stream().map(GrantedAuthority::getAuthority).sorted().collect(Collectors.joining(", ")));
+            
+            if (authorities.isEmpty()) {
+                log.warn("ATENÇÃO: Usuário {} não possui NENHUMA autoridade no sistema!", email);
+            }
             
             return new JwtAuthenticationToken(jwt, authorities, email);
         } catch (Exception e) {
