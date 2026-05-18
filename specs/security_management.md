@@ -97,3 +97,15 @@ Este documento descreve os endpoints e regras de negócio para o gerenciamento d
 ### 6.1. Listar Papéis Disponíveis
 - **GET** `/api/roles`
 - **Descrição**: Retorna a lista de todos os papéis disponíveis no sistema. Acessível por qualquer usuário autenticado.
+
+## 7. Configuração de CORS
+
+O sistema utiliza uma configuração centralizada de CORS para permitir requisições de origens confiáveis.
+
+### 7.1. Variáveis de Ambiente
+- `ALLOWED_ORIGINS`: Lista separada por vírgulas das origens permitidas (ex: `http://localhost:5173,https://meu-dominio.com`). Se não definida, o padrão é `*` para ambientes que não sejam de produção.
+
+### 7.2. Comportamento por Perfil
+- **Desenvolvimento/Staging (não `prod`)**: Permite todas as origens (`*`) por padrão para facilitar o desenvolvimento.
+- **Produção (`prod`)**: Restringe as origens para aquelas definidas na variável `ALLOWED_ORIGINS`. Requer que `allowCredentials` seja `true`.
+
