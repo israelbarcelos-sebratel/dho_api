@@ -252,20 +252,29 @@ public class RecruitmentProcessService {
     }
 
     private void updateStatus(Integer id, String statusName, String report) {
+        log.info("Iniciando atualização de status para '{}' no processo ID: {}", statusName, id);
+        
+        log.info("Buscando processo ID: {} para atualizar status", id);
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+        log.info("Processo encontrado para atualização de status");
+
         if (process.getOpportunity() != null && !"Aprovada".equals(process.getOpportunity().getOpportunityStatus().getName())) {
+            log.warn("Falha ao atualizar status: Oportunidade não aprovada para o processo ID: {}", id);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível alterar o status de um processo cuja oportunidade não está aprovada");
         }
 
-
-
+        log.info("Buscando status pelo nome: '{}'", statusName);
         DhoProcessStatus status = processStatusRepository.findByName(statusName)
                 .orElseThrow(() -> new RuntimeException("Status '" + statusName + "' não encontrado"));
+        log.info("Status '{}' encontrado", statusName);
 
         process.setProcessStatus(status);
         process.setInterviewReport(report);
+        
+        log.info("Salvando alteração de status no banco para o processo ID: {}", id);
         recruitmentProcessRepository.save(process);
+        log.info("Status do processo ID: {} atualizado com sucesso para '{}'", id, statusName);
     }
 
     public List<RecruitmentProcessHistoryDTO> getFinalizedProcesses() {
@@ -430,5 +439,8 @@ public class RecruitmentProcessService {
         }
 
         return stagesResponse;
+    }
+}
+se;
     }
 }
