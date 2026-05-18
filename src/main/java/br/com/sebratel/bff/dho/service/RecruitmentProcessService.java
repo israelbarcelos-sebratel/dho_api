@@ -156,7 +156,7 @@ public class RecruitmentProcessService {
         if (!"Entrevista".equals(process.getProcessStage().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Entrevista para ir para Teste Técnico");
         }
-        process.setInterviewReport(dto.reason());
+        process.setRecruiterReport(dto.reason());
         updateStage(id, "Teste Técnico");
     }
 
@@ -304,6 +304,9 @@ public class RecruitmentProcessService {
                 .processStatusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse(null))
                 .processStageName(Optional.ofNullable(process.getProcessStage()).map(stage -> stage.getName()).orElse(null))
                 .opportunityId(Optional.ofNullable(process.getOpportunity()).map(opp -> opp.getId()).orElse(null))
+                .recruiterReport(process.getRecruiterReport())
+                .interviewReport(process.getInterviewReport())
+
                 .build();
     }
 
