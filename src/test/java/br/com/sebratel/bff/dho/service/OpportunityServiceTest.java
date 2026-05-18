@@ -41,6 +41,8 @@ public class OpportunityServiceTest {
     @Mock private DhoPositionRepository positionRepository;
     @Mock private DhoTeamRepository teamRepository;
     @Mock private DhoDepartmentRepository departmentRepository;
+    @Mock private RecruitmentProcessService recruitmentProcessService;
+
     @Mock private DhoOpportunityMotiveRepository opportunityMotiveRepository;
 
 
@@ -170,6 +172,7 @@ public class OpportunityServiceTest {
         opportunity.setId(1);
         opportunity.setOpportunityStatus(new DhoOpportunityStatus());
         when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(recruitmentProcessRepository.findByOpportunityId(1)).thenReturn(Collections.emptyList());
         assertNotNull(opportunityService.findByIdForUser(1, auth));
     }
 
@@ -185,6 +188,7 @@ public class OpportunityServiceTest {
         opportunity.setRequester(requester);
         opportunity.setOpportunityStatus(new DhoOpportunityStatus());
         when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(recruitmentProcessRepository.findByOpportunityId(1)).thenReturn(Collections.emptyList());
         assertNotNull(opportunityService.findByIdForUser(1, auth));
     }
 
@@ -196,6 +200,7 @@ public class OpportunityServiceTest {
         opportunity.setId(1);
         opportunity.setOpportunityStatus(new DhoOpportunityStatus());
         when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(recruitmentProcessRepository.findByOpportunityId(1)).thenReturn(Collections.emptyList());
         assertNotNull(opportunityService.findByIdForUser(1, auth));
     }
 
@@ -331,6 +336,48 @@ public class OpportunityServiceTest {
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> opportunityService.finalize(1, dto));
         assertEquals("Status 'Finalizada' não encontrado", ex.getMessage());
+    }
+
+
+    @Test
+    void assignRecruiter_ShouldWork() {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(1);
+        opportunity.setOpportunityStatus(new DhoOpportunityStatus());
+        People recruiter = new People();
+        recruiter.setId(10);
+        recruiter.setName("Recruiter Name");
+
+        br.com.sebratel.bff.dho.dto.OpportunityAssignRecruiterDTO dto = new br.com.sebratel.bff.dho.dto.OpportunityAssignRecruiterDTO(10);
+
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(peopleRepository.findById(10)).thenReturn(Optional.of(recruiter));
+        when(opportunityRepository.save(any(Opportunity.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        OpportunityResponseDTO result = opportunityService.assignRecruiter(1, dto);
+
+        assertNotNull(result);
+        assertEquals("Recruiter Name", result.getResponsibleRecruiterName());
+        verify(opportunityRepository).save(any(Opportunity.class));
+    }
+
+    @Test
+    void assignRecruiter_ShouldThrowException_WhenOpportunityNotFound() {
+        br.com.sebratel.bff.dho.dto.OpportunityAssignRecruiterDTO dto = new br.com.sebratel.bff.dho.dto.OpportunityAssignRecruiterDTO(10);
+        when(opportunityRepository.findById(1)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> opportunityService.assignRecruiter(1, dto));
+    }
+
+    @Test
+    void assignRecruiter_ShouldThrowException_WhenRecruiterNotFound() {
+        Opportunity opportunity = new Opportunity();
+        br.com.sebratel.bff.dho.dto.OpportunityAssignRecruiterDTO dto = new br.com.sebratel.bff.dho.dto.OpportunityAssignRecruiterDTO(10);
+
+        when(opportunityRepository.findById(1)).thenReturn(Optional.of(opportunity));
+        when(peopleRepository.findById(10)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> opportunityService.assignRecruiter(1, dto));
     }
 
 }

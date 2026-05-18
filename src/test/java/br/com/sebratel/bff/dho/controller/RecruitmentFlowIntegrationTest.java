@@ -109,6 +109,32 @@ public class RecruitmentFlowIntegrationTest {
         Opportunity opp = Opportunity.builder().position(pos).opportunityStatus(status).openOpportunityDate(LocalDateTime.now()).build();
         return opportunityRepository.save(opp).getId();
     }
+    @Test
+    void testAssignRecruiterFlow() throws Exception {
+        Integer oppId = createOpportunity();
+        Integer recruiterId = createCandidate(); // Use candidate helper as it just creates a person
+
+        // Testa sem permissão
+        mockMvc.perform(post("/opportunities/" + oppId + "/assign-recruiter")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.format("{\"recruiterId\": %d}", recruiterId))
+                .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("suggestions"))))
+                .andExpect(status().isForbidden());
+
+        // Testa com permissão
+        mockMvc.perform(post("/opportunities/" + oppId + "/assign-recruiter")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.format("{\"recruiterId\": %d}", recruiterId))
+                .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("assign_recruiter"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.responsibleRecruiterName").value("Cand"));
+
+        // Valida persistência
+        Opportunity opp = opportunityRepository.findById(oppId).orElseThrow();
+        assertEquals(recruiterId, opp.getResponsibleRecruiter().getId());
+    }
+
+
     private Integer createCandidate() { return peopleRepository.save(People.builder().name("Cand").email("c@t.com").build()).getId(); }
     private void validateStatus(Integer id, String e) { assertEquals(e, recruitmentProcessRepository.findById(id).orElseThrow().getProcessStatus().getName()); }
 }
