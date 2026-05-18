@@ -1,8 +1,11 @@
 package br.com.sebratel.bff.dho;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.TimeZone;
 
 @SpringBootApplication
 public class DhoApiApplication {
@@ -19,6 +22,11 @@ public class DhoApiApplication {
 		});
 
 		SpringApplication.run(DhoApiApplication.class, args);
+	}
+
+	@PostConstruct
+	public void init() {
+		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
 	}
 
 }

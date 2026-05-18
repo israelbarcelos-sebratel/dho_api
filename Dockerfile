@@ -8,6 +8,8 @@ RUN mvn clean package -DskipTests
 
 # Runtime stage
 FROM eclipse-temurin:21-jre-alpine
+RUN apk add --no-cache tzdata
+ENV TZ=America/Sao_Paulo
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 COPY public.pub .

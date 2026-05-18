@@ -5,6 +5,7 @@ services:
     ports:
       - "${PORT:-8090}:8090"
     environment:
+      - TZ=America/Sao_Paulo
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_NAME=${DB_NAME}
