@@ -25,15 +25,33 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 - **Candidato**: Responsável por aceitar ou recusar a proposta.
 
 ## Fluxo Principal (Happy Path)
-1. **Criação da Oportunidade**: A recrutadora ou gestor cria uma nova vaga através do endpoint `/api/opportunities`.
-2. **Aprovação da Oportunidade**: A oportunidade deve ser aprovada (`/api/opportunities/{id}/approve`) antes de qualquer vínculo.
-3. **Vínculo**: O candidato é atrelado à oportunidade aprovada através de `/api/recruitment-processes`. O sistema define automaticamente o estágio como **Banco de Talentos**.
-4. **Avanço para Triagem**: A recrutadora move o candidato do Banco de Talentos para **Triagem** (`/api/recruitment-processes/{id}/move-to-screening`).
-5. **Avanço para Entrevista**: A recrutadora move o candidato para o estágio de **Entrevista** (`/api/recruitment-processes/{id}/move-to-interview`).
-6. **Avanço para Teste Técnico**: A recrutadora move o candidato para o estágio de **Teste Técnico** (`/api/recruitment-processes/{id}/move-to-technical-test`).
-8. **Decisão do Gestor**: O gestor revisa o processo e aprova o candidato (`/api/recruitment-processes/{id}/manager-decision`). O status muda para **Aprovado pelo Gestor**.
-9. **Proposta**: A recrutadora envia a proposta (`/api/recruitment-processes/{id}/proposal`). O status muda para **Enviada Proposta**.
-10. **Decisão do Candidato**: O candidato aceita a proposta (`/api/recruitment-processes/{id}/candidate-decision`). O status muda para **Finalizado**.
+1. **Criação da Oportunidade**: A recrutadora ou gestor cria uma nova vaga através do endpoint `POST /api/opportunities`.
+2. **Aprovação da Oportunidade**: A oportunidade deve ser aprovada (`POST /api/opportunities/{id}/approve`) antes de qualquer vínculo.
+3. **Vínculo**: O candidato é atrelado à oportunidade aprovada através de `POST /api/recruitment-processes`. O sistema define automaticamente o estágio como **Banco de Talentos**.
+4. **Avanço para Triagem**: A recrutadora move o candidato do Banco de Talentos para **Triagem** (`POST /api/recruitment-processes/{id}/move-to-screening`).
+5. **Avanço para Entrevista**: A recrutadora move o candidato para o estágio de **Entrevista** (`POST /api/recruitment-processes/{id}/move-to-interview`).
+6. **Avanço para Teste Técnico**: A recrutadora move o candidato para o estágio de **Teste Técnico** (`POST /api/recruitment-processes/{id}/move-to-technical-test`).
+    - **Nota**: Este endpoint requer um corpo JSON: `{"reason": "Parecer com no mínimo 10 caracteres"}`.
+7. **Avanço para Decisão Final**: A recrutadora move o candidato para o estágio de **Decisão Final** (`POST /api/recruitment-processes/{id}/move-to-final-decision`).
+8. **Decisão do Gestor**: O gestor revisa o processo e aprova o candidato (`POST /api/recruitment-processes/{id}/manager-decision`). O status muda para **Aprovado pelo Gestor**.
+9. **Proposta**: A recrutadora envia a proposta (`POST /api/recruitment-processes/{id}/proposal`). O status muda para **Enviada Proposta**.
+10. **Decisão do Candidato**: O candidato aceita a proposta (`POST /api/recruitment-processes/{id}/candidate-decision`). O status muda para **Finalizado**.
+
+## Exemplos de Uso (CURL)
+
+### Mover para Teste Técnico
+```bash
+curl -X POST http://localhost:8090/api/recruitment-processes/{id}/move-to-technical-test \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer {TOKEN}" \
+-d '{"reason": "Parecer técnico com mais de dez caracteres"}'
+```
+
+### Mover para Decisão Final
+```bash
+curl -X POST http://localhost:8090/api/recruitment-processes/{id}/move-to-final-decision \
+-H "Authorization: Bearer {TOKEN}"
+```
 
 ## Regras de Negócio
 - **Vínculo de Candidato**: Só é permitido vincular um candidato se a oportunidade estiver com status **Aprovada**.
