@@ -84,7 +84,7 @@ public class RecruitmentProcessServiceTest {
         opp.setOpportunityStatus(oppStatus);
         process.setOpportunity(opp);
         when(recruitmentProcessRepository.findById(1)).thenReturn(Optional.of(process));
-        when(processStatusRepository.findByName("Recusado")).thenReturn(Optional.of(new DhoProcessStatus()));
+        when(processStatusRepository.findByName("Reprovado")).thenReturn(Optional.of(new DhoProcessStatus()));
         recruitmentProcessService.refuse(1, dto);
         verify(recruitmentProcessRepository).save(process);
     }

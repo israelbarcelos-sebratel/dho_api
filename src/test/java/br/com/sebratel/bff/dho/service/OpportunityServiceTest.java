@@ -44,7 +44,6 @@ public class OpportunityServiceTest {
     @Mock private RecruitmentProcessService recruitmentProcessService;
 
     @Mock private DhoOpportunityMotiveRepository opportunityMotiveRepository;
-    @Mock private RecruitmentProcessService recruitmentProcessService;
 
 
     @InjectMocks

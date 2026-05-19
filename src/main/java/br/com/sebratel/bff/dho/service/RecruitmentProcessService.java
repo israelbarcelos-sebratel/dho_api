@@ -108,7 +108,7 @@ public class RecruitmentProcessService {
 
     @Transactional
     public void refuse(Integer id, InterviewDecisionDTO dto) {
-        updateStatus(id, "Recusado", dto.reason());
+        updateStatus(id, "Reprovado", dto.reason());
     }
 
     @Transactional
@@ -280,7 +280,7 @@ public class RecruitmentProcessService {
     }
 
     public List<RecruitmentProcessHistoryDTO> getFinalizedProcesses() {
-        List<String> finalizedStatuses = List.of("Contratado", "Recusado", "Desistência");
+        List<String> finalizedStatuses = List.of("Contratado", "Reprovado", "Desistência");
         return recruitmentProcessRepository.findByProcessStatusNameIn(finalizedStatuses).stream()
                 .map(process -> RecruitmentProcessHistoryDTO.builder()
                         .id(process.getId())
