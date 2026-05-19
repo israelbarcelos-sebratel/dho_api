@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/opportunity-motives")
+@RequestMapping("/api/opportunity-motives")
 @RequiredArgsConstructor
 @Tag(name = "Motivos de Oportunidade", description = "Endpoints para consulta de motivos de abertura de vagas")
 public class OpportunityMotiveController {
