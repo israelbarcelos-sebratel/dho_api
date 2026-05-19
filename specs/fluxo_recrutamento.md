@@ -33,7 +33,7 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 5. **Avanço para Entrevista**: A recrutadora move o candidato para o estágio de **Entrevista** (`POST /api/recruitment-processes/{id}/move-to-interview`).
 6. **Avanço para Teste Técnico**: A recrutadora move o candidato para o estágio de **Teste Técnico** (`POST /api/recruitment-processes/{id}/move-to-technical-test`).
     - **Nota**: Este endpoint requer um corpo JSON: `{"reason": "Parecer com no mínimo 10 caracteres"}`.
-7. **Avanço para Decisão Final**: A recrutadora move o candidato para o estágio de **Decisão Final** (`POST /api/recruitment-processes/{id}/move-to-final-decision`).
+7. **Avanço para Decisão Final**: A recrutadora move o candidato para o estágio de **Decisão Final** (`POST /api/recruitment-processes/{id}/move-to-final-decision`). O status muda automaticamente para **Aguardando aprovação**.
 8. **Decisão do Gestor**: O gestor revisa o processo e aprova o candidato (`POST /api/recruitment-processes/{id}/manager-decision`). O status muda para **Aprovado pelo Gestor**.
 9. **Proposta**: A recrutadora envia a proposta (`POST /api/recruitment-processes/{id}/proposal`). O status muda para **Enviada Proposta**.
 10. **Decisão do Candidato**: O candidato aceita a proposta (`POST /api/recruitment-processes/{id}/candidate-decision`). O status muda para **Finalizado**.
