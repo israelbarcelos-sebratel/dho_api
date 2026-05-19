@@ -112,8 +112,6 @@ public class OpportunityController {
         log.info("[CONTROLLER EXIT] Recrutador atribuído com sucesso à oportunidade {}", id);
         return ResponseEntity.ok(response);
     }
-
-    @GetMapping("/{id}/candidates")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
     @Operation(summary = "Listar candidatos de uma oportunidade", description = "Retorna os candidatos associados a uma oportunidade específica.")
     public ResponseEntity<List<CandidateResponseDTO>> getCandidatesByOpportunity(@PathVariable Integer id) {
@@ -124,6 +122,9 @@ public class OpportunityController {
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
     @Operation(summary = "Listar logs de uma oportunidade", description = "Retorna o histórico completo de eventos de uma oportunidade e seus candidatos.")
     public ResponseEntity<List<RecruitmentProcessLogDTO>> getLogs(@PathVariable Integer id) {
+        return ResponseEntity.ok(opportunityService.getLogs(id));
+    }
+
     @GetMapping("/pipeline")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
     @Operation(summary = "Obter pipeline de todas as oportunidades do recrutador", description = "Retorna uma lista de oportunidades com seus respectivos processos e candidatos, filtrando por aquelas onde o usuário autenticado é o recrutador responsável.")
@@ -131,14 +132,10 @@ public class OpportunityController {
         return ResponseEntity.ok(opportunityService.getOpportunitiesPipelineForRecruiter(authentication));
     }
 
-
     @GetMapping("/{id}/pipeline")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
     @Operation(summary = "Obter pipeline da oportunidade", description = "Retorna a estrutura da oportunidade com seus processos e candidatos para visualização no pipeline.")
     public ResponseEntity<OpportunityPipelineResponseDTO> getOpportunityPipeline(@PathVariable Integer id) {
         return ResponseEntity.ok(opportunityService.getOpportunityPipeline(id));
-    }
-
-        return ResponseEntity.ok(opportunityService.getLogs(id));
     }
 }

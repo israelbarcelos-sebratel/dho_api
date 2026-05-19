@@ -378,6 +378,9 @@ public class OpportunityService {
                                 ? log.getRecruitmentProcess().getCandidate().getName() : null)
                         .executedBy(log.getExecutedBy())
                         .build())
+                .collect(Collectors.toList());
+    }
+
     public List<OpportunityPipelineResponseDTO> getOpportunitiesPipelineForRecruiter(Authentication authentication) {
         String email = authentication.getName();
         People recruiter = peopleRepository.findByEmail(email)
@@ -452,8 +455,5 @@ public class OpportunityService {
         return OpportunityPipelineResponseDTO.builder()
                 .opportunity(opportunityData)
                 .build();
-    }
-
-                .collect(Collectors.toList());
     }
 }
