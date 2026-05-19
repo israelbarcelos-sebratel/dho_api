@@ -43,6 +43,9 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
     - Toda ação em um processo (etapa ou status) exige que a oportunidade vinculada esteja **Aprovada**.
     - Se o gestor recusar, o status deve ser **Recusado pelo gestor** e o processo é interrompido.
     - Se o candidato recusar a proposta, o status deve refletir a recusa e o processo é interrompido.
+- **Robustez de Comparação**:
+    - Todas as validações de estágio e status no backend são realizadas de forma **insensível a maiúsculas/minúsculas** (case-insensitive) e ignorando espaços extras (trim). Isso garante que variações no banco de dados (ex: "Entrevista", "ENTREVISTA" ou "Entrevista ") não interrompam o fluxo do sistema.
+
 
 ## Regras de Segurança e Resistência
 - **Restrição de Papéis**:
