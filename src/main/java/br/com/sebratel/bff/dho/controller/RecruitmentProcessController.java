@@ -119,6 +119,15 @@ public class RecruitmentProcessController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/{id}/cancel-decision")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).reject_candidate.name())")
+    @Operation(summary = "Cancelar decisão do gestor", description = "Reverte a decisão tomada pelo gestor, voltando o processo para o estágio de Decisão Final e status Aguardando aprovação.")
+    public ResponseEntity<Void> cancelManagerDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        recruitmentProcessService.cancelManagerDecision(id);
+        return ResponseEntity.ok().build();
+    }
+
+
     @PostMapping("/{id}/proposal")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).initiate_contract_process.name())")
     @Operation(summary = "Enviar proposta", description = "Registra que a proposta salarial foi enviada ao candidato.")

@@ -127,6 +127,21 @@ public class RecruitmentProcessWorkflowService {
     }
 
     @Transactional
+    public void cancelManagerDecision(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+        
+        String currentStage = process.getProcessStage().getName();
+        if (!"Decisão Final".equals(currentStage) && !"Aprovado".equals(currentStage)) {
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cancelamento de decisão só é permitido para processos em Decisão Final ou Aprovado");
+        }
+
+        updateStage(id, "Decisão Final");
+        updateStatus(id, "Aguardando aprovação", null);
+    }
+
+
+    @Transactional
     public void sendProposal(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));

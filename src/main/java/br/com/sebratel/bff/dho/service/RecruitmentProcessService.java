@@ -79,6 +79,8 @@ public class RecruitmentProcessService {
     @Transactional public void managerDecision(Integer id, ManagerDecisionDTO dto) { workflowService.managerDecision(id, dto); }
     @Transactional public void sendProposal(Integer id) { workflowService.sendProposal(id); }
     @Transactional public void candidateDecision(Integer id, CandidateDecisionDTO dto) { workflowService.candidateDecision(id, dto); }
+    @Transactional public void cancelManagerDecision(Integer id) { workflowService.cancelManagerDecision(id); }
+
     @Transactional public void updateStage(Integer id, RecruitmentProcessStageDTO dto) { workflowService.updateStage(id, dto); }
     @Transactional public void updateStatus(Integer id, RecruitmentProcessStatusDTO dto) { workflowService.updateStatus(id, dto); }
 
