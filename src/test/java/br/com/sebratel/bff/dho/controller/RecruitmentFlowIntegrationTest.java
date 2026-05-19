@@ -80,9 +80,9 @@ public class RecruitmentFlowIntegrationTest {
         Integer oppId = createPendingOpportunity();
         
         String justification = "A".repeat(200);
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
-        mockMvc.perform(post("/opportunities/" + oppId + "/reprove")
+        mockMvc.perform(post("/api/opportunities/" + oppId + "/reprove")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto))
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_contract_process"))))
@@ -98,7 +98,7 @@ public class RecruitmentFlowIntegrationTest {
         Opportunity opp = Opportunity.builder()
                 .position(pos)
                 .opportunityStatus(status)
-                .openOpportunityDate(LocalDateTime.now())
+                .openOpportunityDate(LocalDateTime.now().plusDays(1))
                 .build();
         return opportunityRepository.save(opp).getId();
     }
@@ -136,7 +136,7 @@ public class RecruitmentFlowIntegrationTest {
     private Integer createOpportunity() {
         DhoPosition pos = DhoPosition.builder().name("Dev").build(); entityManager.persist(pos);
         DhoOpportunityStatus status = (DhoOpportunityStatus) entityManager.createQuery("SELECT s FROM DhoOpportunityStatus s WHERE s.name = 'Aprovada'").getSingleResult();
-        Opportunity opp = Opportunity.builder().position(pos).opportunityStatus(status).openOpportunityDate(LocalDateTime.now()).build();
+        Opportunity opp = Opportunity.builder().position(pos).opportunityStatus(status).openOpportunityDate(LocalDateTime.now().plusDays(1)).build();
         return opportunityRepository.save(opp).getId();
     }
     @Test
@@ -145,14 +145,14 @@ public class RecruitmentFlowIntegrationTest {
         Integer recruiterId = createCandidate(); // Use candidate helper as it just creates a person
 
         // Testa sem permissão
-        mockMvc.perform(post("/opportunities/" + oppId + "/assign-recruiter")
+        mockMvc.perform(post("/api/opportunities/" + oppId + "/assign-recruiter")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(String.format("{\"recruiterId\": %d}", recruiterId))
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("suggestions"))))
                 .andExpect(status().isForbidden());
 
         // Testa com permissão
-        mockMvc.perform(post("/opportunities/" + oppId + "/assign-recruiter")
+        mockMvc.perform(post("/api/opportunities/" + oppId + "/assign-recruiter")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(String.format("{\"recruiterId\": %d}", recruiterId))
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("assign_recruiter"))))

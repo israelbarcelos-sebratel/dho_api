@@ -1,6 +1,7 @@
 package br.com.sebratel.bff.dho.controller;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
@@ -47,21 +48,22 @@ public class OpportunityControllerTest {
 
     @Test
     void shouldApproveOpportunity() throws Exception {
-        when(opportunityService.approve(1)).thenReturn(new OpportunityResponseDTO());
+        OpportunityApprovalDTO mockDto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(200));
+        when(opportunityService.approve(eq(1), any(OpportunityApprovalDTO.class))).thenReturn(new OpportunityResponseDTO());
 
-        mockMvc.perform(post("/opportunities/1/approve"))
+        mockMvc.perform(post("/api/opportunities/1/approve").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockDto)))
                 .andExpect(status().isOk());
     }
 
     @Test
     void shouldRefuseOpportunityWithValidJustification() throws Exception {
         String justification = "A".repeat(200);
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
         
         when(opportunityService.refuse(eq(1), any(OpportunityApprovalDTO.class)))
                 .thenReturn(new OpportunityResponseDTO());
 
-        mockMvc.perform(post("/opportunities/1/refuse")
+        mockMvc.perform(post("/api/opportunities/1/refuse")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
@@ -69,12 +71,12 @@ public class OpportunityControllerTest {
     @Test
     void shouldReproveOpportunityWithValidJustification() throws Exception {
         String justification = "A".repeat(200);
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
         
         when(opportunityService.refuse(eq(1), any(OpportunityApprovalDTO.class)))
                 .thenReturn(new OpportunityResponseDTO());
 
-        mockMvc.perform(post("/opportunities/1/reprove")
+        mockMvc.perform(post("/api/opportunities/1/reprove")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
@@ -83,9 +85,9 @@ public class OpportunityControllerTest {
     @Test
     void shouldReturnBadRequestWhenReprovingWithShortJustification() throws Exception {
         String justification = "Short justification";
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
-        mockMvc.perform(post("/opportunities/1/reprove")
+        mockMvc.perform(post("/api/opportunities/1/reprove")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest());
@@ -95,9 +97,9 @@ public class OpportunityControllerTest {
     @Test
     void shouldReturnBadRequestWhenRefusingWithShortJustification() throws Exception {
         String justification = "Short justification";
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
-        mockMvc.perform(post("/opportunities/1/refuse")
+        mockMvc.perform(post("/api/opportunities/1/refuse")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest());
@@ -105,12 +107,12 @@ public class OpportunityControllerTest {
     @Test
     void shouldFinalizeOpportunityWithValidJustification() throws Exception {
         String justification = "A".repeat(200);
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
         when(opportunityService.finalize(eq(1), any(OpportunityApprovalDTO.class)))
                 .thenReturn(new OpportunityResponseDTO());
 
-        mockMvc.perform(post("/opportunities/1/finalize")
+        mockMvc.perform(post("/api/opportunities/1/finalize")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
@@ -119,9 +121,9 @@ public class OpportunityControllerTest {
     @Test
     void shouldReturnBadRequestWhenFinalizingWithShortJustification() throws Exception {
         String justification = "Short justification";
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(justification);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
-        mockMvc.perform(post("/opportunities/1/finalize")
+        mockMvc.perform(post("/api/opportunities/1/finalize")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest());
@@ -131,7 +133,7 @@ public class OpportunityControllerTest {
     void shouldListCandidatesByOpportunity() throws Exception {
         when(opportunityService.findCandidatesByOpportunityId(1)).thenReturn(List.of());
 
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/opportunities/1/candidates"))
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/api/opportunities/1/pipeline"))
                 .andExpect(status().isOk());
     }
 

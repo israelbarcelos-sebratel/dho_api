@@ -21,7 +21,7 @@ import java.util.Map;
 import br.com.sebratel.bff.dho.dto.RequisitionSearchDTO;
 
 @RestController
-@RequestMapping("/requisitions")
+@RequestMapping("/api/requisitions")
 @RequiredArgsConstructor
 @Tag(name = "Requisições", description = "Endpoints para gestores acompanharem suas requisições")
 public class RequisitionController {

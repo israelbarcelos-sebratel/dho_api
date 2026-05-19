@@ -4,7 +4,7 @@ Este documento descreve o endpoint criado para suportar a visualização do pipe
 
 ## 1. Informações do Endpoint
 
-- **URL**: `/opportunities/pipeline`
+- **URL**: `/api/opportunities/pipeline`
 - **Método**: `GET`
 - **Autenticação**: Requer JWT válido.
 - **Permissão Necessária**: `view_pipeline` ou `ROLE_ADMIN`.
@@ -19,12 +19,12 @@ Retorna um Array de objetos com a estrutura solicitada:
 ```json
 [
   {
-    "Oportunity": {
+    "opportunity": {
       "id": "Integer",
       "positionName": "String",
       "teamName": "String",
       "departmentName": "String",
-      "processess": [
+      "processes": [
         {
           "id": "Integer (ID do Processo)",
           "processStageName": "String (Ex: Triagem, Entrevista)",
@@ -48,7 +48,7 @@ Retorna um Array de objetos com a estrutura solicitada:
 Substitua `{TOKEN}` pelo seu token de acesso.
 
 ```bash
-curl --location 'http://localhost:8080/opportunities/pipeline' \
+curl --location 'http://localhost:8080/api/opportunities/pipeline' \
 --header 'Authorization: Bearer {TOKEN}'
 ```
 

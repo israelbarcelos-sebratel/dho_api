@@ -1,5 +1,6 @@
 package br.com.sebratel.bff.dho.service;
 
+import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoOpportunityStatus;
 import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 
 import lombok.extern.slf4j.Slf4j;

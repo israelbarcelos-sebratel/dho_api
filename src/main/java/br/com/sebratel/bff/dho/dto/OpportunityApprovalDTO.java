@@ -9,12 +9,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record OpportunityApprovalDTO(
-    @NotBlank(message = "O motivo é obrigatório")
-    @Size(min = 200, message = "deve ter no mínimo 200 caracteres")
     @NotNull(message = "A data da oportunidade é obrigatória")
     @FutureOrPresent(message = "A data da oportunidade deve ser hoje ou uma data futura")
     LocalDateTime opportunityDate,
 
+    @NotBlank(message = "O motivo é obrigatório")
+    @Size(min = 200, message = "deve ter no mínimo 200 caracteres")
     String reason
 ) {
 }

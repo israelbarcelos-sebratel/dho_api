@@ -31,7 +31,7 @@ import java.util.List;
 import org.springframework.security.core.Authentication;
 
 @RestController
-@RequestMapping("/opportunities")
+@RequestMapping("/api/opportunities")
 @RequiredArgsConstructor
 @Tag(name = "Oportunidades", description = "Endpoints para gestão de oportunidades de emprego")
 @Slf4j

@@ -1,6 +1,8 @@
 package br.com.sebratel.bff.dho.controller;
 
 import br.com.sebratel.bff.dho.domain.repository.DhoPermissionRepository;
+import java.time.LocalDateTime;
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
 import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.dto.TechnicalTestRequestDTO;
@@ -61,9 +63,9 @@ public class RecruitmentProcessControllerTest {
 
     @Test
     void approve_ShouldReturnOk() throws Exception {
-        doNothing().when(recruitmentProcessService).approve(1);
+        doNothing().when(recruitmentProcessService).approve(eq(1), any(OpportunityApprovalDTO.class));
 
-        mockMvc.perform(post(BASE_URL + "/1/approve"))
+        mockMvc.perform(post(BASE_URL + "/1/approve").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "Justification of at least 200 characters".repeat(10)))))
                 .andExpect(status().isOk());
     }
 
