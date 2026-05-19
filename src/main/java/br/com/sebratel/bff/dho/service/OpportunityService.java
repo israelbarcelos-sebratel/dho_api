@@ -373,6 +373,7 @@ public class OpportunityService {
                         .errorMessage(log.getErrorMessage())
                         .candidateName(log.getRecruitmentProcess() != null && log.getRecruitmentProcess().getCandidate() != null 
                                 ? log.getRecruitmentProcess().getCandidate().getName() : null)
+                        .executedBy(log.getExecutedBy())
                         .build())
                 .collect(Collectors.toList());
     }

@@ -19,6 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
@@ -119,6 +123,7 @@ public class RecruitmentProcessLoggingAspect {
 
     private void saveSingleLog(RecruitmentProcess process, String actionName, LocalDateTime startTime, LocalDateTime endTime,
                                long durationMs, String status, String errorMessage) {
+        String executedBy = getExecutedBy();
         RecruitmentProcessLog recruitmentLog = RecruitmentProcessLog.builder()
                 .recruitmentProcess(process)
                 .actionName(actionName.toUpperCase())
@@ -128,7 +133,25 @@ public class RecruitmentProcessLoggingAspect {
                 .status(status)
                 .errorMessage(errorMessage != null && errorMessage.length() > 2000 ? 
                              errorMessage.substring(0, 2000) : errorMessage)
+                .executedBy(executedBy)
                 .build();
         logRepository.save(recruitmentLog);
+    }
+
+    private String getExecutedBy() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            if (auth instanceof JwtAuthenticationToken jwtAuth) {
+                Jwt jwt = jwtAuth.getToken();
+                String name = jwt.getClaimAsString("name");
+                String email = jwt.getClaimAsString("email");
+                if (name != null && email != null) {
+                    return String.format("%s(%s)", name, email);
+                }
+                return auth.getName();
+            }
+            return auth.getName();
+        }
+        return "SYSTEM";
     }
 }
