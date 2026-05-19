@@ -2,6 +2,7 @@ package br.com.sebratel.bff.dho.controller;
 
 import br.com.sebratel.bff.dho.dto.TalentPoolRequestDTO;
 import br.com.sebratel.bff.dho.dto.TalentPoolResponseDTO;
+import br.com.sebratel.bff.dho.dto.TalentPoolSelectResponseDTO;
 import br.com.sebratel.bff.dho.service.talentpool.TalentPoolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,6 +29,13 @@ public class TalentPoolController {
     @Operation(summary = "Listar banco de talentos", description = "Retorna todas as pessoas cadastradas no banco de talentos.")
     public List<TalentPoolResponseDTO> getAll() {
         return talentPoolService.findAll();
+    }
+
+    @GetMapping("/select")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_talent_pool.name())")
+    @Operation(summary = "Listar pessoas do banco de talentos para seleção", description = "Retorna uma lista simplificada com ID da pessoa e nome para preenchimento de dropdowns.")
+    public List<TalentPoolSelectResponseDTO> getAllForSelect() {
+        return talentPoolService.findAllForSelect();
     }
 
     @GetMapping("/{id}")

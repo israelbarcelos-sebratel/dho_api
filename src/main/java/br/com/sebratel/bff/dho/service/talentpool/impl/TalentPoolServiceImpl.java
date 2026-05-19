@@ -10,6 +10,7 @@ import br.com.sebratel.bff.dho.domain.repository.TalentPoolRepository;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.TalentPoolRequestDTO;
 import br.com.sebratel.bff.dho.dto.TalentPoolResponseDTO;
+import br.com.sebratel.bff.dho.dto.TalentPoolSelectResponseDTO;
 import br.com.sebratel.bff.dho.service.RecruitmentProcessService;
 import br.com.sebratel.bff.dho.service.talentpool.TalentPoolService;
 import lombok.RequiredArgsConstructor;
@@ -96,6 +97,16 @@ public class TalentPoolServiceImpl implements TalentPoolService {
     public List<TalentPoolResponseDTO> findAll() {
         return talentPoolRepository.findAll().stream()
                 .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TalentPoolSelectResponseDTO> findAllForSelect() {
+        return talentPoolRepository.findAll().stream()
+                .map(entry -> new TalentPoolSelectResponseDTO(
+                        entry.getPerson().getId(),
+                        entry.getPerson().getName()
+                ))
                 .collect(Collectors.toList());
     }
 
