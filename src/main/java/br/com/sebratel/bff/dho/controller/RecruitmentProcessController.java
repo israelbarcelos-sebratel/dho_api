@@ -103,7 +103,7 @@ public class RecruitmentProcessController {
 
     @PostMapping("/{id}/move-to-final-decision")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
-    @Operation(summary = "Mover para decisão final", description = "Altera a etapa do processo para Decisão Final, permitindo que o gestor decida sobre a contratação.")
+    @Operation(summary = "Mover para decisão final", description = "Altera a etapa do processo para Decisão Final e o status para 'Aguardando aprovação', permitindo que o gestor decida sobre a contratação.")
     public ResponseEntity<Void> moveToFinalDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
         recruitmentProcessService.moveToFinalDecision(id);
         return ResponseEntity.ok().build();

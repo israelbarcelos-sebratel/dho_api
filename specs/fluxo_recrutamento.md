@@ -13,6 +13,7 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 
 ### Status (`DhoProcessStatus`)
 - **Em andamento**: Status padrão durante as fases de avaliação.
+- **Aguardando aprovação**: Definido quando o candidato é movido para a etapa de Decisão Final.
 - **Aprovado pelo Gestor**: Definido após a aprovação do gestor.
 - **Recusado pelo gestor**: Definido caso o gestor não aprove o candidato.
 - **Enviada Proposta**: Definido após a recrutadora realizar a proposta formal.

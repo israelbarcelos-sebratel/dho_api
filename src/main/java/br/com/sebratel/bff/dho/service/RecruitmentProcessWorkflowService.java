@@ -107,6 +107,7 @@ public class RecruitmentProcessWorkflowService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Teste Técnico para ir para Decisão Final");
         }
         updateStage(id, "Decisão Final");
+        updateStatus(id, "Aguardando aprovação", null);
     }
 
     @Transactional

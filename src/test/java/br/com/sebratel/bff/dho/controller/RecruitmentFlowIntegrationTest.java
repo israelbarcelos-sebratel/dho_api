@@ -38,7 +38,7 @@ public class RecruitmentFlowIntegrationTest {
 
     @BeforeEach
     void setup() {
-        String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado", "Reprovado", "Enviada Proposta", "Finalizado", "Recusada pelo candidato", "Recusada"};
+        String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado", "Reprovado", "Enviada Proposta", "Finalizado", "Recusada pelo candidato", "Recusada", "Aguardando aprovação"};
         for (String s : statuses) createStatusIfNotExist(s);
         String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Decisão Final", "Aprovado"};
         for (String s : stages) createStageIfNotExist(s);
@@ -70,6 +70,7 @@ public class RecruitmentFlowIntegrationTest {
                 .content("{\"reason\": \"Parecer técnico com mais de dez caracteres\"}")
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-final-decision").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
+        validateStatus(id, "Aguardando aprovação");
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/proposal").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
