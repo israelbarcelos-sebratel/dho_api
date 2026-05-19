@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/departments")
 @RequiredArgsConstructor
 @Tag(name = "Departamentos", description = "Endpoints para consulta de departamentos")
 public class DepartmentController {
