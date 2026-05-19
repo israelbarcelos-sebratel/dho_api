@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/suggestions")
+@RequestMapping("/api/suggestions")
 @RequiredArgsConstructor
 @Tag(name = "Sugestões", description = "Endpoints para o sistema de sugestões e votação")
 public class SuggestionController {

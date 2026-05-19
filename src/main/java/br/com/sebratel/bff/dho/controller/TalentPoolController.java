@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/talent-pool")
+@RequestMapping("/api/talent-pool")
 @RequiredArgsConstructor
 @Tag(name = "Banco de Talentos", description = "Endpoints para gestão do banco de talentos")
 public class TalentPoolController {
