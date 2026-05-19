@@ -1,5 +1,6 @@
 package br.com.sebratel.bff.dho.service.talentpool;
 
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.TalentPoolRequestDTO;
 import br.com.sebratel.bff.dho.dto.TalentPoolResponseDTO;
 
@@ -11,4 +12,5 @@ public interface TalentPoolService {
     List<TalentPoolResponseDTO> findAll();
     TalentPoolResponseDTO findById(Integer id);
     void removeFromPool(Integer id);
+    List<RecruitmentProcessResponseDTO> findProcessesByTalentPoolId(Integer id);
 }

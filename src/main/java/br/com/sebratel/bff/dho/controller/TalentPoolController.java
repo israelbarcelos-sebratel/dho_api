@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,5 +58,12 @@ public class TalentPoolController {
     @Operation(summary = "Remover pessoa do banco de talentos")
     public void delete(@PathVariable Integer id) {
         talentPoolService.removeFromPool(id);
+    }
+
+    @GetMapping("/{id}/processes")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_talent_pool.name())")
+    @Operation(summary = "Listar processos de um candidato do banco de talentos", description = "Retorna todos os processos de recrutamento vinculados ao candidato do banco de talentos.")
+    public List<RecruitmentProcessResponseDTO> getProcesses(@PathVariable Integer id) {
+        return talentPoolService.findProcessesByTalentPoolId(id);
     }
 }
