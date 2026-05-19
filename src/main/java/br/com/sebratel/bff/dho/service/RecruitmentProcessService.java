@@ -146,7 +146,7 @@ public class RecruitmentProcessService {
     public void moveToInterview(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Triagem".equals(process.getProcessStage().getName())) {
+        if (!isSameStage(process.getProcessStage(), "Triagem")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Triagem para ir para Entrevista");
         }
         updateStage(id, "Entrevista");
@@ -156,7 +156,7 @@ public class RecruitmentProcessService {
     public void moveToTechnicalTest(Integer id, TechnicalTestRequestDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Entrevista".equals(process.getProcessStage().getName())) {
+        if (!isSameStage(process.getProcessStage(), "Entrevista")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Entrevista para ir para Teste Técnico");
         }
         process.setRecruiterReport(dto.reason());
@@ -168,7 +168,7 @@ public class RecruitmentProcessService {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
 
-        if (!"Banco de Talentos".equals(process.getProcessStage().getName())) {
+        if (!isSameStage(process.getProcessStage(), "Banco de Talentos")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar no Banco de Talentos para ir para Triagem");
         }
         updateStage(id, "Triagem");
@@ -179,7 +179,7 @@ public class RecruitmentProcessService {
     public void moveToFinalDecision(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
-        if (!"Teste Técnico".equals(process.getProcessStage().getName())) {
+        if (!isSameStage(process.getProcessStage(), "Teste Técnico")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Teste Técnico para ir para Decisão Final");
         }
         updateStage(id, "Decisão Final");
@@ -189,7 +189,7 @@ public class RecruitmentProcessService {
     public void managerDecision(Integer id, br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Decisão Final".equals(process.getProcessStage().getName())) {
+        if (!isSameStage(process.getProcessStage(), "Decisão Final")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do gestor só pode ser tomada no estágio de Decisão Final");
         }
         
@@ -205,7 +205,7 @@ public class RecruitmentProcessService {
     public void sendProposal(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Aprovado".equals(process.getProcessStatus().getName())) {
+        if (!isSameProcessStatus(process.getProcessStatus(), "Aprovado")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proposta só pode ser enviada após aprovação do gestor");
         }
         updateStatus(id, "Enviada Proposta", null);
@@ -215,7 +215,7 @@ public class RecruitmentProcessService {
     public void candidateDecision(Integer id, br.com.sebratel.bff.dho.dto.CandidateDecisionDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Enviada Proposta".equals(process.getProcessStatus().getName())) {
+        if (!isSameProcessStatus(process.getProcessStatus(), "Enviada Proposta")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do candidato só pode ser tomada após envio da proposta");
         }
         String statusName = dto.isAccepted() ? "Finalizado" : "Recusada pelo candidato";
@@ -225,11 +225,9 @@ public class RecruitmentProcessService {
     private void updateStage(Integer id, String stageName) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
-        if (process.getOpportunity() != null && !"Aprovada".equals(process.getOpportunity().getOpportunityStatus().getName())) {
+        if (process.getOpportunity() != null && !isSameOpportunityStatus(process.getOpportunity().getOpportunityStatus(), "Aprovada")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível alterar a etapa de um processo cuja oportunidade não está aprovada");
         }
-
-
 
         DhoProcessStage stage = processStageRepository.findByName(stageName)
                 .orElseThrow(() -> new RuntimeException("Estágio '" + stageName + "' não encontrado"));
@@ -411,16 +409,22 @@ public class RecruitmentProcessService {
         String currentStageName = process.getProcessStage().getName();
         String currentStatusName = process.getProcessStatus().getName();
         
-        int currentStageIndex = orderedStages.indexOf(currentStageName);
+        int currentStageIndex = -1;
+        for (int i = 0; i < orderedStages.size(); i++) {
+            if (orderedStages.get(i).equalsIgnoreCase(currentStageName != null ? currentStageName.trim() : "")) {
+                currentStageIndex = i;
+                break;
+            }
+        }
         List<RecruitmentProcessStageResponseDTO> stagesResponse = new ArrayList<>();
 
         for (int i = 0; i < orderedStages.size(); i++) {
             String stageName = orderedStages.get(i);
             String stageStatus;
 
-            if ("Finalizado".equals(currentStatusName) || "Contratado".equals(currentStatusName)) {
+            if (isSameProcessStatus(process.getProcessStatus(), "Finalizado") || isSameProcessStatus(process.getProcessStatus(), "Contratado")) {
                 stageStatus = "CONCLUIDO";
-            } else if ("Desistência".equals(currentStatusName)) {
+            } else if (isSameProcessStatus(process.getProcessStatus(), "Desistência")) {
                 if (i < currentStageIndex) {
                     stageStatus = "CONCLUIDO";
                 } else if (i == currentStageIndex) {
@@ -428,7 +432,7 @@ public class RecruitmentProcessService {
                 } else {
                     stageStatus = "PENDENTE";
                 }
-            } else if (currentStatusName.toLowerCase().contains("recusado") || "Reprovado".equals(currentStatusName)) {
+            } else if ((currentStatusName != null && currentStatusName.toLowerCase().contains("recusado")) || isSameProcessStatus(process.getProcessStatus(), "Reprovado")) {
                 if (i < currentStageIndex) {
                     stageStatus = "CONCLUIDO";
                 } else if (i == currentStageIndex) {
@@ -450,5 +454,17 @@ public class RecruitmentProcessService {
         }
 
         return stagesResponse;
+    }
+
+    private boolean isSameStage(DhoProcessStage stage, String targetName) {
+        return stage != null && stage.getName() != null && stage.getName().trim().equalsIgnoreCase(targetName);
+    }
+
+    private boolean isSameProcessStatus(DhoProcessStatus status, String targetName) {
+        return status != null && status.getName() != null && status.getName().trim().equalsIgnoreCase(targetName);
+    }
+
+    private boolean isSameOpportunityStatus(DhoOpportunityStatus status, String targetName) {
+        return status != null && status.getName() != null && status.getName().trim().equalsIgnoreCase(targetName);
     }
 }
