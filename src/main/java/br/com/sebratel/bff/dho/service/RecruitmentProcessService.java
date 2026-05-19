@@ -352,12 +352,12 @@ public class RecruitmentProcessService {
 
         long openVacancies = opportunityRepository.countByOpportunityStatusNameNotIn(List.of("Finalizada", "Cancelada"));
 
-        long approvedHiresLastMonth = logRepository.findByActionNameAndStatusAndStartTimeAfter("HIRE", "SUCCESS", lastMonth).size();
+        long approvedHiresLastMonth = logRepository.findByActionNameInAndStatusAndStartTimeAfter(List.of("HIRE", "Contratação do candidato efetivada"), "SUCCESS", lastMonth).size();
 
         long pendingApprovals = recruitmentProcessRepository.countByProcessStatusName("Aguardando aprovação");
 
-        List<RecruitmentProcessLog> hireLogs = logRepository.findByActionNameAndStatusAndStartTimeAfter("HIRE", "SUCCESS", lastYear);
-        List<RecruitmentProcessLog> approveLogs = logRepository.findByActionNameAndStatusAndStartTimeAfter("APPROVE", "SUCCESS", lastYear);
+        List<RecruitmentProcessLog> hireLogs = logRepository.findByActionNameInAndStatusAndStartTimeAfter(List.of("HIRE", "Contratação do candidato efetivada"), "SUCCESS", lastYear);
+        List<RecruitmentProcessLog> approveLogs = logRepository.findByActionNameInAndStatusAndStartTimeAfter(List.of("APPROVE", "Candidato aprovado"), "SUCCESS", lastYear);
 
         Map<Integer, LocalDateTime> approvalTimes = approveLogs.stream()
                 .filter(log -> log.getRecruitmentProcess() != null && log.getRecruitmentProcess().getCandidate() != null)
