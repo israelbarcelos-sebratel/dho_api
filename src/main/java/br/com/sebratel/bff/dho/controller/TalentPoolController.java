@@ -46,7 +46,7 @@ public class TalentPoolController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_talent_pool.name())")
     @Operation(summary = "Atualizar registro do banco de talentos")
-    public TalentPoolResponseDTO update(@PathVariable Integer id, @RequestBody TalentPoolRequestDTO dto) {
+    public TalentPoolResponseDTO update(@PathVariable Integer id, @RequestBody @Valid TalentPoolRequestDTO dto) {
         return talentPoolService.updatePoolEntry(id, dto);
     }
 

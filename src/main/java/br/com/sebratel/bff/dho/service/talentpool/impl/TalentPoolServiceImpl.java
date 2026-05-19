@@ -57,9 +57,23 @@ public class TalentPoolServiceImpl implements TalentPoolService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public TalentPoolResponseDTO updatePoolEntry(Integer id, TalentPoolRequestDTO request) {
         TalentPool entry = talentPoolRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Registro não encontrado no banco de talentos"));
+
+        People person = entry.getPerson();
+
+        if (request.getEmail() != null && !request.getEmail().equalsIgnoreCase(person.getEmail())) {
+            peopleRepository.findByEmail(request.getEmail()).ifPresent(otherPerson -> {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O e-mail informado já está em uso por outra pessoa");
+            });
+        }
+
+        person.setName(request.getName());
+        person.setEmail(request.getEmail());
+        person.setPhoneNumber(request.getPhoneNumber());
+        person.setExternalLink(request.getExternalLink());
 
         if (request.getObservations() != null) {
             entry.setObservations(request.getObservations());
