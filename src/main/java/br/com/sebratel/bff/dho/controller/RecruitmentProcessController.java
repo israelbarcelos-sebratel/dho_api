@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/recruitment-processes")
+@RequestMapping("/recruitment-processes")
 @RequiredArgsConstructor
 @Tag(name = "Processos de Recrutamento", description = "Endpoints para gestão do fluxo de contratação e candidatos")
 public class RecruitmentProcessController {
