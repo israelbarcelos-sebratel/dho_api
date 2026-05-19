@@ -3,6 +3,7 @@ package br.com.sebratel.bff.dho.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
+import br.com.sebratel.bff.dho.dto.TechnicalTestRequestDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/recruitment-processes")
+@RequestMapping("/api/recruitment-processes")
 @RequiredArgsConstructor
 @Tag(name = "Processos de Recrutamento", description = "Endpoints para gestão do fluxo de contratação e candidatos")
 public class RecruitmentProcessController {
@@ -84,7 +85,7 @@ public class RecruitmentProcessController {
     @PostMapping("/{id}/move-to-technical-test")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
     @Operation(summary = "Mover para teste técnico", description = "Altera a etapa do processo para Teste Técnico. Requer parecer da entrevista.")
-    public ResponseEntity<Void> moveToTechnicalTest(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid InterviewDecisionDTO dto) {
+    public ResponseEntity<Void> moveToTechnicalTest(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid TechnicalTestRequestDTO dto) {
         recruitmentProcessService.moveToTechnicalTest(id, dto);
         return ResponseEntity.ok().build();
     }

@@ -3,6 +3,7 @@ package br.com.sebratel.bff.dho.controller;
 import br.com.sebratel.bff.dho.domain.repository.DhoPermissionRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
+import br.com.sebratel.bff.dho.dto.TechnicalTestRequestDTO;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.security.CustomJwtAuthenticationConverter;
 import br.com.sebratel.bff.dho.service.RecruitmentProcessService;
@@ -32,6 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 public class RecruitmentProcessControllerTest {
 
+    private static final String BASE_URL = "/api/recruitment-processes";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -60,7 +63,7 @@ public class RecruitmentProcessControllerTest {
     void approve_ShouldReturnOk() throws Exception {
         doNothing().when(recruitmentProcessService).approve(1);
 
-        mockMvc.perform(post("/recruitment-processes/1/approve"))
+        mockMvc.perform(post(BASE_URL + "/1/approve"))
                 .andExpect(status().isOk());
     }
 
@@ -70,7 +73,7 @@ public class RecruitmentProcessControllerTest {
         InterviewDecisionDTO dto = new InterviewDecisionDTO(longReport);
         doNothing().when(recruitmentProcessService).refuse(eq(1), any(InterviewDecisionDTO.class));
 
-        mockMvc.perform(post("/recruitment-processes/1/refuse")
+        mockMvc.perform(post(BASE_URL + "/1/refuse")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
@@ -80,7 +83,7 @@ public class RecruitmentProcessControllerTest {
     void refuse_ShouldReturnBadRequest_WhenReportIsTooShort() throws Exception {
         InterviewDecisionDTO dto = new InterviewDecisionDTO("Too short");
 
-        mockMvc.perform(post("/recruitment-processes/1/refuse")
+        mockMvc.perform(post(BASE_URL + "/1/refuse")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest());
@@ -90,7 +93,7 @@ public class RecruitmentProcessControllerTest {
     void withdraw_ShouldReturnOk() throws Exception {
         doNothing().when(recruitmentProcessService).withdraw(1);
 
-        mockMvc.perform(post("/recruitment-processes/1/withdraw"))
+        mockMvc.perform(post(BASE_URL + "/1/withdraw"))
                 .andExpect(status().isOk());
     }
 
@@ -98,20 +101,20 @@ public class RecruitmentProcessControllerTest {
     void hire_ShouldReturnOk() throws Exception {
         doNothing().when(recruitmentProcessService).hire(1);
 
-        mockMvc.perform(post("/recruitment-processes/1/hire"))
+        mockMvc.perform(post(BASE_URL + "/1/hire"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getHistory_ShouldReturnOk() throws Exception {
-        mockMvc.perform(get("/recruitment-processes/history"))
+        mockMvc.perform(get(BASE_URL + "/history"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(username = "recruiter@sebratel.com.br")
     void getMyProcesses_ShouldReturnOk() throws Exception {
-        mockMvc.perform(get("/recruitment-processes/mine"))
+        mockMvc.perform(get(BASE_URL + "/mine"))
                 .andExpect(status().isOk());
     }
 
@@ -120,7 +123,7 @@ public class RecruitmentProcessControllerTest {
         RecruitmentProcessStageDTO dto = new RecruitmentProcessStageDTO("Entrevista");
         doNothing().when(recruitmentProcessService).updateStage(eq(1), any(RecruitmentProcessStageDTO.class));
 
-        mockMvc.perform(patch("/recruitment-processes/1/stage")
+        mockMvc.perform(patch(BASE_URL + "/1/stage")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
@@ -131,7 +134,7 @@ public class RecruitmentProcessControllerTest {
         RecruitmentProcessStatusDTO dto = new RecruitmentProcessStatusDTO("Teste técnico");
         doNothing().when(recruitmentProcessService).updateStatus(eq(1), any(RecruitmentProcessStatusDTO.class));
 
-        mockMvc.perform(patch("/recruitment-processes/1/status")
+        mockMvc.perform(patch(BASE_URL + "/1/status")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
@@ -139,7 +142,7 @@ public class RecruitmentProcessControllerTest {
 
     @Test
     void getIndicators_ShouldReturnOk() throws Exception {
-        mockMvc.perform(get("/recruitment-processes/indicators"))
+        mockMvc.perform(get(BASE_URL + "/indicators"))
                 .andExpect(status().isOk());
     }
 
@@ -149,7 +152,7 @@ public class RecruitmentProcessControllerTest {
     void moveToScreening_ShouldReturnOk() throws Exception {
         doNothing().when(recruitmentProcessService).moveToScreening(1);
 
-        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+        mockMvc.perform(post(BASE_URL + "/1/move-to-screening"))
                 .andExpect(status().isOk());
     }
 
@@ -158,7 +161,7 @@ public class RecruitmentProcessControllerTest {
     void moveToScreening_WithRecruiterRole_ShouldReturnOk() throws Exception {
         doNothing().when(recruitmentProcessService).moveToScreening(1);
 
-        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+        mockMvc.perform(post(BASE_URL + "/1/move-to-screening"))
                 .andExpect(status().isOk());
     }
 
@@ -167,18 +170,17 @@ public class RecruitmentProcessControllerTest {
     void moveToScreening_WithAdminRole_ShouldReturnOk() throws Exception {
         doNothing().when(recruitmentProcessService).moveToScreening(1);
 
-        mockMvc.perform(post("/recruitment-processes/1/move-to-screening"))
+        mockMvc.perform(post(BASE_URL + "/1/move-to-screening"))
                 .andExpect(status().isOk());
     }
 
 
     @Test
     void moveToTechnicalTest_ShouldReturnOk_WhenReportIsValid() throws Exception {
-        String longReport = "A".repeat(200);
-        InterviewDecisionDTO dto = new InterviewDecisionDTO(longReport);
-        doNothing().when(recruitmentProcessService).moveToTechnicalTest(eq(1), any(InterviewDecisionDTO.class));
+        TechnicalTestRequestDTO dto = new TechnicalTestRequestDTO("Parecer técnico válido com mais de 10 caracteres");
+        doNothing().when(recruitmentProcessService).moveToTechnicalTest(eq(1), any(TechnicalTestRequestDTO.class));
 
-        mockMvc.perform(post("/recruitment-processes/1/move-to-technical-test")
+        mockMvc.perform(post(BASE_URL + "/1/move-to-technical-test")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
@@ -186,9 +188,9 @@ public class RecruitmentProcessControllerTest {
 
     @Test
     void moveToTechnicalTest_ShouldReturnBadRequest_WhenReportIsTooShort() throws Exception {
-        InterviewDecisionDTO dto = new InterviewDecisionDTO("Too short");
+        TechnicalTestRequestDTO dto = new TechnicalTestRequestDTO("Curto");
 
-        mockMvc.perform(post("/recruitment-processes/1/move-to-technical-test")
+        mockMvc.perform(post(BASE_URL + "/1/move-to-technical-test")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest());

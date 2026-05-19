@@ -59,20 +59,20 @@ public class RecruitmentFlowIntegrationTest {
     @Test
     void testCompleteRecruitmentFlow() throws Exception {
         Integer oppId = createOpportunity(); Integer candId = createCandidate();
-        MvcResult res = mockMvc.perform(post("/recruitment-processes").contentType(MediaType.APPLICATION_JSON).content(String.format("{\"candidateId\": %d, \"opportunityId\": %d}", candId, oppId)).with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk()).andReturn();
+        MvcResult res = mockMvc.perform(post("/api/recruitment-processes").contentType(MediaType.APPLICATION_JSON).content(String.format("{\"candidateId\": %d, \"opportunityId\": %d}", candId, oppId)).with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk()).andReturn();
         Integer id = objectMapper.readTree(res.getResponse().getContentAsString()).get("id").asInt();
         
-        mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-screening").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-screening").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
 
-        mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-interview").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
-        mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-technical-test")
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-interview").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-technical-test")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"reason\": \"" + "A".repeat(200) + "\"}")
+                .content("{\"reason\": \"Parecer técnico com mais de dez caracteres\"}")
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
-        mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-final-decision").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
-        mockMvc.perform(post("/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isOk());
-        mockMvc.perform(post("/recruitment-processes/"+id+"/proposal").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
-        mockMvc.perform(post("/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-final-decision").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isOk());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/proposal").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
         validateStatus(id, "Finalizado");
     }
     @Test
@@ -107,30 +107,30 @@ public class RecruitmentFlowIntegrationTest {
     @Test
     void testSecurityResistances() throws Exception {
         Integer oppId = createOpportunity(); Integer candId = createCandidate();
-        MvcResult res = mockMvc.perform(post("/recruitment-processes").contentType(MediaType.APPLICATION_JSON).content(String.format("{\"candidateId\": %d, \"opportunityId\": %d}", candId, oppId)).with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andReturn();
+        MvcResult res = mockMvc.perform(post("/api/recruitment-processes").contentType(MediaType.APPLICATION_JSON).content(String.format("{\"candidateId\": %d, \"opportunityId\": %d}", candId, oppId)).with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andReturn();
         Integer id = objectMapper.readTree(res.getResponse().getContentAsString()).get("id").asInt();
 
         // 1. Tente fazer alguém sem role de recrutadora (sem approve_candidate) transicionar um candidato de triagem para entrevista
-        mockMvc.perform(post("/recruitment-processes/"+id+"/move-to-interview").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("suggestions")))).andExpect(status().isForbidden());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-interview").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("suggestions")))).andExpect(status().isForbidden());
 
         // 2. Tente fazer com que alguém sem role de gestor (sem reject_candidate) tente aprovar um candidato
-        mockMvc.perform(post("/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isForbidden());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isForbidden());
 
         // 3. Tente fazer com que alguém sem role de recrutadora (sem initiate_contract_process) finalize o processo
-        mockMvc.perform(post("/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isForbidden());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isForbidden());
     }
 
     @Test
     void testBusinessLogicResistances() throws Exception {
         Integer oppId = createOpportunity(); Integer candId = createCandidate();
-        MvcResult res = mockMvc.perform(post("/recruitment-processes").contentType(MediaType.APPLICATION_JSON).content(String.format("{\"candidateId\": %d, \"opportunityId\": %d}", candId, oppId)).with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andReturn();
+        MvcResult res = mockMvc.perform(post("/api/recruitment-processes").contentType(MediaType.APPLICATION_JSON).content(String.format("{\"candidateId\": %d, \"opportunityId\": %d}", candId, oppId)).with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andReturn();
         Integer id = objectMapper.readTree(res.getResponse().getContentAsString()).get("id").asInt();
 
         // Tente pular estágio: Manager decision direto da Triagem
-        mockMvc.perform(post("/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isBadRequest());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isBadRequest());
 
         // Tente pular estágio: Proposal direto da Triagem
-        mockMvc.perform(post("/recruitment-processes/"+id+"/proposal").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isBadRequest());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/proposal").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isBadRequest());
     }
 
     private Integer createOpportunity() {

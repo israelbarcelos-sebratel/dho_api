@@ -18,6 +18,7 @@ import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.domain.repository.DhoRoleRepository;
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
+import br.com.sebratel.bff.dho.dto.TechnicalTestRequestDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
@@ -150,7 +151,7 @@ public class RecruitmentProcessService {
     }
 
     @Transactional
-    public void moveToTechnicalTest(Integer id, InterviewDecisionDTO dto) {
+    public void moveToTechnicalTest(Integer id, TechnicalTestRequestDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
         if (!"Entrevista".equals(process.getProcessStage().getName())) {
