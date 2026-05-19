@@ -39,23 +39,23 @@ public class SuggestionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sugestão não encontrada"));
     }
 
-    public SuggestionResponseDTO create(SuggestionRequestDTO dto) {
+    public SuggestionResponseDTO create(SuggestionRequestDTO dto, String email) {
         Suggestion suggestion = Suggestion.builder()
                 .title(dto.title())
                 .description(dto.description())
-                .email(encryptionUtil.encrypt(dto.email()))
+                .email(encryptionUtil.encrypt(email))
                 .build();
         
         return SuggestionResponseDTO.fromEntity(suggestionRepository.save(suggestion));
     }
 
-    public SuggestionResponseDTO update(Long id, SuggestionRequestDTO dto) {
+    public SuggestionResponseDTO update(Long id, SuggestionRequestDTO dto, String email) {
         Suggestion suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sugestão não encontrada"));
         
         suggestion.setTitle(dto.title());
         suggestion.setDescription(dto.description());
-        suggestion.setEmail(encryptionUtil.encrypt(dto.email()));
+        suggestion.setEmail(encryptionUtil.encrypt(email));
         
         return SuggestionResponseDTO.fromEntity(suggestionRepository.save(suggestion));
     }
@@ -67,11 +67,11 @@ public class SuggestionService {
         suggestionRepository.deleteById(id);
     }
 
-    public void vote(Long id, VoteRequestDTO dto) {
+    public void vote(Long id, VoteRequestDTO dto, String email) {
         Suggestion suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sugestão não encontrada"));
 
-        String hashedEmail = hashUtil.hash(dto.email());
+        String hashedEmail = hashUtil.hash(email);
         
         Optional<SuggestionVote> existingVote = suggestionVoteRepository.findBySuggestionAndEmail(suggestion, hashedEmail);
         

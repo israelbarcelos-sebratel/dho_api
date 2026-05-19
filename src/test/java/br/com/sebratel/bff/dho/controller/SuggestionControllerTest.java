@@ -14,11 +14,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -52,10 +56,10 @@ class SuggestionControllerTest {
         SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0L, 0L);
         when(suggestionService.findAll()).thenReturn(List.of(response));
 
-        mockMvc.perform(get("/suggestions"))
+        mockMvc.perform(get("/api/suggestions"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].title").value("Title"));
+                .andExpect(jsonPath("0.id").value(1L))
+                .andExpect(jsonPath("0.title").value("Title"));
     }
 
     @Test
@@ -63,7 +67,7 @@ class SuggestionControllerTest {
         SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0L, 0L);
         when(suggestionService.findById(1L)).thenReturn(response);
 
-        mockMvc.perform(get("/suggestions/1"))
+        mockMvc.perform(get("/api/suggestions/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.title").value("Title"));
@@ -71,22 +75,25 @@ class SuggestionControllerTest {
 
     @Test
     void create_WithValidData_ShouldReturnCreated() throws Exception {
-        SuggestionRequestDTO request = new SuggestionRequestDTO("Title", "Desc", "email@test.com");
+        SuggestionRequestDTO request = new SuggestionRequestDTO("Title", "Desc");
         SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Title", "Desc", "email@test.com", 0L, 0L);
-        when(suggestionService.create(any(SuggestionRequestDTO.class))).thenReturn(response);
+        when(suggestionService.create(any(SuggestionRequestDTO.class), anyString())).thenReturn(response);
 
-        mockMvc.perform(post("/suggestions")
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("email@test.com", null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+
+        mockMvc.perform(post("/api/suggestions")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(request))
+                        .principal(auth))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1L));
     }
 
     @Test
     void create_WithInvalidData_ShouldReturnBadRequest() throws Exception {
-        SuggestionRequestDTO request = new SuggestionRequestDTO("", "", "invalido");
+        SuggestionRequestDTO request = new SuggestionRequestDTO("", "");
 
-        mockMvc.perform(post("/suggestions")
+        mockMvc.perform(post("/api/suggestions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -94,13 +101,16 @@ class SuggestionControllerTest {
 
     @Test
     void update_WithValidData_ShouldReturnOk() throws Exception {
-        SuggestionRequestDTO request = new SuggestionRequestDTO("Updated Title", "Updated Desc", "email@test.com");
+        SuggestionRequestDTO request = new SuggestionRequestDTO("Updated Title", "Updated Desc");
         SuggestionResponseDTO response = new SuggestionResponseDTO(1L, "Updated Title", "Updated Desc", "email@test.com", 0L, 0L);
-        when(suggestionService.update(eq(1L), any(SuggestionRequestDTO.class))).thenReturn(response);
+        when(suggestionService.update(eq(1L), any(SuggestionRequestDTO.class), anyString())).thenReturn(response);
 
-        mockMvc.perform(put("/suggestions/1")
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("email@test.com", null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+
+        mockMvc.perform(put("/api/suggestions/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(request))
+                        .principal(auth))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Updated Title"));
     }
@@ -109,18 +119,21 @@ class SuggestionControllerTest {
     void delete_ShouldReturnNoContent() throws Exception {
         doNothing().when(suggestionService).delete(1L);
 
-        mockMvc.perform(delete("/suggestions/1"))
+        mockMvc.perform(delete("/api/suggestions/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void vote_WithValidData_ShouldReturnCreated() throws Exception {
-        VoteRequestDTO request = new VoteRequestDTO("voter@test.com", 1);
-        doNothing().when(suggestionService).vote(eq(1L), any(VoteRequestDTO.class));
+        VoteRequestDTO request = new VoteRequestDTO(1);
+        doNothing().when(suggestionService).vote(eq(1L), any(VoteRequestDTO.class), anyString());
 
-        mockMvc.perform(post("/suggestions/1/vote")
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("voter@test.com", null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+
+        mockMvc.perform(post("/api/suggestions/1/vote")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(request))
+                        .principal(auth))
                 .andExpect(status().isCreated());
     }
 }
