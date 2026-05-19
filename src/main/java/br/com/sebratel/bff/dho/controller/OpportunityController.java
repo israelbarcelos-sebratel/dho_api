@@ -14,6 +14,8 @@ import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityRequestDTO;
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
 import br.com.sebratel.bff.dho.service.OpportunityService;
+import br.com.sebratel.bff.dho.dto.OpportunityPipelineResponseDTO;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -122,6 +124,21 @@ public class OpportunityController {
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
     @Operation(summary = "Listar logs de uma oportunidade", description = "Retorna o histórico completo de eventos de uma oportunidade e seus candidatos.")
     public ResponseEntity<List<RecruitmentProcessLogDTO>> getLogs(@PathVariable Integer id) {
+    @GetMapping("/pipeline")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
+    @Operation(summary = "Obter pipeline de todas as oportunidades do recrutador", description = "Retorna uma lista de oportunidades com seus respectivos processos e candidatos, filtrando por aquelas onde o usuário autenticado é o recrutador responsável.")
+    public ResponseEntity<List<OpportunityPipelineResponseDTO>> getMyOpportunitiesPipeline(Authentication authentication) {
+        return ResponseEntity.ok(opportunityService.getOpportunitiesPipelineForRecruiter(authentication));
+    }
+
+
+    @GetMapping("/{id}/pipeline")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_pipeline.name())")
+    @Operation(summary = "Obter pipeline da oportunidade", description = "Retorna a estrutura da oportunidade com seus processos e candidatos para visualização no pipeline.")
+    public ResponseEntity<OpportunityPipelineResponseDTO> getOpportunityPipeline(@PathVariable Integer id) {
+        return ResponseEntity.ok(opportunityService.getOpportunityPipeline(id));
+    }
+
         return ResponseEntity.ok(opportunityService.getLogs(id));
     }
 }
