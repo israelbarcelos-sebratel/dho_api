@@ -1,5 +1,8 @@
 package br.com.sebratel.bff.dho.controller;
 
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+import jakarta.validation.Valid;
+
 import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
 
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
@@ -49,17 +52,8 @@ public class RequisitionController {
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
     @Operation(summary = "Atualizar status de uma requisição", description = "Altera o status de uma requisição (vaga).")
-    public ResponseEntity<OpportunityResponseDTO> updateStatus(@PathVariable Integer id, @RequestBody Map<String, String> body) {
-        String status = body.get("status");
-        if (status == null) {
-            status = body.get("statusName");
-        }
-
-        if ("Aprovada".equalsIgnoreCase(status)) {
-            return ResponseEntity.ok(opportunityService.approve(id));
-        }
-
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<OpportunityResponseDTO> updateStatus(@PathVariable Integer id, @RequestBody @Valid OpportunityApprovalDTO approvalDTO) {
+        return ResponseEntity.ok(opportunityService.approve(id, approvalDTO));
     }
 
 }

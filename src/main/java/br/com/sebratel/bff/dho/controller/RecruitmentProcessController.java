@@ -2,6 +2,8 @@ package br.com.sebratel.bff.dho.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
 import br.com.sebratel.bff.dho.dto.TechnicalTestRequestDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
@@ -45,8 +47,8 @@ public class RecruitmentProcessController {
     @PostMapping("/{id}/approve")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
     @Operation(summary = "Aprovar candidato na etapa atual", description = "Avança o candidato para a próxima fase do processo.")
-    public ResponseEntity<Void> approve(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
-        recruitmentProcessService.approve(id);
+    public ResponseEntity<Void> approve(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid OpportunityApprovalDTO dto) {
+        recruitmentProcessService.approve(id, dto);
         return ResponseEntity.ok().build();
     }
 

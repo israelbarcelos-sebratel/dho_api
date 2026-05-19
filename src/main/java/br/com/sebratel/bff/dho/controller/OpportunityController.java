@@ -65,8 +65,8 @@ public class OpportunityController {
     @PostMapping("/{id}/approve")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
     @Operation(summary = "Aprovar oportunidade", description = "Altera o status da oportunidade para aprovada.")
-    public ResponseEntity<OpportunityResponseDTO> approveOpportunity(@PathVariable Integer id) {
-        return ResponseEntity.ok(opportunityService.approve(id));
+    public ResponseEntity<OpportunityResponseDTO> approveOpportunity(@PathVariable Integer id, @RequestBody @Valid OpportunityApprovalDTO dto) {
+        return ResponseEntity.ok(opportunityService.approve(id, dto));
     }
 
     @PostMapping("/{id}/refuse")

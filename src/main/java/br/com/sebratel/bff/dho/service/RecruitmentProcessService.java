@@ -1,5 +1,7 @@
 package br.com.sebratel.bff.dho.service;
 
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+
 import lombok.extern.slf4j.Slf4j;
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.Opportunity;
@@ -103,7 +105,7 @@ public class RecruitmentProcessService {
     }
 
     @Transactional
-    public void approve(Integer id) {
+    public void approve(Integer id, OpportunityApprovalDTO dto) {
         updateStatus(id, "Aprovado", null);
     }
 
@@ -307,6 +309,8 @@ public class RecruitmentProcessService {
                 .opportunityId(Optional.ofNullable(process.getOpportunity()).map(opp -> opp.getId()).orElse(null))
                 .recruiterReport(process.getRecruiterReport())
                 .interviewReport(process.getInterviewReport())
+
+                .opportunityDate(Optional.ofNullable(process.getOpportunity()).map(Opportunity::getOpenOpportunityDate).orElse(null))
 
                 .build();
     }

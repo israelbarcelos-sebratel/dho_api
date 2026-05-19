@@ -160,7 +160,7 @@ public class OpportunityService {
     }
 
     @Transactional
-    public OpportunityResponseDTO approve(Integer id) {
+    public OpportunityResponseDTO approve(Integer id, OpportunityApprovalDTO dto) {
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
@@ -173,6 +173,7 @@ public class OpportunityService {
 
         opportunity.setOpportunityStatus(approvedStatus);
         opportunity.setDeadlineSlaDays(30);
+        opportunity.setOpenOpportunityDate(dto.opportunityDate());
         
         return convertToDTO(opportunityRepository.save(opportunity), false);
     }
