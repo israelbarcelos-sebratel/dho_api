@@ -71,6 +71,11 @@ public class SuggestionService {
         Suggestion suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sugestão não encontrada"));
 
+        String encryptedVoterEmail = encryptionUtil.encrypt(email);
+        if (suggestion.getEmail().equals(encryptedVoterEmail)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O usuário não pode votar na sua própria sugestão");
+        }
+
         String hashedEmail = hashUtil.hash(email);
         
         Optional<SuggestionVote> existingVote = suggestionVoteRepository.findBySuggestionAndEmail(suggestion, hashedEmail);

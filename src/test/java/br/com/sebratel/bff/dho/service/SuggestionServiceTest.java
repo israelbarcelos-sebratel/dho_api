@@ -15,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,14 +151,31 @@ class SuggestionServiceTest {
 
     @Test
     void vote_ShouldSaveVote() {
+        String voterEmail = "voter@sebratel.com.br";
         VoteRequestDTO voteDTO = new VoteRequestDTO(1);
         when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
+        when(encryptionUtil.encrypt(voterEmail)).thenReturn("encrypted-voter-email");
         when(hashUtil.hash(anyString())).thenReturn("hashed-email");
         when(suggestionVoteRepository.findBySuggestionAndEmail(any(), anyString())).thenReturn(Optional.empty());
 
-        suggestionService.vote(1L, voteDTO, testEmail);
+        suggestionService.vote(1L, voteDTO, voterEmail);
 
-        verify(hashUtil, times(1)).hash(testEmail);
+        verify(hashUtil, times(1)).hash(voterEmail);
         verify(suggestionVoteRepository, times(1)).save(any());
     }
+
+    @Test
+    void vote_WhenUserVotesOnOwnSuggestion_ShouldThrowException() {
+        VoteRequestDTO voteDTO = new VoteRequestDTO(1);
+        when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
+        when(encryptionUtil.encrypt(testEmail)).thenReturn("encrypted-email");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, 
+            () -> suggestionService.vote(1L, voteDTO, testEmail));
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("O usuário não pode votar na sua própria sugestão", exception.getReason());
+        verify(suggestionVoteRepository, never()).save(any());
+    }
+
 }
