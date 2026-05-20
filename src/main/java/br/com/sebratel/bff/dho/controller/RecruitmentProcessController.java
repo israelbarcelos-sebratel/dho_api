@@ -2,7 +2,10 @@ package br.com.sebratel.bff.dho.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+
 import br.com.sebratel.bff.dho.dto.InterviewDecisionDTO;
+import br.com.sebratel.bff.dho.dto.TechnicalTestRequestDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessHistoryDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessLogDTO;
@@ -27,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/recruitment-processes")
+@RequestMapping("/api/recruitment-processes")
 @RequiredArgsConstructor
 @Tag(name = "Processos de Recrutamento", description = "Endpoints para gestão do fluxo de contratação e candidatos")
 public class RecruitmentProcessController {
@@ -44,8 +47,8 @@ public class RecruitmentProcessController {
     @PostMapping("/{id}/approve")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
     @Operation(summary = "Aprovar candidato na etapa atual", description = "Avança o candidato para a próxima fase do processo.")
-    public ResponseEntity<Void> approve(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
-        recruitmentProcessService.approve(id);
+    public ResponseEntity<Void> approve(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid OpportunityApprovalDTO dto) {
+        recruitmentProcessService.approve(id, dto);
         return ResponseEntity.ok().build();
     }
 
@@ -84,8 +87,10 @@ public class RecruitmentProcessController {
     @PostMapping("/{id}/move-to-technical-test")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
     @Operation(summary = "Mover para teste técnico", description = "Altera a etapa do processo para Teste Técnico. Requer parecer da entrevista.")
-    public ResponseEntity<Void> moveToTechnicalTest(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid InterviewDecisionDTO dto) {
+    public ResponseEntity<Void> moveToTechnicalTest(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid TechnicalTestRequestDTO dto) {
+        log.info("Recebida requisição para mover para teste técnico. Processo ID: {}. Parecer: {}", id, dto.reason());
         recruitmentProcessService.moveToTechnicalTest(id, dto);
+        log.info("Candidato movido para teste técnico com sucesso. Processo ID: {}", id);
         return ResponseEntity.ok().build();
     }
 
@@ -100,9 +105,25 @@ public class RecruitmentProcessController {
 
     @PostMapping("/{id}/move-to-final-decision")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
-    @Operation(summary = "Mover para decisão final", description = "Altera a etapa do processo para Decisão Final, permitindo que o gestor decida sobre a contratação.")
+    @Operation(summary = "Mover para decisão final", description = "Altera a etapa do processo para 'Aguardando aprovação' e o status para 'Aguardando aprovação', permitindo que o gestor decida sobre a contratação.")
     public ResponseEntity<Void> moveToFinalDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
         recruitmentProcessService.moveToFinalDecision(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/move-to-awaiting-documents")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    @Operation(summary = "Mover para aguardando documentos", description = "Altera a etapa do processo para Aguardando documentos após o envio da proposta.")
+    public ResponseEntity<Void> moveToAwaitingDocuments(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        recruitmentProcessService.moveToAwaitingDocuments(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/move-to-onboarding")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    @Operation(summary = "Mover para onboarding", description = "Altera a etapa do processo para Onboarding após a entrega dos documentos.")
+    public ResponseEntity<Void> moveToOnboarding(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        recruitmentProcessService.moveToOnboarding(id);
         return ResponseEntity.ok().build();
     }
 
@@ -115,6 +136,15 @@ public class RecruitmentProcessController {
         log.info("Decisão do gestor processada com sucesso para o processo ID: {}", id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{id}/cancel-decision")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).reject_candidate.name())")
+    @Operation(summary = "Cancelar decisão do gestor", description = "Reverte a decisão tomada pelo gestor, voltando o processo para o estágio e status 'Aguardando aprovação'.")
+    public ResponseEntity<Void> cancelManagerDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        recruitmentProcessService.cancelManagerDecision(id);
+        return ResponseEntity.ok().build();
+    }
+
 
     @PostMapping("/{id}/proposal")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).initiate_contract_process.name())")

@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface DhoProcessStageRepository extends JpaRepository<DhoProcessStage, Integer> {
     Optional<DhoProcessStage> findByName(String name);
+    Optional<DhoProcessStage> findByNameIgnoreCase(String name);
 }

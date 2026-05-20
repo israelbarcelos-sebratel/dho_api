@@ -1,5 +1,8 @@
 package br.com.sebratel.bff.dho.controller;
 
+import br.com.sebratel.bff.dho.dto.OpportunityApprovalDTO;
+import jakarta.validation.Valid;
+
 import br.com.sebratel.bff.dho.dto.CandidateResponseDTO;
 
 import br.com.sebratel.bff.dho.dto.OpportunityResponseDTO;
@@ -8,20 +11,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import br.com.sebratel.bff.dho.dto.RequisitionSearchDTO;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
-@RequestMapping("/requisitions")
+@RequestMapping("/api/requisitions")
 @RequiredArgsConstructor
 @Tag(name = "Requisições", description = "Endpoints para gestores acompanharem suas requisições")
 public class RequisitionController {
@@ -47,6 +47,13 @@ public class RequisitionController {
     @Operation(summary = "Listar candidatos de uma requisição aprovada", description = "Retorna os candidatos vinculados a uma vaga aprovada. Requer ser o solicitante ou ter permissão admin.")
     public ResponseEntity<List<CandidateResponseDTO>> getCandidates(@PathVariable Integer id, Authentication authentication) {
         return ResponseEntity.ok(opportunityService.findCandidatesForUser(id, authentication));
+    }
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_contract_process.name())")
+    @Operation(summary = "Atualizar status de uma requisição", description = "Altera o status de uma requisição (vaga).")
+    public ResponseEntity<OpportunityResponseDTO> updateStatus(@PathVariable Integer id, @RequestBody @Valid OpportunityApprovalDTO approvalDTO) {
+        return ResponseEntity.ok(opportunityService.approve(id, approvalDTO));
     }
 
 }

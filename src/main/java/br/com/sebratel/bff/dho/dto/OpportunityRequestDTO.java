@@ -1,6 +1,8 @@
 package br.com.sebratel.bff.dho.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -45,6 +47,7 @@ public record OpportunityRequestDTO(
     Integer replacedPersonId,
     
     @Schema(description = "ID da base de origem", example = "1")
+    @NotNull(message = "A base de origem é obrigatória")
     Integer baseOriginId,
     
     @Schema(description = "ID do status inicial", example = "1")

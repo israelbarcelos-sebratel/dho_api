@@ -19,6 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
@@ -36,60 +40,103 @@ public class RecruitmentProcessLoggingAspect {
     private final OpportunityRepository opportunityRepository;
 
     @Pointcut("(execution(public * br.com.sebratel.bff.dho.service.RecruitmentProcessService.*(..)) && " +
-              "!execution(public * br.com.sebratel.bff.dho.service.RecruitmentProcessService.get*(..))) || " +
+              "!execution(public * br.com.sebratel.bff.dho.service.RecruitmentProcessService.get*(..)) && " +
+              "!execution(public * br.com.sebratel.bff.dho.service.RecruitmentProcessService.mapTo*(..))) || " +
               "(execution(public * br.com.sebratel.bff.dho.service.OpportunityService.*(..)) && " +
               "!execution(public * br.com.sebratel.bff.dho.service.OpportunityService.get*(..)) && " +
               "!execution(public * br.com.sebratel.bff.dho.service.OpportunityService.find*(..)) && " +
-              "!execution(public * br.com.sebratel.bff.dho.service.OpportunityService.findAll*(..)))")
+              "!execution(public * br.com.sebratel.bff.dho.service.OpportunityService.findAll*(..)) && " +
+              "!execution(public * br.com.sebratel.bff.dho.service.OpportunityService.convertTo*(..))) || " +
+              "(execution(public * br.com.sebratel.bff.dho.service.talentpool.TalentPoolService.*(..)) && " +
+              "!execution(public * br.com.sebratel.bff.dho.service.talentpool.TalentPoolService.get*(..)) && " +
+              "!execution(public * br.com.sebratel.bff.dho.service.talentpool.TalentPoolService.find*(..)) && " +
+              "!execution(public * br.com.sebratel.bff.dho.service.talentpool.TalentPoolService.findAll*(..)))")
     public void loggedActions() {}
 
     @Around("loggedActions()")
     public Object logAction(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().getName();
+        String serviceName = joinPoint.getSignature().getDeclaringTypeName();
         Object[] args = joinPoint.getArgs();
-        Integer entityId = null;
-
-        // Try to get ID from first argument if it's an Integer
-        if (args.length > 0 && args[0] instanceof Integer) {
-            entityId = (Integer) args[0];
-        }
+        Integer entityId = (args.length > 0 && args[0] instanceof Integer) ? (Integer) args[0] : null;
 
         LocalDateTime startTime = LocalDateTime.now();
         long start = System.currentTimeMillis();
-        
         String status = "SUCCESS";
         String errorMessage = null;
         Object result;
 
         try {
             result = joinPoint.proceed();
-            
-            // If it's a create method, we get the ID from the returned DTO
             if (entityId == null && result != null) {
-                if (result instanceof RecruitmentProcessResponseDTO) {
-                    entityId = ((RecruitmentProcessResponseDTO) result).getId();
-                } else if (result instanceof OpportunityResponseDTO) {
-                    entityId = ((OpportunityResponseDTO) result).getId();
-                }
+                if (result instanceof RecruitmentProcessResponseDTO) entityId = ((RecruitmentProcessResponseDTO) result).getId();
+                else if (result instanceof OpportunityResponseDTO) entityId = ((OpportunityResponseDTO) result).getId();
+            }
+            String humanAction = getHumanizedAction(serviceName, methodName, args, result);
+            if (humanAction != null && entityId != null) {
+                saveLog(serviceName, entityId, humanAction, startTime, LocalDateTime.now(), System.currentTimeMillis() - start, status, errorMessage);
             }
         } catch (Throwable throwable) {
             status = "FAILURE";
             errorMessage = throwable.getMessage();
-            throw throwable;
-        } finally {
-            long executionTime = System.currentTimeMillis() - start;
-            LocalDateTime endTime = LocalDateTime.now();
-
-            if (entityId != null) {
-                try {
-                    saveLog(joinPoint.getSignature().getDeclaringTypeName(), entityId, methodName, startTime, endTime, executionTime, status, errorMessage);
-                } catch (Exception e) {
-                    log.error("Failed to save action log", e);
-                }
+            String humanAction = getHumanizedAction(serviceName, methodName, args, null);
+            if (humanAction != null && entityId != null) {
+                saveLog(serviceName, entityId, humanAction, startTime, LocalDateTime.now(), System.currentTimeMillis() - start, status, errorMessage);
             }
+            throw throwable;
         }
-
         return result;
+    }
+
+    private String getHumanizedAction(String serviceName, String methodName, Object[] args, Object result) {
+        if (serviceName.contains("OpportunityService")) {
+            return switch (methodName) {
+                case "create" -> "Criação da oportunidade";
+                case "approve" -> "Oportunidade aprovada";
+                case "refuse" -> "Oportunidade recusada";
+                case "finalize" -> "Oportunidade finalizada";
+                case "assignRecruiter" -> "Atribuição de recrutador à oportunidade";
+                default -> null;
+            };
+        }
+        if (serviceName.contains("RecruitmentProcessService")) {
+            return switch (methodName) {
+                case "create" -> "Candidato vinculado à oportunidade";
+                case "approve" -> "Candidato aprovado";
+                case "refuse" -> "Candidato reprovado";
+                case "withdraw" -> "Candidato desistiu do processo";
+                case "hire" -> "Contratação do candidato efetivada";
+                case "moveToInterview" -> "Candidato movido para Entrevista";
+                case "moveToTechnicalTest" -> "Candidato movido para Teste Técnico";
+                case "moveToScreening" -> "Candidato movido para Triagem";
+                case "moveToFinalDecision" -> "Candidato movido para Decisão Final";
+                case "sendProposal" -> "Proposta enviada ao candidato";
+                case "updateStage" -> "Etapa do processo atualizada";
+                case "updateStatus" -> "Status do processo atualizado";
+                case "managerDecision" -> {
+                    if (args.length > 1 && args[1] instanceof br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {
+                        yield dto.isApproved() ? "Gestor aprovou candidato" : "Gestor reprovou candidato";
+                    }
+                    yield "Decisão do gestor registrada";
+                }
+                case "candidateDecision" -> {
+                    if (args.length > 1 && args[1] instanceof br.com.sebratel.bff.dho.dto.CandidateDecisionDTO dto) {
+                        yield dto.isAccepted() ? "Candidato aceitou a proposta" : "Candidato recusou a proposta";
+                    }
+                    yield "Decisão do candidato registrada";
+                }
+                default -> null;
+            };
+        }
+        if (serviceName.contains("TalentPoolService")) {
+            return switch (methodName) {
+                case "addToPool" -> "Pessoa adicionada ao Banco de Talentos";
+                case "updatePoolEntry" -> "Registro no Banco de Talentos atualizado";
+                case "removeFromPool" -> "Pessoa removida do Banco de Talentos";
+                default -> null;
+            };
+        }
+        return null;
     }
 
     private void saveLog(String serviceName, Integer id, String actionName, LocalDateTime startTime, LocalDateTime endTime, 
@@ -119,16 +166,35 @@ public class RecruitmentProcessLoggingAspect {
 
     private void saveSingleLog(RecruitmentProcess process, String actionName, LocalDateTime startTime, LocalDateTime endTime,
                                long durationMs, String status, String errorMessage) {
+        String executedBy = getExecutedBy();
         RecruitmentProcessLog recruitmentLog = RecruitmentProcessLog.builder()
                 .recruitmentProcess(process)
-                .actionName(actionName.toUpperCase())
+                .actionName(actionName)
                 .startTime(startTime)
                 .endTime(endTime)
                 .durationMs(durationMs)
                 .status(status)
                 .errorMessage(errorMessage != null && errorMessage.length() > 2000 ? 
                              errorMessage.substring(0, 2000) : errorMessage)
+                .executedBy(executedBy)
                 .build();
         logRepository.save(recruitmentLog);
+    }
+
+    private String getExecutedBy() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            if (auth instanceof JwtAuthenticationToken jwtAuth) {
+                Jwt jwt = jwtAuth.getToken();
+                String name = jwt.getClaimAsString("name");
+                String email = jwt.getClaimAsString("email");
+                if (name != null && email != null) {
+                    return String.format("%s(%s)", name, email);
+                }
+                return auth.getName();
+            }
+            return auth.getName();
+        }
+        return "SYSTEM";
     }
 }

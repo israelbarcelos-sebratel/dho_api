@@ -55,7 +55,7 @@ Define permissões granulares para funcionalidades do sistema.
 | `description` | String | O que a permissão permite fazer. |
 
 ### 1.4. `people_roles` (Tabela de Ligação)
-Relaciona pessoas a papéis (roles).
+Relaciona pessoas a papéis (roles) - Muitos-para-Muitos.
 
 | Campo | Tipo | Descrição |
 |-------|------|-------------|
@@ -99,13 +99,16 @@ Gerencia as vagas e o ciclo de vida da abertura de oportunidades.
 | `replaced_person_id` | Integer (FK) | Pessoa substituída (link com `people`). |
 | `base_origin_id` | Integer (FK) | Origem da base (link com `base_origin`). |
 | `opportunity_status_id` | Integer (FK) | Status da oportunidade (link com `opportunity_status`). |
-| `process_stage_id` | Integer (FK) | Estágio atual do processo (link com `process_stage`). |
-| `process_status_id` | Integer (FK) | Status atual do processo (link com `process_status`). |
 | `deadline_sla_days` | Integer | Prazo de SLA em dias. |
 | `accept_date` | LocalDateTime | Data de aceite da proposta. |
 | `responsible_recruiter_id`| Integer (FK) | Recrutador responsável (link com `people`). |
+| `requester_id` | Integer (FK) | Solicitante da vaga (link com `people`). |
 | `observations` | String | Observações da oportunidade. |
 | `refusal_justification` | String (1000) | Justificativa em caso de recusa. |
+| `finalization_justification` | String (1000) | Justificativa em caso de finalização. |
+| `work_schedule` | String | Horário/Escala de trabalho. |
+| `hard_skills` | String (2000) | Competências técnicas exigidas. |
+| `soft_skills` | String (2000) | Competências comportamentais exigidas. |
 
 ### 1.8. `recruitment_process`
 Acompanha a jornada específica de um candidato dentro de uma oportunidade.

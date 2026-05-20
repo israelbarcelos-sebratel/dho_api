@@ -5,9 +5,13 @@ import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoPosition;
 import br.com.sebratel.bff.dho.domain.entity.talentpool.TalentPool;
 import br.com.sebratel.bff.dho.domain.repository.DhoPositionRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
+import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.domain.repository.TalentPoolRepository;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import br.com.sebratel.bff.dho.dto.TalentPoolRequestDTO;
 import br.com.sebratel.bff.dho.dto.TalentPoolResponseDTO;
+import br.com.sebratel.bff.dho.dto.TalentPoolSelectResponseDTO;
+import br.com.sebratel.bff.dho.service.RecruitmentProcessService;
 import br.com.sebratel.bff.dho.service.talentpool.TalentPoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +30,8 @@ public class TalentPoolServiceImpl implements TalentPoolService {
     private final TalentPoolRepository talentPoolRepository;
     private final PeopleRepository peopleRepository;
     private final DhoPositionRepository positionRepository;
+    private final RecruitmentProcessRepository recruitmentProcessRepository;
+    private final RecruitmentProcessService recruitmentProcessService;
 
     @Override
     @org.springframework.transaction.annotation.Transactional
@@ -57,9 +63,23 @@ public class TalentPoolServiceImpl implements TalentPoolService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional
     public TalentPoolResponseDTO updatePoolEntry(Integer id, TalentPoolRequestDTO request) {
         TalentPool entry = talentPoolRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Registro não encontrado no banco de talentos"));
+
+        People person = entry.getPerson();
+
+        if (request.getEmail() != null && !request.getEmail().equalsIgnoreCase(person.getEmail())) {
+            peopleRepository.findByEmail(request.getEmail()).ifPresent(otherPerson -> {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O e-mail informado já está em uso por outra pessoa");
+            });
+        }
+
+        person.setName(request.getName());
+        person.setEmail(request.getEmail());
+        person.setPhoneNumber(request.getPhoneNumber());
+        person.setExternalLink(request.getExternalLink());
 
         if (request.getObservations() != null) {
             entry.setObservations(request.getObservations());
@@ -77,6 +97,16 @@ public class TalentPoolServiceImpl implements TalentPoolService {
     public List<TalentPoolResponseDTO> findAll() {
         return talentPoolRepository.findAll().stream()
                 .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TalentPoolSelectResponseDTO> findAllForSelect() {
+        return talentPoolRepository.findAll().stream()
+                .map(entry -> new TalentPoolSelectResponseDTO(
+                        entry.getPerson().getId(),
+                        entry.getPerson().getName()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -109,5 +139,15 @@ public class TalentPoolServiceImpl implements TalentPoolService {
                 .createdAt(entry.getCreatedAt())
                 .updatedAt(entry.getUpdatedAt())
                 .build();
+    }
+
+    @Override
+    public List<RecruitmentProcessResponseDTO> findProcessesByTalentPoolId(Integer id) {
+        TalentPool entry = talentPoolRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Registro não encontrado no banco de talentos"));
+
+        return recruitmentProcessRepository.findByCandidateId(entry.getPerson().getId()).stream()
+                .map(recruitmentProcessService::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 }

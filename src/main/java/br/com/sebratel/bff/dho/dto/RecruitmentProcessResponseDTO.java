@@ -18,4 +18,6 @@ public class RecruitmentProcessResponseDTO {
     private Integer opportunityId;
     private String recruiterReport;
     private String interviewReport;
+    private java.time.LocalDateTime opportunityDate;
+
 }

@@ -15,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ class SuggestionServiceTest {
 
     private Suggestion suggestion;
     private SuggestionRequestDTO suggestionRequestDTO;
+    private final String testEmail = "test@sebratel.com.br";
 
     @BeforeEach
     void setUp() {
@@ -52,12 +55,14 @@ class SuggestionServiceTest {
                 .title("Test Title")
                 .description("Test Description")
                 .email("encrypted-email")
+                .emailHash("hashed-email")
                 .votes(new ArrayList<>())
                 .build();
 
-        suggestionRequestDTO = new SuggestionRequestDTO("Test Title", "Test Description", "test@sebratel.com.br");
+        suggestionRequestDTO = new SuggestionRequestDTO("Test Title", "Test Description");
         
         lenient().when(encryptionUtil.encrypt(anyString())).thenReturn("encrypted-email");
+        lenient().when(hashUtil.hash(anyString())).thenReturn("hashed-email");
     }
 
     @Test
@@ -95,11 +100,11 @@ class SuggestionServiceTest {
     void create_ShouldReturnSavedSuggestion() {
         when(suggestionRepository.save(any(Suggestion.class))).thenReturn(suggestion);
 
-        SuggestionResponseDTO result = suggestionService.create(suggestionRequestDTO);
+        SuggestionResponseDTO result = suggestionService.create(suggestionRequestDTO, testEmail);
 
         assertNotNull(result);
         assertEquals(suggestion.getTitle(), result.title());
-        verify(encryptionUtil, times(1)).encrypt("test@sebratel.com.br");
+        verify(encryptionUtil, times(1)).encrypt(testEmail);
         verify(suggestionRepository, times(1)).save(any(Suggestion.class));
     }
 
@@ -108,11 +113,11 @@ class SuggestionServiceTest {
         when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
         when(suggestionRepository.save(any(Suggestion.class))).thenReturn(suggestion);
 
-        SuggestionResponseDTO result = suggestionService.update(1L, suggestionRequestDTO);
+        SuggestionResponseDTO result = suggestionService.update(1L, suggestionRequestDTO, testEmail);
 
         assertNotNull(result);
         assertEquals(suggestion.getTitle(), result.title());
-        verify(encryptionUtil, times(1)).encrypt("test@sebratel.com.br");
+        verify(encryptionUtil, times(1)).encrypt(testEmail);
         verify(suggestionRepository, times(1)).findById(1L);
         verify(suggestionRepository, times(1)).save(any(Suggestion.class));
     }
@@ -121,7 +126,7 @@ class SuggestionServiceTest {
     void update_WhenIdDoesNotExist_ShouldThrowException() {
         when(suggestionRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(ResponseStatusException.class, () -> suggestionService.update(1L, suggestionRequestDTO));
+        assertThrows(ResponseStatusException.class, () -> suggestionService.update(1L, suggestionRequestDTO, testEmail));
         verify(suggestionRepository, times(1)).findById(1L);
         verify(suggestionRepository, never()).save(any());
     }
@@ -148,14 +153,30 @@ class SuggestionServiceTest {
 
     @Test
     void vote_ShouldSaveVote() {
-        VoteRequestDTO voteDTO = new VoteRequestDTO("voter@sebratel.com.br", 1);
+        String voterEmail = "voter@sebratel.com.br";
+        VoteRequestDTO voteDTO = new VoteRequestDTO(1);
         when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
-        when(hashUtil.hash(anyString())).thenReturn("hashed-email");
+        when(hashUtil.hash(voterEmail)).thenReturn("different-hash");
         when(suggestionVoteRepository.findBySuggestionAndEmail(any(), anyString())).thenReturn(Optional.empty());
 
-        suggestionService.vote(1L, voteDTO);
+        suggestionService.vote(1L, voteDTO, voterEmail);
 
-        verify(hashUtil, times(1)).hash("voter@sebratel.com.br");
+        verify(hashUtil, atLeastOnce()).hash(voterEmail);
         verify(suggestionVoteRepository, times(1)).save(any());
     }
+
+    @Test
+    void vote_WhenUserVotesOnOwnSuggestion_ShouldThrowException() {
+        VoteRequestDTO voteDTO = new VoteRequestDTO(1);
+        when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
+        when(hashUtil.hash(testEmail)).thenReturn("hashed-email");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, 
+            () -> suggestionService.vote(1L, voteDTO, testEmail));
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("O usuário não pode votar na sua própria sugestão", exception.getReason());
+        verify(suggestionVoteRepository, never()).save(any());
+    }
+
 }

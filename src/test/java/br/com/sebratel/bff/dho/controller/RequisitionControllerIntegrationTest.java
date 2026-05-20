@@ -76,7 +76,7 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         opportunityRepository.save(opp);
 
-        mockMvc.perform(post("/requisitions")
+        mockMvc.perform(post("/api/requisitions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")
                 .with(jwt().jwt(builder -> builder
@@ -116,7 +116,7 @@ public class RequisitionControllerIntegrationTest {
                 .requester(admin).build());
 
         // Admin requesting ONLY THEIR OWN (default)
-        mockMvc.perform(post("/requisitions")
+        mockMvc.perform(post("/api/requisitions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")
                 .with(jwt().jwt(builder -> builder
@@ -127,7 +127,7 @@ public class RequisitionControllerIntegrationTest {
                 .andExpect(jsonPath("$.length()").value(1));
 
         // Admin requesting ALL
-        mockMvc.perform(post("/requisitions")
+        mockMvc.perform(post("/api/requisitions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"showAllRequisitions\": true}")
                 .with(jwt().jwt(builder -> builder
@@ -161,7 +161,7 @@ public class RequisitionControllerIntegrationTest {
                 .requester(requester1).build());
 
         // User 2 requesting ALL (should fail and return only their own, which is 0)
-        mockMvc.perform(post("/requisitions")
+        mockMvc.perform(post("/api/requisitions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"showAllRequisitions\": true}")
                 .with(jwt().jwt(builder -> builder
@@ -200,7 +200,7 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         entityManager.persist(rp);
 
-        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+        mockMvc.perform(get("/api/requisitions/" + opp.getId() + "/candidates")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "manager@test.com")
                         .subject("manager@test.com"))))
@@ -239,7 +239,7 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         entityManager.persist(rp);
 
-        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+        mockMvc.perform(get("/api/requisitions/" + opp.getId() + "/candidates")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "admin@test.com")
                         .subject("admin@test.com"))
@@ -263,7 +263,7 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         opp = opportunityRepository.save(opp);
 
-        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+        mockMvc.perform(get("/api/requisitions/" + opp.getId() + "/candidates")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "other@test.com")
                         .subject("other@test.com"))))
@@ -285,7 +285,7 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         opp = opportunityRepository.save(opp);
 
-        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+        mockMvc.perform(get("/api/requisitions/" + opp.getId() + "/candidates")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "manager@test.com")
                         .subject("manager@test.com"))))
@@ -304,7 +304,13 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         opp = opportunityRepository.save(opp);
 
-        mockMvc.perform(post("/opportunities/" + opp.getId() + "/approve")
+        String reason = "A".repeat(200);
+        String body = String.format("{\"opportunityDate\": \"%s\", \"reason\": \"%s\"}", 
+            LocalDateTime.now().plusDays(1), reason);
+
+        mockMvc.perform(post("/api/opportunities/" + opp.getId() + "/approve")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_contract_process"))))
                 .andExpect(status().isBadRequest());
     }
@@ -328,7 +334,7 @@ public class RequisitionControllerIntegrationTest {
                 .build());
 
         // Second link attempt via API
-        mockMvc.perform(post("/recruitment-processes")
+        mockMvc.perform(post("/api/recruitment-processes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"candidateId\": " + candidate.getId() + ", \"opportunityId\": " + opp.getId() + "}")
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process"))))
@@ -348,7 +354,7 @@ public class RequisitionControllerIntegrationTest {
                 .openOpportunityDate(LocalDateTime.now())
                 .build());
 
-        mockMvc.perform(get("/requisitions/" + opp.getId())
+        mockMvc.perform(get("/api/requisitions/" + opp.getId())
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "owner@test.com")
                         .subject("owner@test.com"))))
@@ -369,7 +375,7 @@ public class RequisitionControllerIntegrationTest {
                 .openOpportunityDate(LocalDateTime.now())
                 .build());
 
-        mockMvc.perform(get("/requisitions/" + opp.getId())
+        mockMvc.perform(get("/api/requisitions/" + opp.getId())
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "admin@test.com")
                         .subject("admin@test.com"))
@@ -391,7 +397,7 @@ public class RequisitionControllerIntegrationTest {
                 .openOpportunityDate(LocalDateTime.now())
                 .build());
 
-        mockMvc.perform(get("/requisitions/" + opp.getId())
+        mockMvc.perform(get("/api/requisitions/" + opp.getId())
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "other@test.com")
                         .subject("other@test.com"))))

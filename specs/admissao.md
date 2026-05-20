@@ -51,3 +51,10 @@ O endpoint `GET /requisitions/{id}/candidates` permite que o gestor visualize os
     - O usuário deve ser o solicitante (`requester`) da vaga OU possuir permissão `view_all_requests`/`ROLE_ADMIN`.
     - A vaga deve estar com o status "Aprovada".
 - **Retorno**: Lista de `CandidateResponseDTO`.
+
+### 3.3. Motivos de Oportunidade
+O endpoint `GET /api/opportunity-motives` permite consultar os motivos disponíveis para abertura de uma vaga.
+
+- **Retorno**: Lista de objetos `DhoOpportunityMotive` contendo `id`, `name` e `description`.
+- **Acesso**: Requer usuário autenticado.
+

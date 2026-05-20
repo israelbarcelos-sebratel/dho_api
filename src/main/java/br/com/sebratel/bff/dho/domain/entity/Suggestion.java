@@ -35,6 +35,10 @@ public class Suggestion {
     @Column(length = 512)
     private String email;
 
+    @Column(name = "email_hash", length = 64)
+    private String emailHash;
+
+
     @OneToMany(mappedBy = "suggestion")
     private List<SuggestionVote> votes;
 }
