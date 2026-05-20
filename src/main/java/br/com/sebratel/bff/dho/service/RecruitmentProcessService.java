@@ -76,6 +76,8 @@ public class RecruitmentProcessService {
     @Transactional public void moveToTechnicalTest(Integer id, TechnicalTestRequestDTO dto) { workflowService.moveToTechnicalTest(id, dto); }
     @Transactional public void moveToScreening(Integer id) { workflowService.moveToScreening(id); }
     @Transactional public void moveToFinalDecision(Integer id) { workflowService.moveToFinalDecision(id); }
+    @Transactional public void moveToAwaitingDocuments(Integer id) { workflowService.moveToAwaitingDocuments(id); }
+    @Transactional public void moveToOnboarding(Integer id) { workflowService.moveToOnboarding(id); }
     @Transactional public void managerDecision(Integer id, ManagerDecisionDTO dto) { workflowService.managerDecision(id, dto); }
     @Transactional public void sendProposal(Integer id) { workflowService.sendProposal(id); }
     @Transactional public void candidateDecision(Integer id, CandidateDecisionDTO dto) { workflowService.candidateDecision(id, dto); }

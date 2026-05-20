@@ -109,6 +109,22 @@ public class RecruitmentProcessController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/{id}/move-to-awaiting-documents")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    @Operation(summary = "Mover para aguardando documentos", description = "Altera a etapa do processo para Aguardando documentos após o envio da proposta.")
+    public ResponseEntity<Void> moveToAwaitingDocuments(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        recruitmentProcessService.moveToAwaitingDocuments(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/move-to-onboarding")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
+    @Operation(summary = "Mover para onboarding", description = "Altera a etapa do processo para Onboarding após a entrega dos documentos.")
+    public ResponseEntity<Void> moveToOnboarding(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        recruitmentProcessService.moveToOnboarding(id);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/{id}/manager-decision")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).reject_candidate.name())")
     @Operation(summary = "Decisão do gestor", description = "Registra o feedback/decisão do gestor sobre o candidato. O processo deve estar no estágio de Decisão Final.")

@@ -29,7 +29,12 @@ public class RecruitmentProcessWorkflowService {
     private final DhoProcessStatusRepository processStatusRepository;
     private final DhoProcessStageRepository processStageRepository;
     private final PeopleRepository peopleRepository;
-    private final OpportunityRepository opportunityRepository;
+    private final ApplicationContext applicationContext;
+
+    private ProcessState getCurrentState(RecruitmentProcess process) {
+        String stageName = process.getProcessStage().getName();
+        return (ProcessState) applicationContext.getBean(stageName + "State");
+    }
 
     @Transactional
     public void approve(Integer id, OpportunityApprovalDTO dto) {
@@ -70,20 +75,16 @@ public class RecruitmentProcessWorkflowService {
     @Transactional
     public void moveToInterview(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Triagem".equals(process.getProcessStage().getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Triagem para ir para Entrevista");
-        }
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        getCurrentState(process).moveToInterview(process);
         updateStage(id, "Entrevista");
     }
 
     @Transactional
     public void moveToTechnicalTest(Integer id, TechnicalTestRequestDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Entrevista".equals(process.getProcessStage().getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Entrevista para ir para Teste Técnico");
-        }
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        getCurrentState(process).moveToTechnicalTest(process, dto.reason());
         process.setRecruiterReport(dto.reason());
         updateStage(id, "Teste Técnico");
     }
@@ -91,11 +92,8 @@ public class RecruitmentProcessWorkflowService {
     @Transactional
     public void moveToScreening(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-
-        if (!"Banco de Talentos".equals(process.getProcessStage().getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar no Banco de Talentos para ir para Triagem");
-        }
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        getCurrentState(process).moveToScreening(process);
         updateStage(id, "Triagem");
     }
 
@@ -103,9 +101,7 @@ public class RecruitmentProcessWorkflowService {
     public void moveToFinalDecision(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
-        if (!"Teste Técnico".equals(process.getProcessStage().getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Candidato deve estar em Teste Técnico para ir para Decisão Final");
-        }
+        getCurrentState(process).moveToFinalDecision(process);
         updateStage(id, "Decisão Final");
         updateStatus(id, "Aguardando aprovação", null);
     }
@@ -113,10 +109,8 @@ public class RecruitmentProcessWorkflowService {
     @Transactional
     public void managerDecision(Integer id, ManagerDecisionDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
-        if (!"Decisão Final".equals(process.getProcessStage().getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do gestor só pode ser tomada no estágio de Decisão Final");
-        }
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        getCurrentState(process).managerDecision(process, dto.isApproved());
         
         if (dto.isApproved()) {
             updateStatus(id, "Aprovado", dto.getReason());
@@ -144,20 +138,47 @@ public class RecruitmentProcessWorkflowService {
     @Transactional
     public void sendProposal(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        
         if (!"Aprovado".equals(process.getProcessStatus().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proposta só pode ser enviada após aprovação do gestor");
         }
+        
+        getCurrentState(process).sendProposal(process);
         updateStatus(id, "Enviada Proposta", null);
+    }
+
+    @Transactional
+    public void moveToAwaitingDocuments(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        
+        getCurrentState(process).moveToAwaitingDocuments(process);
+        updateStage(id, "Aguardando documentos");
+    }
+
+    @Transactional
+    public void moveToOnboarding(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        
+        getCurrentState(process).moveToOnboarding(process);
+        updateStage(id, "Onboarding");
     }
 
     @Transactional
     public void candidateDecision(Integer id, CandidateDecisionDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        
+        if (dto.isAccepted()) {
+            getCurrentState(process).candidateDecision(process, true);
+        }
+
         if (!"Enviada Proposta".equals(process.getProcessStatus().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do candidato só pode ser tomada após envio da proposta");
         }
+        
         String statusName = dto.isAccepted() ? "Finalizado" : "Recusada pelo candidato";
         updateStatus(id, statusName, dto.getReason());
     }
