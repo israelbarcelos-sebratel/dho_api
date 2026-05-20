@@ -48,10 +48,7 @@ public class OpportunityPipelineService {
         List<RecruitmentProcess> processes = recruitmentProcessRepository.findByOpportunityId(opp.getId());
         
         List<OpportunityPipelineResponseDTO.RecruitmentProcessPipelineDTO> processDTOs = processes.stream()
-                .filter(rp -> {
-                    String status = opportunityMapper.mapName(rp.getProcessStatus(), DhoProcessStatus::getName);
-                    return status != null && !List.of("Cancelado", "Recusado", "Finalizado", "Contratado", "Reprovado", "Desistência").contains(status);
-                })
+                .filter(rp -> rp.getCandidate() != null)
                 .map(rp -> OpportunityPipelineResponseDTO.RecruitmentProcessPipelineDTO.builder()
                         .id(rp.getId())
                         .processStageName(opportunityMapper.mapName(rp.getProcessStage(), DhoProcessStage::getName))

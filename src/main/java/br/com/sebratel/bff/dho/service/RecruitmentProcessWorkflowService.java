@@ -159,10 +159,6 @@ public class RecruitmentProcessWorkflowService {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         
-        if (!"Aprovado".equals(process.getProcessStatus().getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proposta só pode ser enviada após aprovação do gestor");
-        }
-        
         getCurrentState(process).sendProposal(process);
         updateStatus(process, "Enviada Proposta", null);
     }

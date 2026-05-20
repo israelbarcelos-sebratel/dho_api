@@ -55,4 +55,5 @@ curl --location 'http://localhost:8080/api/opportunities/pipeline' \
 ## 5. Regras de Negócio Aplicadas
 - Retorna apenas oportunidades com status **"Aprovada"**.
 - Filtra automaticamente pelo e-mail do usuário autenticado (vinculado ao campo `responsible_recruiter_id`).
+- Retorna **todos** os candidatos vinculados à oportunidade, incluindo aqueles em estados finais ou negativos (Reprovado, Recusado, Cancelado, etc.), para que o recrutador tenha visibilidade total do histórico da pipeline.
 - Se o recrutador não tiver vagas atribuídas, retorna uma lista vazia `[]`.
