@@ -11,6 +11,9 @@ import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.PeopleRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.dto.*;
+import br.com.sebratel.bff.dho.service.workflow.state.ProcessState;
+import org.springframework.context.ApplicationContext;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
