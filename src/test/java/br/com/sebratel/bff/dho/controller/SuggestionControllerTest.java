@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,16 +36,16 @@ class SuggestionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private SuggestionService suggestionService;
 
-    @MockBean
+    @MockitoBean
     private PeopleRepository peopleRepository;
 
-    @MockBean
+    @MockitoBean
     private DhoRoleRepository roleRepository;
 
-    @MockBean
+    @MockitoBean
     private DhoPermissionRepository permissionRepository;
 
     @Autowired
@@ -58,8 +58,8 @@ class SuggestionControllerTest {
 
         mockMvc.perform(get("/api/suggestions"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("0.id").value(1L))
-                .andExpect(jsonPath("0.title").value("Title"));
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].title").value("Title"));
     }
 
     @Test
