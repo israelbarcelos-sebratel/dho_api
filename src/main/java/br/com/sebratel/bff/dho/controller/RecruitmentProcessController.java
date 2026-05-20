@@ -88,7 +88,9 @@ public class RecruitmentProcessController {
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
     @Operation(summary = "Mover para teste técnico", description = "Altera a etapa do processo para Teste Técnico. Requer parecer da entrevista.")
     public ResponseEntity<Void> moveToTechnicalTest(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id, @RequestBody @Valid TechnicalTestRequestDTO dto) {
+        log.info("Recebida requisição para mover para teste técnico. Processo ID: {}. Parecer: {}", id, dto.reason());
         recruitmentProcessService.moveToTechnicalTest(id, dto);
+        log.info("Candidato movido para teste técnico com sucesso. Processo ID: {}", id);
         return ResponseEntity.ok().build();
     }
 

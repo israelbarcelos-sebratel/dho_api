@@ -41,23 +41,29 @@ public class RecruitmentProcessWorkflowService {
 
     @Transactional
     public void approve(Integer id, OpportunityApprovalDTO dto) {
-        updateStatus(id, "Aprovado", null);
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        updateStatus(process, "Aprovado", null);
     }
 
     @Transactional
     public void refuse(Integer id, InterviewDecisionDTO dto) {
-        updateStatus(id, "Reprovado", dto.reason());
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        updateStatus(process, "Reprovado", dto.reason());
     }
 
     @Transactional
     public void withdraw(Integer id) {
-        updateStatus(id, "Desistência", null);
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+        updateStatus(process, "Desistência", null);
     }
 
     @Transactional
     public void hire(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo de recrutamento não encontrado"));
         
         validateOpportunityApproved(process);
 
@@ -80,7 +86,7 @@ public class RecruitmentProcessWorkflowService {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         getCurrentState(process).moveToInterview(process);
-        updateStage(id, "Entrevista");
+        updateStage(process, "Entrevista");
     }
 
     @Transactional
@@ -89,7 +95,7 @@ public class RecruitmentProcessWorkflowService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         getCurrentState(process).moveToTechnicalTest(process, dto.reason());
         process.setRecruiterReport(dto.reason());
-        updateStage(id, "Teste Técnico");
+        updateStage(process, "Teste Técnico");
     }
 
     @Transactional
@@ -97,7 +103,7 @@ public class RecruitmentProcessWorkflowService {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         getCurrentState(process).moveToScreening(process);
-        updateStage(id, "Triagem");
+        updateStage(process, "Triagem");
     }
 
     @Transactional
@@ -105,8 +111,8 @@ public class RecruitmentProcessWorkflowService {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         getCurrentState(process).moveToFinalDecision(process);
-        updateStage(id, "Decisão Final");
-        updateStatus(id, "Aguardando aprovação", null);
+        updateStage(process, "Decisão Final");
+        updateStatus(process, "Aguardando aprovação", null);
     }
 
     @Transactional
@@ -116,25 +122,25 @@ public class RecruitmentProcessWorkflowService {
         getCurrentState(process).managerDecision(process, dto.isApproved());
         
         if (dto.isApproved()) {
-            updateStatus(id, "Aprovado", dto.getReason());
-            updateStage(id, "Aprovado");
+            updateStatus(process, "Aprovado", dto.getReason());
+            updateStage(process, "Aprovado");
         } else {
-            updateStatus(id, "Reprovado", dto.getReason());
+            updateStatus(process, "Reprovado", dto.getReason());
         }
     }
 
     @Transactional
     public void cancelManagerDecision(Integer id) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         
         String currentStage = process.getProcessStage().getName();
         if (!"Decisão Final".equals(currentStage) && !"Aprovado".equals(currentStage)) {
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cancelamento de decisão só é permitido para processos em Decisão Final ou Aprovado");
         }
 
-        updateStage(id, "Decisão Final");
-        updateStatus(id, "Aguardando aprovação", null);
+        updateStage(process, "Decisão Final");
+        updateStatus(process, "Aguardando aprovação", null);
     }
 
 
@@ -148,7 +154,7 @@ public class RecruitmentProcessWorkflowService {
         }
         
         getCurrentState(process).sendProposal(process);
-        updateStatus(id, "Enviada Proposta", null);
+        updateStatus(process, "Enviada Proposta", null);
     }
 
     @Transactional
@@ -157,7 +163,7 @@ public class RecruitmentProcessWorkflowService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         
         getCurrentState(process).moveToAwaitingDocuments(process);
-        updateStage(id, "Aguardando documentos");
+        updateStage(process, "Aguardando documentos");
     }
 
     @Transactional
@@ -166,7 +172,7 @@ public class RecruitmentProcessWorkflowService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         
         getCurrentState(process).moveToOnboarding(process);
-        updateStage(id, "Onboarding");
+        updateStage(process, "Onboarding");
     }
 
     @Transactional
@@ -183,30 +189,25 @@ public class RecruitmentProcessWorkflowService {
         }
         
         String statusName = dto.isAccepted() ? "Finalizado" : "Recusada pelo candidato";
-        updateStatus(id, statusName, dto.getReason());
+        updateStatus(process, statusName, dto.getReason());
     }
 
     @Transactional
     public void updateStage(Integer id, RecruitmentProcessStageDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo de recrutamento não encontrado"));
 
-        DhoProcessStage stage = processStageRepository.findByName(dto.getStageName())
-                .orElseThrow(() -> new RuntimeException("Estágio '" + dto.getStageName() + "' não encontrado"));
-
-        process.setProcessStage(stage);
-        recruitmentProcessRepository.save(process);
+        updateStage(process, dto.getStageName());
     }
 
     @Transactional
     public void updateStatus(Integer id, RecruitmentProcessStatusDTO dto) {
-        updateStatus(id, dto.getStatusName(), null);
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo de recrutamento não encontrado"));
+        updateStatus(process, dto.getStatusName(), null);
     }
 
-    private void updateStage(Integer id, String stageName) {
-        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
-        
+    private void updateStage(RecruitmentProcess process, String stageName) {
         validateOpportunityApproved(process);
 
         DhoProcessStage stage = processStageRepository.findByName(stageName)
@@ -216,11 +217,9 @@ public class RecruitmentProcessWorkflowService {
         recruitmentProcessRepository.save(process);
     }
 
-    private void updateStatus(Integer id, String statusName, String report) {
-        log.info("Iniciando atualização de status para '{}\' no processo ID: {}", statusName, id);
-        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Processo de recrutamento não encontrado"));
-
+    private void updateStatus(RecruitmentProcess process, String statusName, String report) {
+        log.info("Iniciando atualização de status para '{}' no processo ID: {}", statusName, process.getId());
+        
         validateOpportunityApproved(process);
 
         DhoProcessStatus status = processStatusRepository.findByName(statusName)
@@ -229,7 +228,7 @@ public class RecruitmentProcessWorkflowService {
         process.setProcessStatus(status);
         process.setInterviewReport(report);
         recruitmentProcessRepository.save(process);
-        log.info("Status do processo ID: {} atualizado com sucesso para '{}\'", id, statusName);
+        log.info("Status do processo ID: {} atualizado com sucesso para '{}'", process.getId(), statusName);
     }
 
     private void validateOpportunityApproved(RecruitmentProcess process) {
