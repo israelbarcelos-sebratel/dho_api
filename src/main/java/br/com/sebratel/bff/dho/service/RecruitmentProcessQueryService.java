@@ -112,7 +112,7 @@ public class RecruitmentProcessQueryService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
 
         List<String> orderedStages = List.of(
-                "Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Decisão Final", "Aprovado"
+                "Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Aguardando aprovação", "Aprovado"
         );
 
         String currentStageName = process.getProcessStage().getName();
