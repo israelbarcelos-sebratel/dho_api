@@ -68,7 +68,7 @@ public class OpportunityService {
 
     @Transactional
     public OpportunityResponseDTO create(OpportunityRequestDTO dto, Authentication authentication) {
-        DhoOpportunityStatus pendingStatus = statusRepository.findByName("Pendente")
+        DhoOpportunityStatus pendingStatus = statusRepository.findByNameIgnoreCase("Pendente")
                 .orElseThrow(() -> new RuntimeException("Status 'Pendente' não encontrado"));
 
         People requester = Optional.ofNullable(authentication)

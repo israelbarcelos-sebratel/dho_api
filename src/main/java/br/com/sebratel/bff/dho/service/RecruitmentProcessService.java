@@ -52,10 +52,10 @@ public class RecruitmentProcessService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Este candidato já está vinculado a esta oportunidade");
         }
 
-        DhoProcessStatus initialStatus = processStatusRepository.findByName("Em andamento")
+        DhoProcessStatus initialStatus = processStatusRepository.findByNameIgnoreCase("Em andamento")
                 .orElseThrow(() -> new RuntimeException("Status 'Em andamento' não encontrado no banco"));
 
-        DhoProcessStage initialStage = processStageRepository.findByName("Banco de Talentos")
+        DhoProcessStage initialStage = processStageRepository.findByNameIgnoreCase("Banco de Talentos")
                 .orElseThrow(() -> new RuntimeException("Estágio 'Banco de Talentos' não encontrado no banco"));
 
         RecruitmentProcess process = RecruitmentProcess.builder()

@@ -105,7 +105,7 @@ public class RecruitmentProcessController {
 
     @PostMapping("/{id}/move-to-final-decision")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).approve_candidate.name())")
-    @Operation(summary = "Mover para decisão final", description = "Altera a etapa do processo para Decisão Final e o status para 'Aguardando aprovação', permitindo que o gestor decida sobre a contratação.")
+    @Operation(summary = "Mover para decisão final", description = "Altera a etapa do processo para 'Aguardando aprovação' e o status para 'Aguardando aprovação', permitindo que o gestor decida sobre a contratação.")
     public ResponseEntity<Void> moveToFinalDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
         recruitmentProcessService.moveToFinalDecision(id);
         return ResponseEntity.ok().build();
@@ -139,7 +139,7 @@ public class RecruitmentProcessController {
 
     @PostMapping("/{id}/cancel-decision")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).reject_candidate.name())")
-    @Operation(summary = "Cancelar decisão do gestor", description = "Reverte a decisão tomada pelo gestor, voltando o processo para o estágio de Decisão Final e status Aguardando aprovação.")
+    @Operation(summary = "Cancelar decisão do gestor", description = "Reverte a decisão tomada pelo gestor, voltando o processo para o estágio e status 'Aguardando aprovação'.")
     public ResponseEntity<Void> cancelManagerDecision(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
         recruitmentProcessService.cancelManagerDecision(id);
         return ResponseEntity.ok().build();

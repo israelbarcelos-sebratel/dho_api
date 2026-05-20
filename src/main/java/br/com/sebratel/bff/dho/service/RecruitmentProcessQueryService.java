@@ -126,9 +126,11 @@ public class RecruitmentProcessQueryService {
 
             if ("Finalizado".equals(currentStatusName) || "Contratado".equals(currentStatusName)) {
                 stageStatus = "CONCLUIDO";
-            } else if ("Desistência".equals(currentStatusName)) {
+            } else if ("Aguardando aprovação".equalsIgnoreCase(currentStatusName)) {
+                stageStatus = (i < currentStageIndex) ? "CONCLUIDO" : (i == currentStageIndex ? "EM_ANDAMENTO" : "PENDENTE");
+            } else if ("Desistência".equalsIgnoreCase(currentStatusName)) {
                 stageStatus = (i < currentStageIndex) ? "CONCLUIDO" : (i == currentStageIndex ? "DESISTENCIA" : "PENDENTE");
-            } else if (currentStatusName.toLowerCase().contains("recusado") || "Reprovado".equals(currentStatusName)) {
+            } else if (currentStatusName.toLowerCase().contains("recusado") || "Reprovado".equalsIgnoreCase(currentStatusName)) {
                 stageStatus = (i < currentStageIndex) ? "CONCLUIDO" : (i == currentStageIndex ? "RECUSADO" : "PENDENTE");
             } else {
                 stageStatus = (i < currentStageIndex) ? "CONCLUIDO" : (i == currentStageIndex ? "EM_ANDAMENTO" : "PENDENTE");

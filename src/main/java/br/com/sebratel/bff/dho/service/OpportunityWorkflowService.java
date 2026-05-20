@@ -32,11 +32,11 @@ public class OpportunityWorkflowService {
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
-        if ("Aprovada".equals(opportunity.getOpportunityStatus().getName())) {
+        if ("Aprovada".equalsIgnoreCase(opportunity.getOpportunityStatus().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esta oportunidade já está aprovada");
         }
 
-        DhoOpportunityStatus approvedStatus = statusRepository.findByName("Aprovada")
+        DhoOpportunityStatus approvedStatus = statusRepository.findByNameIgnoreCase("Aprovada")
                 .orElseThrow(() -> new RuntimeException("Status 'Aprovada' não encontrado"));
 
         opportunity.setOpportunityStatus(approvedStatus);
@@ -56,7 +56,7 @@ public class OpportunityWorkflowService {
                     return new RuntimeException("Oportunidade não encontrada");
                 });
 
-        DhoOpportunityStatus refusedStatus = statusRepository.findByName("Recusada")
+        DhoOpportunityStatus refusedStatus = statusRepository.findByNameIgnoreCase("Recusada")
                 .orElseThrow(() -> {
                     log.error("[OpportunityWorkflowService] refuse - Status 'Recusada' not found in database");
                     return new RuntimeException("Status 'Recusada' não encontrado");
@@ -75,7 +75,7 @@ public class OpportunityWorkflowService {
         Opportunity opportunity = opportunityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Oportunidade não encontrada"));
 
-        DhoOpportunityStatus finalizedStatus = statusRepository.findByName("Finalizada")
+        DhoOpportunityStatus finalizedStatus = statusRepository.findByNameIgnoreCase("Finalizada")
                 .orElseThrow(() -> new RuntimeException("Status 'Finalizada' não encontrado"));
 
         opportunity.setOpportunityStatus(finalizedStatus);

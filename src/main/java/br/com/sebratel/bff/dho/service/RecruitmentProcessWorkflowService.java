@@ -67,7 +67,7 @@ public class RecruitmentProcessWorkflowService {
         
         validateOpportunityApproved(process);
 
-        DhoProcessStatus status = processStatusRepository.findByName("Contratado")
+        DhoProcessStatus status = processStatusRepository.findByNameIgnoreCase("Contratado")
                 .orElseThrow(() -> new RuntimeException("Status 'Contratado' não encontrado"));
 
         process.setProcessStatus(status);
@@ -111,7 +111,7 @@ public class RecruitmentProcessWorkflowService {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         getCurrentState(process).moveToFinalDecision(process);
-        updateStage(process, "Decisão Final");
+        updateStage(process, "Aguardando aprovação");
         updateStatus(process, "Aguardando aprovação", null);
     }
 
@@ -135,11 +135,11 @@ public class RecruitmentProcessWorkflowService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         
         String currentStage = process.getProcessStage().getName();
-        if (!"Decisão Final".equals(currentStage) && !"Aprovado".equals(currentStage)) {
-             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cancelamento de decisão só é permitido para processos em Decisão Final ou Aprovado");
+        if (!"Aguardando aprovação".equals(currentStage) && !"Aprovado".equals(currentStage)) {
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cancelamento de decisão só é permitido para processos em Aguardando aprovação ou Aprovado");
         }
 
-        updateStage(process, "Decisão Final");
+        updateStage(process, "Aguardando aprovação");
         updateStatus(process, "Aguardando aprovação", null);
     }
 
@@ -210,7 +210,7 @@ public class RecruitmentProcessWorkflowService {
     private void updateStage(RecruitmentProcess process, String stageName) {
         validateOpportunityApproved(process);
 
-        DhoProcessStage stage = processStageRepository.findByName(stageName)
+        DhoProcessStage stage = processStageRepository.findByNameIgnoreCase(stageName)
                 .orElseThrow(() -> new RuntimeException("Estágio '" + stageName + "' não encontrado"));
 
         process.setProcessStage(stage);
@@ -222,7 +222,7 @@ public class RecruitmentProcessWorkflowService {
         
         validateOpportunityApproved(process);
 
-        DhoProcessStatus status = processStatusRepository.findByName(statusName)
+        DhoProcessStatus status = processStatusRepository.findByNameIgnoreCase(statusName)
                 .orElseThrow(() -> new RuntimeException("Status '" + statusName + "' não encontrado"));
 
         process.setProcessStatus(status);
