@@ -83,7 +83,13 @@ public class RecruitmentProcessServiceTest {
 
     @Test
     void getIndicators_ShouldWork() {
-        when(queryService.getIndicators()).thenReturn(new RecruitmentIndicatorsDTO(0L, 0L, 0L, 0L, 0L, 0L, null));
+        RecruitmentIndicatorsDTO indicators = RecruitmentIndicatorsDTO.builder()
+                .openVacancies(5L)
+                .approvedHiresLastMonth(2L)
+                .pendingApprovals(3L)
+                .averageHiringTimeLastYear(10.0)
+                .build();
+        when(queryService.getIndicators()).thenReturn(indicators);
         assertNotNull(recruitmentProcessService.getIndicators());
         verify(queryService).getIndicators();
     }
