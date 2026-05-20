@@ -304,7 +304,13 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         opp = opportunityRepository.save(opp);
 
+        String reason = "A".repeat(200);
+        String body = String.format("{\"opportunityDate\": \"%s\", \"reason\": \"%s\"}", 
+            LocalDateTime.now().plusDays(1), reason);
+
         mockMvc.perform(post("/api/opportunities/" + opp.getId() + "/approve")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_contract_process"))))
                 .andExpect(status().isBadRequest());
     }
