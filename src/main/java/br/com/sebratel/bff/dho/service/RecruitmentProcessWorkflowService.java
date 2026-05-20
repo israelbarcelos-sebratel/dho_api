@@ -13,7 +13,6 @@ import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
 import br.com.sebratel.bff.dho.dto.*;
 import br.com.sebratel.bff.dho.service.workflow.state.ProcessState;
 import org.springframework.context.ApplicationContext;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,16 +36,7 @@ public class RecruitmentProcessWorkflowService {
 
     private ProcessState getCurrentState(RecruitmentProcess process) {
         String stageName = process.getProcessStage().getName();
-        try {
-            return (ProcessState) applicationContext.getBean(stageName + "State");
-        } catch (NoSuchBeanDefinitionException e) {
-            log.warn("Bean não encontrado para o estágio '{}State', tentando busca robusta por nome do estágio", stageName);
-            return applicationContext.getBeansOfType(ProcessState.class).values().stream()
-                    .filter(state -> stageName.equalsIgnoreCase(state.getStageName()))
-                    .findFirst()
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, 
-                        "Nenhum bean de estado configurado para o estágio: " + stageName));
-        }
+        return (ProcessState) applicationContext.getBean(stageName + "State");
     }
 
     @Transactional
