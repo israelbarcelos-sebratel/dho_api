@@ -55,7 +55,7 @@ public class Opportunity {
     private People replacedPerson;
 
     @ManyToOne
-    @JoinColumn(name = "base_origin_id")
+    @JoinColumn(name = "base_origin_id", nullable = false)
     private DhoBaseOrigin baseOrigin;
 
     @ManyToOne
