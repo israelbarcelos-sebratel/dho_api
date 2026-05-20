@@ -3,7 +3,7 @@ package br.com.sebratel.bff.dho.service.workflow.state;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import org.springframework.stereotype.Component;
 
-@Component("Decisão FinalState")
+@Component("Aguardando aprovaçãoState")
 public class FinalDecisionState extends AbstractProcessState {
     @Override
     public void managerDecision(RecruitmentProcess process, boolean approved) {
@@ -12,6 +12,6 @@ public class FinalDecisionState extends AbstractProcessState {
 
     @Override
     public String getStageName() {
-        return "Decisão Final";
+        return "Aguardando aprovação";
     }
 }
