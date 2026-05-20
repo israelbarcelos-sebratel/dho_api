@@ -172,6 +172,10 @@ public class RecruitmentProcessWorkflowService {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         
+        if (!"Enviada Proposta".equals(process.getProcessStatus().getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Movimentação para aguardando documentos só pode ser feita após o envio da proposta");
+        }
+
         getCurrentState(process).moveToAwaitingDocuments(process);
         updateStage(process, "Aguardando documentos");
     }

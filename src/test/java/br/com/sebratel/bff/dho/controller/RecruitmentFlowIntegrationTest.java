@@ -40,7 +40,7 @@ public class RecruitmentFlowIntegrationTest {
     void setup() {
         String[] statuses = {"Pendente", "Aprovada", "Em andamento", "Aprovado", "Reprovado", "Enviada Proposta", "Finalizado", "Recusada pelo candidato", "Recusada", "Aguardando aprovação"};
         for (String s : statuses) createStatusIfNotExist(s);
-        String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Aguardando aprovação", "Aprovado"};
+        String[] stages = {"Banco de Talentos", "Triagem", "Entrevista", "Teste Técnico", "Aguardando aprovação", "Aprovado", "Aguardando documentos", "Onboarding"};
         for (String s : stages) createStageIfNotExist(s);
     }
 
@@ -73,6 +73,11 @@ public class RecruitmentFlowIntegrationTest {
         validateStatus(id, "Aguardando aprovação");
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/proposal").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
+        validateStatus(id, "Enviada Proposta");
+
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-awaiting-documents").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-onboarding").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
+
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
         validateStatus(id, "Finalizado");
     }
@@ -93,12 +98,15 @@ public class RecruitmentFlowIntegrationTest {
     }
 
     private Integer createPendingOpportunity() {
+        DhoBaseOrigin baseOrigin = DhoBaseOrigin.builder().name("Origin Pending").build();
+        entityManager.persist(baseOrigin);
         DhoPosition pos = DhoPosition.builder().name("Dev Pending").build(); 
         entityManager.persist(pos);
         DhoOpportunityStatus status = (DhoOpportunityStatus) entityManager.createQuery("SELECT s FROM DhoOpportunityStatus s WHERE s.name = 'Pendente'").getSingleResult();
         Opportunity opp = Opportunity.builder()
                 .position(pos)
                 .opportunityStatus(status)
+                .baseOrigin(baseOrigin)
                 .openOpportunityDate(LocalDateTime.now().plusDays(1))
                 .build();
         return opportunityRepository.save(opp).getId();
@@ -135,9 +143,11 @@ public class RecruitmentFlowIntegrationTest {
     }
 
     private Integer createOpportunity() {
+        DhoBaseOrigin baseOrigin = DhoBaseOrigin.builder().name("Origin").build();
+        entityManager.persist(baseOrigin);
         DhoPosition pos = DhoPosition.builder().name("Dev").build(); entityManager.persist(pos);
         DhoOpportunityStatus status = (DhoOpportunityStatus) entityManager.createQuery("SELECT s FROM DhoOpportunityStatus s WHERE s.name = 'Aprovada'").getSingleResult();
-        Opportunity opp = Opportunity.builder().position(pos).opportunityStatus(status).openOpportunityDate(LocalDateTime.now().plusDays(1)).build();
+        Opportunity opp = Opportunity.builder().position(pos).opportunityStatus(status).baseOrigin(baseOrigin).openOpportunityDate(LocalDateTime.now().plusDays(1)).build();
         return opportunityRepository.save(opp).getId();
     }
     @Test

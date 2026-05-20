@@ -11,6 +11,11 @@ public class ApprovedState extends AbstractProcessState {
     }
 
     @Override
+    public void moveToAwaitingDocuments(RecruitmentProcess process) {
+        // Transição permitida
+    }
+
+    @Override
     public String getStageName() {
         return "Aprovado";
     }
