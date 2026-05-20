@@ -55,12 +55,14 @@ class SuggestionServiceTest {
                 .title("Test Title")
                 .description("Test Description")
                 .email("encrypted-email")
+                .emailHash("hashed-email")
                 .votes(new ArrayList<>())
                 .build();
 
         suggestionRequestDTO = new SuggestionRequestDTO("Test Title", "Test Description");
         
         lenient().when(encryptionUtil.encrypt(anyString())).thenReturn("encrypted-email");
+        lenient().when(hashUtil.hash(anyString())).thenReturn("hashed-email");
     }
 
     @Test
@@ -154,13 +156,12 @@ class SuggestionServiceTest {
         String voterEmail = "voter@sebratel.com.br";
         VoteRequestDTO voteDTO = new VoteRequestDTO(1);
         when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
-        when(encryptionUtil.encrypt(voterEmail)).thenReturn("encrypted-voter-email");
-        when(hashUtil.hash(anyString())).thenReturn("hashed-email");
+        when(hashUtil.hash(voterEmail)).thenReturn("different-hash");
         when(suggestionVoteRepository.findBySuggestionAndEmail(any(), anyString())).thenReturn(Optional.empty());
 
         suggestionService.vote(1L, voteDTO, voterEmail);
 
-        verify(hashUtil, times(1)).hash(voterEmail);
+        verify(hashUtil, atLeastOnce()).hash(voterEmail);
         verify(suggestionVoteRepository, times(1)).save(any());
     }
 
@@ -168,7 +169,7 @@ class SuggestionServiceTest {
     void vote_WhenUserVotesOnOwnSuggestion_ShouldThrowException() {
         VoteRequestDTO voteDTO = new VoteRequestDTO(1);
         when(suggestionRepository.findById(1L)).thenReturn(Optional.of(suggestion));
-        when(encryptionUtil.encrypt(testEmail)).thenReturn("encrypted-email");
+        when(hashUtil.hash(testEmail)).thenReturn("hashed-email");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, 
             () -> suggestionService.vote(1L, voteDTO, testEmail));

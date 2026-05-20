@@ -44,6 +44,7 @@ public class SuggestionService {
                 .title(dto.title())
                 .description(dto.description())
                 .email(encryptionUtil.encrypt(email))
+                .emailHash(hashUtil.hash(email))
                 .build();
         
         return SuggestionResponseDTO.fromEntity(suggestionRepository.save(suggestion));
@@ -56,6 +57,7 @@ public class SuggestionService {
         suggestion.setTitle(dto.title());
         suggestion.setDescription(dto.description());
         suggestion.setEmail(encryptionUtil.encrypt(email));
+        suggestion.setEmailHash(hashUtil.hash(email));
         
         return SuggestionResponseDTO.fromEntity(suggestionRepository.save(suggestion));
     }
@@ -71,14 +73,12 @@ public class SuggestionService {
         Suggestion suggestion = suggestionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sugestão não encontrada"));
 
-        String encryptedVoterEmail = encryptionUtil.encrypt(email);
-        if (suggestion.getEmail().equals(encryptedVoterEmail)) {
+        String voterEmailHash = hashUtil.hash(email);
+        if (voterEmailHash.equals(suggestion.getEmailHash())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O usuário não pode votar na sua própria sugestão");
         }
 
-        String hashedEmail = hashUtil.hash(email);
-        
-        Optional<SuggestionVote> existingVote = suggestionVoteRepository.findBySuggestionAndEmail(suggestion, hashedEmail);
+        Optional<SuggestionVote> existingVote = suggestionVoteRepository.findBySuggestionAndEmail(suggestion, voterEmailHash);
         
         String requestedVoteType = dto.vote() > 0 ? "POSITIVO" : "NEGATIVO";
 
@@ -96,7 +96,7 @@ public class SuggestionService {
             // Se não existe voto, cria um novo
             SuggestionVote vote = SuggestionVote.builder()
                     .suggestion(suggestion)
-                    .email(hashedEmail)
+                    .email(voterEmailHash)
                     .vote(requestedVoteType)
                     .build();
             suggestionVoteRepository.save(vote);
