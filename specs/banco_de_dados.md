@@ -55,7 +55,8 @@ Define permissões granulares para funcionalidades do sistema.
 | `description` | String | O que a permissão permite fazer. |
 
 ### 1.4. `people_roles` (Tabela de Ligação)
-Relaciona pessoas a papéis (roles) - Muitos-para-Muitos.
+Relaciona pessoas a papéis (roles) - Relacionamento Muitos-para-Muitos (N:M).
+*Nota: Uma pessoa pode desempenhar múltiplos papéis no sistema, e cada papel (ex: ADMIN) pode ser atribuído a várias pessoas.*
 
 | Campo | Tipo | Descrição |
 |-------|------|-------------|

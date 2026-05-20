@@ -38,16 +38,16 @@ Represents individuals involved in the recruitment and organizational process (c
 | `id_resignation_type` | INT (FK) | Links to `resignation_type` |
 | `id_education` | INT (FK) | Links to `education` |
 | `id_situation` | INT (FK) | Links to `situation` |
+| `id_recruitment_source` | INT (FK) | Links to `recruitment_source` |
 
 ### 1.1. `people_roles` (Join Table)
-Links individuals to their roles (Many-to-Many).
+Links individuals to their roles (Many-to-Many). 
+*Note: A person can have multiple roles, and a role (e.g., ADMIN) is shared by multiple people.*
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `people_id` | INT (PK, FK) | Links to `people` |
 | `role_id` | INT (PK, FK) | Links to `roles` |
-
-| `id_recruitment_source` | INT (FK) | Links to `recruitment_source` |
 
 ---
 
