@@ -76,7 +76,7 @@ public class RecruitmentProcessServiceTest {
 
     @Test
     void refuse_ShouldWork() {
-        InterviewDecisionDTO dto = new InterviewDecisionDTO("A".repeat(200));
+        InterviewDecisionDTO dto = new InterviewDecisionDTO("A".repeat(50));
         recruitmentProcessService.refuse(1, dto);
         verify(workflowService).refuse(1, dto);
     }
@@ -96,14 +96,14 @@ public class RecruitmentProcessServiceTest {
 
     @Test
     void managerDecision_ShouldApproveAndMoveStage() {
-        ManagerDecisionDTO dto = new ManagerDecisionDTO(true, "A".repeat(200));
+        ManagerDecisionDTO dto = new ManagerDecisionDTO(true, "A".repeat(50));
         recruitmentProcessService.managerDecision(1, dto);
         verify(workflowService).managerDecision(1, dto);
     }
 
     @Test
     void managerDecision_ShouldReprove() {
-        ManagerDecisionDTO dto = new ManagerDecisionDTO(false, "A".repeat(200));
+        ManagerDecisionDTO dto = new ManagerDecisionDTO(false, "A".repeat(50));
         recruitmentProcessService.managerDecision(1, dto);
         verify(workflowService).managerDecision(1, dto);
     }

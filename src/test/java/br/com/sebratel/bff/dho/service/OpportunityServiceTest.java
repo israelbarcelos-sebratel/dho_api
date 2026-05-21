@@ -51,7 +51,7 @@ public class OpportunityServiceTest {
 
     @Test
     void shouldApproveOpportunity() {
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(200));
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(50));
         when(workflowService.approve(eq(1), any(OpportunityApprovalDTO.class))).thenReturn(OpportunityResponseDTO.builder().opportunityStatusName("Aprovada").build());
         
         OpportunityResponseDTO result = opportunityService.approve(1, dto);
@@ -63,7 +63,7 @@ public class OpportunityServiceTest {
 
     @Test
     void approve_ShouldThrowException_WhenAlreadyApproved() {
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(200));
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(50));
         when(workflowService.approve(eq(1), any(OpportunityApprovalDTO.class))).thenThrow(new ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST));
         
         assertThrows(ResponseStatusException.class, () -> opportunityService.approve(1, dto));
@@ -71,7 +71,7 @@ public class OpportunityServiceTest {
 
     @Test
     void shouldRefuseOpportunityWithValidJustification() {
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(200));
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(50));
         when(workflowService.refuse(eq(1), any(OpportunityApprovalDTO.class))).thenReturn(OpportunityResponseDTO.builder().opportunityStatusName("Recusada").build());
         
         OpportunityResponseDTO result = opportunityService.refuse(1, dto);

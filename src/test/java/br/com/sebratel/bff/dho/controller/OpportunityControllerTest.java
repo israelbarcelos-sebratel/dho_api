@@ -48,7 +48,7 @@ public class OpportunityControllerTest {
 
     @Test
     void shouldApproveOpportunity() throws Exception {
-        OpportunityApprovalDTO mockDto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(200));
+        OpportunityApprovalDTO mockDto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), "A".repeat(50));
         when(opportunityService.approve(eq(1), any(OpportunityApprovalDTO.class))).thenReturn(new OpportunityResponseDTO());
 
         mockMvc.perform(post("/api/opportunities/1/approve").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockDto)))
@@ -57,7 +57,7 @@ public class OpportunityControllerTest {
 
     @Test
     void shouldRefuseOpportunityWithValidJustification() throws Exception {
-        String justification = "A".repeat(200);
+        String justification = "A".repeat(50);
         OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
         
         when(opportunityService.refuse(eq(1), any(OpportunityApprovalDTO.class)))
@@ -70,7 +70,7 @@ public class OpportunityControllerTest {
     }
     @Test
     void shouldReproveOpportunityWithValidJustification() throws Exception {
-        String justification = "A".repeat(200);
+        String justification = "A".repeat(50);
         OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
         
         when(opportunityService.refuse(eq(1), any(OpportunityApprovalDTO.class)))
@@ -84,7 +84,7 @@ public class OpportunityControllerTest {
 
     @Test
     void shouldReturnBadRequestWhenReprovingWithShortJustification() throws Exception {
-        String justification = "Short justification";
+        String justification = "A".repeat(49);
         OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
         mockMvc.perform(post("/api/opportunities/1/reprove")
@@ -96,7 +96,7 @@ public class OpportunityControllerTest {
 
     @Test
     void shouldReturnBadRequestWhenRefusingWithShortJustification() throws Exception {
-        String justification = "Short justification";
+        String justification = "A".repeat(49);
         OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
         mockMvc.perform(post("/api/opportunities/1/refuse")
@@ -106,7 +106,7 @@ public class OpportunityControllerTest {
     }
     @Test
     void shouldFinalizeOpportunityWithValidJustification() throws Exception {
-        String justification = "A".repeat(200);
+        String justification = "A".repeat(50);
         OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
         when(opportunityService.finalize(eq(1), any(OpportunityApprovalDTO.class)))
@@ -120,7 +120,7 @@ public class OpportunityControllerTest {
 
     @Test
     void shouldReturnBadRequestWhenFinalizingWithShortJustification() throws Exception {
-        String justification = "Short justification";
+        String justification = "A".repeat(49);
         OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
 
         mockMvc.perform(post("/api/opportunities/1/finalize")

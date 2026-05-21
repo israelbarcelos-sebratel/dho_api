@@ -71,7 +71,7 @@ public class RecruitmentProcessControllerTest {
 
     @Test
     void refuse_ShouldReturnOk_WhenReportIsValid() throws Exception {
-        String longReport = "A".repeat(200);
+        String longReport = "A".repeat(50);
         InterviewDecisionDTO dto = new InterviewDecisionDTO(longReport);
         doNothing().when(recruitmentProcessService).refuse(eq(1), any(InterviewDecisionDTO.class));
 
@@ -83,7 +83,7 @@ public class RecruitmentProcessControllerTest {
 
     @Test
     void refuse_ShouldReturnBadRequest_WhenReportIsTooShort() throws Exception {
-        InterviewDecisionDTO dto = new InterviewDecisionDTO("Too short");
+        InterviewDecisionDTO dto = new InterviewDecisionDTO("A".repeat(49));
 
         mockMvc.perform(post(BASE_URL + "/1/refuse")
                         .contentType(MediaType.APPLICATION_JSON)
