@@ -212,16 +212,17 @@ public class RecruitmentProcessWorkflowService {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
         
-        if (dto.isAccepted()) {
-            getCurrentState(process).candidateDecision(process, true);
-        }
-
         if (!"Enviada Proposta".equals(process.getProcessStatus().getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Decisão do candidato só pode ser tomada após envio da proposta");
         }
-        
-        String statusName = dto.isAccepted() ? "Finalizado" : "Recusada pelo candidato";
-        updateStatus(process, statusName, dto.getReason());
+
+        if (dto.isAccepted()) {
+            getCurrentState(process).candidateDecision(process, true);
+            updateStatus(process, "Em andamento", dto.getReason());
+            updateStage(process, "Aguardando documentos");
+        } else {
+            updateStatus(process, "Recusada pelo candidato", dto.getReason());
+        }
     }
 
     @Transactional

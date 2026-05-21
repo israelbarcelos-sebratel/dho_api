@@ -80,7 +80,8 @@ public class RecruitmentFlowIntegrationTest {
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-onboarding").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
 
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
-        validateStatus(id, "Finalizado");
+        validateStage(id, "Aguardando documentos");
+        validateStatus(id, "Em andamento");
     }
     @Test
     void testReproveOpportunityFlow() throws Exception {
