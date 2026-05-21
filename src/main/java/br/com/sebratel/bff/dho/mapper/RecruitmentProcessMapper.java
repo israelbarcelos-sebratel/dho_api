@@ -26,6 +26,8 @@ public class RecruitmentProcessMapper {
                 .opportunityDate(Optional.ofNullable(process.getOpportunity())
                         .map(opp -> opp.getAcceptDate() != null ? opp.getAcceptDate() : (opp.getOpenOpportunityDate() != null ? opp.getOpenOpportunityDate() : java.time.LocalDateTime.now()))
                         .orElse(java.time.LocalDateTime.now()))
+                .startDate(process.getStartDate())
+                .endDate(process.getEndDate())
                 .build();
     }
 }

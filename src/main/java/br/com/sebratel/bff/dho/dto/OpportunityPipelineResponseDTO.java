@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -26,6 +27,7 @@ public class OpportunityPipelineResponseDTO {
         private String teamName;
         private String departmentName;
         private Integer numberOfVacancies;
+        private LocalDateTime openOpportunityDate;
 
         @JsonProperty("processess")
         private List<RecruitmentProcessPipelineDTO> processes;
@@ -39,6 +41,8 @@ public class OpportunityPipelineResponseDTO {
         private Integer id;
         private String processStageName;
         private String processStatusName;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
         private CandidatePipelineDTO candidate;
     }
 

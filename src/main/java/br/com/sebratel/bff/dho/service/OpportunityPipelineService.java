@@ -53,6 +53,8 @@ public class OpportunityPipelineService {
                         .id(rp.getId())
                         .processStageName(opportunityMapper.mapName(rp.getProcessStage(), DhoProcessStage::getName))
                         .processStatusName(opportunityMapper.mapName(rp.getProcessStatus(), DhoProcessStatus::getName))
+                        .startDate(rp.getStartDate())
+                        .endDate(rp.getEndDate())
                         .candidate(OpportunityPipelineResponseDTO.CandidatePipelineDTO.builder()
                                 .id(rp.getCandidate().getId())
                                 .name(rp.getCandidate().getName())
@@ -69,6 +71,7 @@ public class OpportunityPipelineService {
                 .teamName(opportunityMapper.mapName(opp.getTeam(), DhoTeam::getName))
                 .departmentName(opportunityMapper.mapName(opp.getDepartment(), DhoDepartment::getName))
                 .numberOfVacancies(opp.getNumberOfVacancies())
+                .openOpportunityDate(opp.getOpenOpportunityDate())
                 .processes(processDTOs)
                 .build();
 
