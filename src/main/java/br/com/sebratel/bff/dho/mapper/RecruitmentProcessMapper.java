@@ -18,12 +18,14 @@ public class RecruitmentProcessMapper {
                 .positionName(Optional.ofNullable(process.getOpportunity())
                         .map(opp -> Optional.ofNullable(opp.getPosition()).map(pos -> pos.getName()).orElse(null))
                         .orElse(null))
-                .processStatusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse(null))
-                .processStageName(Optional.ofNullable(process.getProcessStage()).map(stage -> stage.getName()).orElse(null))
+                .processStatusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse("Pendente"))
+                .processStageName(Optional.ofNullable(process.getProcessStage()).map(stage -> stage.getName()).orElse("Não iniciado"))
                 .opportunityId(Optional.ofNullable(process.getOpportunity()).map(opp -> opp.getId()).orElse(null))
                 .recruiterReport(process.getRecruiterReport())
                 .interviewReport(process.getInterviewReport())
-                .opportunityDate(Optional.ofNullable(process.getOpportunity()).map(Opportunity::getOpenOpportunityDate).orElse(null))
+                .opportunityDate(Optional.ofNullable(process.getOpportunity())
+                        .map(opp -> opp.getAcceptDate() != null ? opp.getAcceptDate() : (opp.getOpenOpportunityDate() != null ? opp.getOpenOpportunityDate() : java.time.LocalDateTime.now()))
+                        .orElse(java.time.LocalDateTime.now()))
                 .build();
     }
 }

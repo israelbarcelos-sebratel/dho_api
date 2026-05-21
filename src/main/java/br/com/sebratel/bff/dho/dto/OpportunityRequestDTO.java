@@ -53,12 +53,6 @@ public record OpportunityRequestDTO(
     @Schema(description = "ID do status inicial", example = "1")
     Integer opportunityStatusId,
     
-    @Schema(description = "ID da etapa inicial do processo", example = "1")
-    Integer processStageId,
-    
-    @Schema(description = "ID do status inicial do processo", example = "1")
-    Integer processStatusId,
-    
     @Schema(description = "Prazo SLA em dias", example = "15")
     Integer deadlineSlaDays,
     

@@ -83,10 +83,10 @@ public class OpportunityServiceTest {
     @Test
     void create_ShouldWork() {
         OpportunityRequestDTO dto = new OpportunityRequestDTO(
-            null, null, 1, 1, 1, 1, "work", "hard", "soft", null, null, null, null, null, null, null, null, null, 1
+            null, null, 1, 1, 1, 1, "work", "hard", "soft", null, 1, null, null, null, null, null, 1
         );
-        when(statusRepository.findByName("Pendente")).thenReturn(Optional.of(new DhoOpportunityStatus()));
-        when(baseOriginRepository.findByName("Porto Alegre")).thenReturn(Optional.of(new DhoBaseOrigin()));
+        when(statusRepository.findByNameIgnoreCase("Pendente")).thenReturn(Optional.of(new DhoOpportunityStatus()));
+        when(baseOriginRepository.findById(1)).thenReturn(Optional.of(new DhoBaseOrigin()));
         when(opportunityRepository.save(any())).thenAnswer(i -> i.getArgument(0));
         when(opportunityMapper.convertToDTO(any(), eq(false))).thenReturn(new OpportunityResponseDTO());
         

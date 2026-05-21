@@ -61,6 +61,7 @@ public class Opportunity {
     @ManyToOne
     @JoinColumn(name = "opportunity_status_id")
     private DhoOpportunityStatus opportunityStatus;
+
     @Column(name = "deadline_sla_days")
     private Integer deadlineSlaDays;
 

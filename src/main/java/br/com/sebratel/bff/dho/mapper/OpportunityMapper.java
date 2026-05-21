@@ -58,11 +58,9 @@ public class OpportunityMapper {
                     .build();
         }
 
-        List<RecruitmentProcessResponseDTO> recruitmentProcesses = includeCandidates
-            ? recruitmentProcessRepository.findByOpportunityId(opportunity.getId()).stream()
+        List<RecruitmentProcessResponseDTO> recruitmentProcesses = recruitmentProcessRepository.findByOpportunityId(opportunity.getId()).stream()
                 .map(recruitmentProcessService::mapToResponseDTO)
-                .collect(Collectors.toList())
-            : null;
+                .collect(Collectors.toList());
 
         return OpportunityResponseDTO.builder()
                 .id(opportunity.getId())
@@ -73,10 +71,8 @@ public class OpportunityMapper {
                 .opportunityMotiveName(mapName(opportunity.getOpportunityMotive(), DhoOpportunityMotive::getName))
                 .baseOriginName(mapName(opportunity.getBaseOrigin(), DhoBaseOrigin::getName))
                 .opportunityStatusName(statusName)
-                .processStageName(null)
-                .processStatusName(null)
                 .deadlineSlaDays(opportunity.getDeadlineSlaDays())
-                .acceptDate(opportunity.getAcceptDate())
+                .acceptDate(opportunity.getAcceptDate() != null ? opportunity.getAcceptDate() : (opportunity.getOpenOpportunityDate() != null ? opportunity.getOpenOpportunityDate() : java.time.LocalDateTime.now()))
                 .responsibleRecruiterName(mapName(opportunity.getResponsibleRecruiter(), People::getName))
                 .observations(opportunity.getObservations())
                 .refusalJustification(opportunity.getRefusalJustification())
@@ -92,12 +88,16 @@ public class OpportunityMapper {
                 .date(formattedDate)
                 .statusVariant(statusVariant)
                 .requester(requesterDTO)
-                .recruitmentProcesses(recruitmentProcesses)
+                .recruitmentProcesses(includeCandidates ? recruitmentProcesses : null)
                 .build();
     }
 
     public <T, R> R mapName(T entity, Function<T, R> mapper) {
         return Optional.ofNullable(entity).map(mapper).orElse(null);
+    }
+
+    public <T, R> R mapNameOrDefault(T entity, Function<T, R> mapper, R defaultValue) {
+        return Optional.ofNullable(entity).map(mapper).orElse(defaultValue);
     }
 
     public boolean hasPermission(Authentication authentication, Permission permission) {

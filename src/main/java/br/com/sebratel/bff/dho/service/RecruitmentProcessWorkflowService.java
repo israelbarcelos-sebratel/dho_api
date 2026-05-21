@@ -244,6 +244,11 @@ public class RecruitmentProcessWorkflowService {
         DhoProcessStage stage = processStageRepository.findByNameIgnoreCase(stageName)
                 .orElseThrow(() -> new RuntimeException("Estágio '" + stageName + "' não encontrado"));
 
+        if ("Triagem".equalsIgnoreCase(stageName) && process.getStartDate() == null) {
+            process.setStartDate(LocalDateTime.now());
+            log.info("Data de início definida para o processo ID: {}", process.getId());
+        }
+
         process.setProcessStage(stage);
         recruitmentProcessRepository.save(process);
     }
@@ -255,6 +260,11 @@ public class RecruitmentProcessWorkflowService {
 
         DhoProcessStatus status = processStatusRepository.findByNameIgnoreCase(statusName)
                 .orElseThrow(() -> new RuntimeException("Status '" + statusName + "' não encontrado"));
+
+        if (("Reprovado".equalsIgnoreCase(statusName) || "Desistência".equalsIgnoreCase(statusName)) && process.getEndDate() == null) {
+            process.setEndDate(LocalDateTime.now());
+            log.info("Data de fim definida para o processo ID: {} devido ao status: {}", process.getId(), statusName);
+        }
 
         process.setProcessStatus(status);
         process.setInterviewReport(report);

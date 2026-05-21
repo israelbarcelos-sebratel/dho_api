@@ -82,7 +82,7 @@ public class OpportunityService {
                 .orElseThrow(() -> new RuntimeException("Base de origem padrão não encontrada"));
 
         Opportunity opportunity = Opportunity.builder()
-                .openOpportunityDate(Optional.ofNullable(dto.openOpportunityDate()).orElse(LocalDateTime.now()))
+                .openOpportunityDate(LocalDateTime.now())
                 .requester(requester)
                 .candidate(findOptionalEntity(dto.candidateId(), peopleRepository))
                 .position(findOptionalEntity(dto.positionId(), positionRepository))
