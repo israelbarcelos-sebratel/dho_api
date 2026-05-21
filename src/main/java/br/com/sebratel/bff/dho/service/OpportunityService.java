@@ -99,6 +99,7 @@ public class OpportunityService {
                 .workSchedule(dto.workSchedule())
                 .hardSkills(dto.hardSkills())
                 .softSkills(dto.softSkills())
+                .numberOfVacancies(Optional.ofNullable(dto.numberOfVacancies()).orElse(1))
                 .build();
 
         return opportunityMapper.convertToDTO(opportunityRepository.save(opportunity), false);

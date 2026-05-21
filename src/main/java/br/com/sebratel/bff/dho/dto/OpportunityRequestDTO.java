@@ -69,6 +69,9 @@ public record OpportunityRequestDTO(
     Integer responsibleRecruiterId,
     
     @Schema(description = "Observações adicionais", example = "Vaga urgente para projeto X")
-    String observations
+    String observations,
+
+    @Schema(description = "Número de pessoas a serem contratadas", example = "1")
+    Integer numberOfVacancies
 ) {
 }

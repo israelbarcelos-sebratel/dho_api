@@ -68,6 +68,7 @@ public class OpportunityPipelineService {
                 .positionName(opportunityMapper.mapName(opp.getPosition(), DhoPosition::getName))
                 .teamName(opportunityMapper.mapName(opp.getTeam(), DhoTeam::getName))
                 .departmentName(opportunityMapper.mapName(opp.getDepartment(), DhoDepartment::getName))
+                .numberOfVacancies(opp.getNumberOfVacancies())
                 .processes(processDTOs)
                 .build();
 

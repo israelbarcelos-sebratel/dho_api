@@ -24,6 +24,7 @@ Retorna um Array de objetos com a estrutura solicitada:
       "positionName": "String",
       "teamName": "String",
       "departmentName": "String",
+      "numberOfVacancies": "Integer",
       "processes": [
         {
           "id": "Integer (ID do Processo)",

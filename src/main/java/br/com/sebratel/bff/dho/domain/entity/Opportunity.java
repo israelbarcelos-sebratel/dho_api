@@ -92,4 +92,7 @@ public class Opportunity {
 
     @Column(name = "soft_skills", length = 2000)
     private String softSkills;
+
+    @Column(name = "number_of_vacancies")
+    private Integer numberOfVacancies;
 }

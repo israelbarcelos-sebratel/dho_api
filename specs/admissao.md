@@ -11,6 +11,8 @@ O gestor deve poder iniciar o pedido de uma nova vaga para o DHO, o DHO deve val
 - [x] **RQ02:** Ver o andamento das vagas.
 - [ ] **RQ03:** Ver detalhes do processo de admissão.
 - [ ] **RQ04:** Fluxo de Decisão Final (Aprovar/Recusar candidatos).
+- [x] **RQ22:** Limite de contratações por vaga (número de pessoas a contratar).
+
 - [ ] **RQ22:** Limite de contratações por vaga.
 - [ ] **RQ21:** Ver o perfil do usuário.
 

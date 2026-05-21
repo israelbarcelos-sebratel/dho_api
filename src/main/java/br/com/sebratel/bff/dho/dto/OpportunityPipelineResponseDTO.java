@@ -25,6 +25,7 @@ public class OpportunityPipelineResponseDTO {
         private String positionName;
         private String teamName;
         private String departmentName;
+        private Integer numberOfVacancies;
 
         @JsonProperty("processess")
         private List<RecruitmentProcessPipelineDTO> processes;

@@ -84,6 +84,7 @@ public class OpportunityMapper {
                 .workSchedule(opportunity.getWorkSchedule())
                 .hardSkills(opportunity.getHardSkills())
                 .softSkills(opportunity.getSoftSkills())
+                .numberOfVacancies(opportunity.getNumberOfVacancies())
                 .title(mapName(opportunity.getPosition(), DhoPosition::getName))
                 .type(opportunity.getWorkSchedule())
                 .team(mapName(opportunity.getTeam(), DhoTeam::getName))

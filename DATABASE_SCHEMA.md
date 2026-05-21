@@ -72,6 +72,10 @@ Represents job openings and the recruitment lifecycle.
 | `accept_date` | DATETIME | When the offer was accepted |
 | `responsible_recruiter_id` | INT (FK) | The **recruiter** (links to `people`) |
 | `observations` | VARCHAR | Specific opportunity notes |
+| `number_of_vacancies` | INT | Number of people to be hired |
+| `work_schedule` | VARCHAR | Work schedule description |
+| `hard_skills` | VARCHAR | Technical skills required |
+| `soft_skills` | VARCHAR | Behavioral skills required |
 
 
 ---

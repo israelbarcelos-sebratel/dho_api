@@ -31,6 +31,7 @@ public class OpportunityResponseDTO {
     private String workSchedule;
     private String hardSkills;
     private String softSkills;
+    private Integer numberOfVacancies;
 
     // Frontend compatibility fields
     private String title;

@@ -83,7 +83,7 @@ public class OpportunityServiceTest {
     @Test
     void create_ShouldWork() {
         OpportunityRequestDTO dto = new OpportunityRequestDTO(
-            null, null, 1, 1, 1, 1, "work", "hard", "soft", null, null, null, null, null, null, null, null, null
+            null, null, 1, 1, 1, 1, "work", "hard", "soft", null, null, null, null, null, null, null, null, null, 1
         );
         when(statusRepository.findByName("Pendente")).thenReturn(Optional.of(new DhoOpportunityStatus()));
         when(baseOriginRepository.findByName("Porto Alegre")).thenReturn(Optional.of(new DhoBaseOrigin()));
