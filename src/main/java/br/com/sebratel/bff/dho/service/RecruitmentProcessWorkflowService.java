@@ -60,6 +60,19 @@ public class RecruitmentProcessWorkflowService {
     public void refuse(Integer id, InterviewDecisionDTO dto) {
         RecruitmentProcess process = recruitmentProcessRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+
+        String stage = process.getProcessStage().getName();
+        String status = process.getProcessStatus().getName();
+        java.util.List<String> restrictedStates = java.util.List.of(
+                "Aprovado", "Aguardando aprovação", "Finalizado",
+                "Aguardando documentos", "Onboarding", "Enviada Proposta"
+        );
+
+        if (restrictedStates.contains(stage) || restrictedStates.contains(status)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "A partir da etapa de 'Aguardando aprovação', o candidato não pode mais ser reprovado, apenas marcado como desistente.");
+        }
+
         updateStatus(process, "Reprovado", dto.reason());
     }
 
