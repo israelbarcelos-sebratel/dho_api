@@ -13,6 +13,8 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 - **Aprovado**: Estágio após aprovação do gestor e antes do envio de documentos.
 - **Aguardando documentos**: Fase de coleta de documentação após aceite prévio/envio de proposta.
 - **Onboarding**: Fase final de integração antes da conclusão do processo.
+- **Enviada Proposta**: Fase de negociação formal após aprovação do gestor e antes do envio de documentos.
+
 
 ### Status (`DhoProcessStatus`)
 - **Em andamento**: Status padrão durante as fases de avaliação.
@@ -41,8 +43,8 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 | 7 | **Mover para Teste Técnico** | `POST .../{id}/move-to-technical-test` | Origem: **Entrevista** |
 | 8 | **Mover para Decisão Final** | `POST .../{id}/move-to-final-decision` | Origem: **Teste Técnico** |
 | 9 | **Decisão do Gestor** | `POST .../{id}/manager-decision` | Origem: **Decisão Final** |
-| 10 | **Enviar Proposta** | `POST .../{id}/proposal` | Status deve ser **Aprovado** |
-| 11 | **Aguardando Documentos** | `POST .../{id}/move-to-awaiting-documents` | Status deve ser **Enviada Proposta** |
+| 10 | **Enviar Proposta** | `POST .../{id}/proposal` | Origem: **Aprovado**, Destino: **Enviada Proposta** |
+| 11 | **Aguardando Documentos** | `POST .../{id}/move-to-awaiting-documents` | Origem: **Enviada Proposta** |
 | 12 | **Onboarding** | `POST .../{id}/move-to-onboarding` | Origem: **Aguardando documentos** |
 | 13 | **Decisão do Candidato** | `POST .../{id}/candidate-decision` | Origem: **Onboarding** |
 

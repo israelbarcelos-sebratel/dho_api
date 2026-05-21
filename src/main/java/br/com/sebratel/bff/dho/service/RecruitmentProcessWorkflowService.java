@@ -182,6 +182,7 @@ public class RecruitmentProcessWorkflowService {
         
         getCurrentState(process).sendProposal(process);
         updateStatus(process, "Enviada Proposta", null);
+        updateStage(process, "Enviada Proposta");
     }
 
     @Transactional
