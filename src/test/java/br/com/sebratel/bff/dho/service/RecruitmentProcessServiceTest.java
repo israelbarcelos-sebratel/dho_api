@@ -59,8 +59,8 @@ public class RecruitmentProcessServiceTest {
 
         when(peopleRepository.findById(1)).thenReturn(Optional.of(candidate));
         when(opportunityRepository.findById(1)).thenReturn(Optional.of(opp));
-        when(processStatusRepository.findByName("Em andamento")).thenReturn(Optional.of(new DhoProcessStatus()));
-        when(processStageRepository.findByName("Banco de Talentos")).thenReturn(Optional.of(new DhoProcessStage()));
+        when(processStatusRepository.findByNameIgnoreCase("Em andamento")).thenReturn(Optional.of(new DhoProcessStatus()));
+        when(processStageRepository.findByNameIgnoreCase("Banco de Talentos")).thenReturn(Optional.of(new DhoProcessStage()));
         when(recruitmentProcessRepository.save(any())).thenAnswer(i -> i.getArgument(0));
         when(recruitmentProcessMapper.mapToResponseDTO(any())).thenReturn(RecruitmentProcessResponseDTO.builder().build());
 

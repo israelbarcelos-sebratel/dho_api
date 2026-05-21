@@ -93,7 +93,11 @@ public class RecruitmentProcessWorkflowService {
         DhoProcessStatus status = processStatusRepository.findByNameIgnoreCase("Contratado")
                 .orElseThrow(() -> new RuntimeException("Status 'Contratado' não encontrado"));
 
+        DhoProcessStage stage = processStageRepository.findByNameIgnoreCase("Finalizado")
+                .orElseThrow(() -> new RuntimeException("Estágio 'Finalizado' não encontrado"));
+
         process.setProcessStatus(status);
+        process.setProcessStage(stage);
         
         People candidate = process.getCandidate();
         if (candidate != null) {
