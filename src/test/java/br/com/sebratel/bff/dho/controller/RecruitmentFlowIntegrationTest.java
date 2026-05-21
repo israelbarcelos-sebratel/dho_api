@@ -78,7 +78,7 @@ public class RecruitmentFlowIntegrationTest {
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-awaiting-documents").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/move-to-onboarding").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isOk());
 
-        mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process")))).andExpect(status().isOk());
         validateStatus(id, "Finalizado");
     }
     @Test
@@ -126,7 +126,7 @@ public class RecruitmentFlowIntegrationTest {
         mockMvc.perform(post("/api/recruitment-processes/"+id+"/manager-decision").contentType(MediaType.APPLICATION_JSON).content("{\"approved\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_candidate")))).andExpect(status().isForbidden());
 
         // 3. Tente fazer com que alguém sem role de recrutadora (sem initiate_contract_process) finalize o processo
-        mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true, \"reason\": \"" + "A".repeat(200) + "\"}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isForbidden());
+        mockMvc.perform(post("/api/recruitment-processes/"+id+"/candidate-decision").contentType(MediaType.APPLICATION_JSON).content("{\"accepted\": true}").with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("reject_candidate")))).andExpect(status().isForbidden());
     }
 
     @Test
