@@ -44,14 +44,18 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 | 10 | **Enviar Proposta** | `POST .../{id}/proposal` | Status deve ser **Aprovado** |
 | 11 | **Aguardando Documentos** | `POST .../{id}/move-to-awaiting-documents` | Status deve ser **Enviada Proposta** |
 | 12 | **Onboarding** | `POST .../{id}/move-to-onboarding` | Origem: **Aguardando documentos** |
-| 13 | **Finalizar Processo** | `POST .../{id}/candidate-decision` | Origem: **Onboarding** |
+| 13 | **Decisão do Candidato** | `POST .../{id}/candidate-decision` | Origem: **Onboarding** |
 
 ## Exemplos de Uso (CURL)
 
-### Mover para Onboarding
+### Decisão do Candidato (Aceite)
 ```bash
-curl -X POST http://localhost:8090/api/recruitment-processes/{id}/move-to-onboarding \
--H "Authorization: Bearer {TOKEN}"
+curl -X POST http://localhost:8090/api/recruitment-processes/{id}/candidate-decision \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer {TOKEN}" \
+-d '{
+  "accepted": true
+}'
 ```
 
 ### Decisão do Gestor (Aprovação)
@@ -68,7 +72,7 @@ curl -X POST http://localhost:8090/api/recruitment-processes/{id}/manager-decisi
 ## Regras de Negócio e Segurança
 
 - **State Pattern**: O sistema utiliza uma máquina de estados inteligente. Cada etapa conhece apenas a sua próxima etapa válida. Qualquer tentativa de "pular" processos resultará em erro `400 Bad Request`.
-- **Validação de Motivos**: Endpoints como `manager-decision` e `candidate-decision` exigem um campo `reason` com no mínimo 200 caracteres.
+- **Validação de Motivos**: O endpoint `manager-decision` exige um campo `reason` com no mínimo 200 caracteres. Para o endpoint `candidate-decision`, o campo `reason` é opcional e não possui tamanho mínimo.
 - **Oportunidade Aprovada**: Nenhuma ação no processo de recrutamento é permitida se a oportunidade vinculada não estiver com o status **Aprovada**.
 - **Permissões**:
     - `approve_candidate`: Necessária para movimentações entre estágios.
