@@ -17,8 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -35,6 +37,8 @@ public class RecruitmentProcessService {
     private final RecruitmentProcessMapper recruitmentProcessMapper;
     private final RecruitmentProcessWorkflowService workflowService;
     private final RecruitmentProcessQueryService queryService;
+    private final br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessItemRepository recruitmentProcessItemRepository;
+    private final DocumentService documentService;
 
     @Transactional
     public RecruitmentProcessResponseDTO create(RecruitmentProcessRequestDTO dto) {
@@ -104,4 +108,31 @@ public class RecruitmentProcessService {
     public List<RecruitmentProcessLogDTO> getLogs(Integer id) { return queryService.getLogs(id); }
     public RecruitmentIndicatorsDTO getIndicators() { return queryService.getIndicators(); }
     public List<RecruitmentProcessStageResponseDTO> getProcessStages(Integer id) { return queryService.getProcessStages(id); }
+    public List<br.com.sebratel.bff.dho.dto.RecruitmentProcessItemResponseDTO> getAdditionalInfo(Integer id) { return queryService.getAdditionalInfo(id); }
+
+    @Transactional
+    public void addAdditionalInfo(Integer id, String comment, MultipartFile[] files) throws IOException {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+
+        Opportunity opportunity = process.getOpportunity();
+        if (opportunity != null) {
+            long hiredCount = recruitmentProcessRepository.countByOpportunityIdAndProcessStatusName(opportunity.getId(), "Contratado");
+            if (opportunity.getNumberOfVacancies() != null && hiredCount >= opportunity.getNumberOfVacancies()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O número de vagas para esta oportunidade já foi preenchido.");
+            }
+        }
+
+        br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessItem item = br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessItem.builder()
+                .recruitmentProcess(process)
+                .comment(comment)
+                .createdAt(java.time.LocalDateTime.now())
+                .createdBy(org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName())
+                .build();
+        recruitmentProcessItemRepository.save(item);
+
+        if (files != null && files.length > 0) {
+            documentService.uploadDocuments(process.getCandidate().getId(), null, files, "ADDITIONAL_INFO_" + id, item);
+        }
+    }
 }

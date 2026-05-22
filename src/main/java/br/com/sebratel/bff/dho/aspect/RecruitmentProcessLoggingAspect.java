@@ -73,15 +73,23 @@ public class RecruitmentProcessLoggingAspect {
                 else if (result instanceof OpportunityResponseDTO) entityId = ((OpportunityResponseDTO) result).getId();
             }
             String humanAction = getHumanizedAction(serviceName, methodName, args, result);
+            String details = null;
+            if ("addAdditionalInfo".equals(methodName) && args.length > 1 && args[1] instanceof String) {
+                details = (String) args[1];
+            }
             if (humanAction != null && entityId != null) {
-                saveLog(serviceName, entityId, humanAction, startTime, LocalDateTime.now(), System.currentTimeMillis() - start, status, errorMessage);
+                saveLog(serviceName, entityId, humanAction, startTime, LocalDateTime.now(), System.currentTimeMillis() - start, status, errorMessage, details);
             }
         } catch (Throwable throwable) {
             status = "FAILURE";
             errorMessage = throwable.getMessage();
             String humanAction = getHumanizedAction(serviceName, methodName, args, null);
+            String details = null;
+            if ("addAdditionalInfo".equals(methodName) && args.length > 1 && args[1] instanceof String) {
+                details = (String) args[1];
+            }
             if (humanAction != null && entityId != null) {
-                saveLog(serviceName, entityId, humanAction, startTime, LocalDateTime.now(), System.currentTimeMillis() - start, status, errorMessage);
+                saveLog(serviceName, entityId, humanAction, startTime, LocalDateTime.now(), System.currentTimeMillis() - start, status, errorMessage, details);
             }
             throw throwable;
         }
@@ -113,6 +121,7 @@ public class RecruitmentProcessLoggingAspect {
                 case "sendProposal" -> "Proposta enviada ao candidato";
                 case "updateStage" -> "Etapa do processo atualizada";
                 case "updateStatus" -> "Status do processo atualizado";
+                case "addAdditionalInfo" -> "Informação Complementar Adicionada";
                 case "managerDecision" -> {
                     if (args.length > 1 && args[1] instanceof br.com.sebratel.bff.dho.dto.ManagerDecisionDTO dto) {
                         yield dto.isApproved() ? "Gestor aprovou candidato" : "Gestor reprovou candidato";
@@ -140,7 +149,7 @@ public class RecruitmentProcessLoggingAspect {
     }
 
     private void saveLog(String serviceName, Integer id, String actionName, LocalDateTime startTime, LocalDateTime endTime, 
-                         long durationMs, String status, String errorMessage) {
+                         long durationMs, String status, String errorMessage, String details) {
         
         RecruitmentProcess process = null;
 
@@ -154,18 +163,18 @@ public class RecruitmentProcessLoggingAspect {
             // For simplicity and to match the "process log" nature, we'll log it for each process 
             // of this opportunity if they exist.
             for (RecruitmentProcess rp : processes) {
-                saveSingleLog(rp, actionName, startTime, endTime, durationMs, status, errorMessage);
+                saveSingleLog(rp, actionName, startTime, endTime, durationMs, status, errorMessage, details);
             }
             return;
         }
 
         if (process != null) {
-            saveSingleLog(process, actionName, startTime, endTime, durationMs, status, errorMessage);
+            saveSingleLog(process, actionName, startTime, endTime, durationMs, status, errorMessage, details);
         }
     }
 
     private void saveSingleLog(RecruitmentProcess process, String actionName, LocalDateTime startTime, LocalDateTime endTime,
-                               long durationMs, String status, String errorMessage) {
+                               long durationMs, String status, String errorMessage, String details) {
         String executedBy = getExecutedBy();
         RecruitmentProcessLog recruitmentLog = RecruitmentProcessLog.builder()
                 .recruitmentProcess(process)
@@ -176,6 +185,7 @@ public class RecruitmentProcessLoggingAspect {
                 .status(status)
                 .errorMessage(errorMessage != null && errorMessage.length() > 2000 ? 
                              errorMessage.substring(0, 2000) : errorMessage)
+                .details(details)
                 .executedBy(executedBy)
                 .build();
         logRepository.save(recruitmentLog);

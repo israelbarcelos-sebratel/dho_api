@@ -125,7 +125,19 @@ Acompanha a jornada específica de um candidato dentro de uma oportunidade.
 | `situation_id` | Integer (FK) | Referência à situação atual. |
 | `interview_report` | String (1000) | Relatório/parecer da entrevista. |
 
-### 1.9. `suggestions` & `suggestions_votes`
+### 1.9. `recruitment_process_items`
+Armazena comentários e informações adicionais inseridas durante o processo de recrutamento.
+
+| Campo | Tipo (JPA/SQL) | Descrição |
+|-------|----------------|-------------|
+| `id` | Integer (PK) | Identificador único. |
+| `recruitment_process_id` | Integer (FK) | Referência ao processo de recrutamento. |
+| `comment` | String (2000) | Comentário ou observação inserida. |
+| `created_at` | LocalDateTime | Data e hora da criação. |
+| `created_by` | String | Identificação de quem inseriu a informação. |
+
+
+### 1.10. `suggestions` & `suggestions_votes`
 Sistema de feedback e sugestões.
 
 **Tabela `suggestions`**:

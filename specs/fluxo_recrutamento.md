@@ -48,6 +48,15 @@ Esta especificação descreve o fluxo de recrutamento de um candidato, desde a c
 | 12 | **Onboarding** | `POST .../{id}/move-to-onboarding` | Origem: **Aguardando documentos** |
 | 13 | **Decisão do Candidato** | `POST .../{id}/candidate-decision` | Origem: **Onboarding** |
 
+## Funcionalidades Adicionais
+
+### Informações Complementares e Documentos
+A qualquer momento do processo, o recrutador pode adicionar comentários e arquivos anexos ao processo do candidato.
+- **Endpoint**: `POST /api/recruitment-processes/{id}/additional-info`
+- **Regra**: Não permitido se a oportunidade já tiver atingido o limite de contratados.
+- **Armazenamento**: Comentários são salvos em `recruitment_process_items` e arquivos em `documents`.
+
+
 ## Exemplos de Uso (CURL)
 
 ### Decisão do Candidato (Aceite)

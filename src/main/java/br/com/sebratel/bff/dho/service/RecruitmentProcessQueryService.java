@@ -30,6 +30,9 @@ public class RecruitmentProcessQueryService {
     private final OpportunityRepository opportunityRepository;
     private final RecruitmentProcessLogRepository logRepository;
     private final RecruitmentProcessMapper recruitmentProcessMapper;
+    private final br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessItemRepository recruitmentProcessItemRepository;
+    private final br.com.sebratel.bff.dho.domain.repository.DhoDocumentRepository documentRepository;
+    private final DocumentService documentService;
 
     public List<RecruitmentProcessHistoryDTO> getFinalizedProcesses() {
         List<String> finalizedStatuses = List.of("Contratado", "Reprovado", "Desistência");
@@ -56,6 +59,7 @@ public class RecruitmentProcessQueryService {
                         .durationMs(log.getDurationMs())
                         .status(log.getStatus())
                         .errorMessage(log.getErrorMessage())
+                        .details(log.getDetails())
                         .candidateName(log.getRecruitmentProcess() != null && log.getRecruitmentProcess().getCandidate() != null 
                                 ? log.getRecruitmentProcess().getCandidate().getName() : null)
                         .executedBy(log.getExecutedBy())
@@ -138,5 +142,19 @@ public class RecruitmentProcessQueryService {
             stagesResponse.add(new RecruitmentProcessStageResponseDTO(stageName, stageStatus));
         }
         return stagesResponse;
+    }
+
+    public List<br.com.sebratel.bff.dho.dto.RecruitmentProcessItemResponseDTO> getAdditionalInfo(Integer id) {
+        return recruitmentProcessItemRepository.findByRecruitmentProcessIdOrderByCreatedAtDesc(id).stream()
+                .map(item -> br.com.sebratel.bff.dho.dto.RecruitmentProcessItemResponseDTO.builder()
+                        .id(item.getId())
+                        .comment(item.getComment())
+                        .createdAt(item.getCreatedAt())
+                        .createdBy(item.getCreatedBy())
+                        .documents(documentRepository.findByRecruitmentProcessItemId(item.getId()).stream()
+                                .map(documentService::mapToDTO)
+                                .collect(java.util.stream.Collectors.toList()))
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
     }
 }

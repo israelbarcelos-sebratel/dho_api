@@ -94,12 +94,25 @@ Tracks the individual recruitment process of a candidate for a specific opportun
 | `situation_id` | INT (FK) | Links to `situation` |
 
 
+### 3.1 `recruitment_process_items`
+Stores additional comments and items related to a recruitment process.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | INT (PK) | Unique identifier |
+| `recruitment_process_id` | INT (FK) | Links to `recruitment_process` |
+| `comment` | VARCHAR(2000) | Recruiter comment |
+| `created_at` | DATETIME | Creation timestamp |
+| `created_by` | VARCHAR | User who created the item |
+
+
 ### 4. `documents`
 Stores documents uploaded for candidates.
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | INT (PK) | Unique identifier (Identity) |
+| `recruitment_process_item_id` | INT (FK) | Links to `recruitment_process_items` |
 | `file_name` | VARCHAR | Original file name |
 | `file_type` | VARCHAR | MIME type of the file |
 | `file_path` | VARCHAR | Physical path where the file is stored |

@@ -33,6 +33,8 @@ public class RecruitmentProcessServiceTest {
     @Mock private RecruitmentProcessMapper recruitmentProcessMapper;
     @Mock private RecruitmentProcessWorkflowService workflowService;
     @Mock private RecruitmentProcessQueryService queryService;
+    @Mock private br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessItemRepository recruitmentProcessItemRepository;
+    @Mock private DocumentService documentService;
 
     @InjectMocks
     private RecruitmentProcessService recruitmentProcessService;
@@ -107,4 +109,22 @@ public class RecruitmentProcessServiceTest {
         recruitmentProcessService.managerDecision(1, dto);
         verify(workflowService).managerDecision(1, dto);
     }
+
+
+    @Test
+    void addAdditionalInfo_ShouldSaveItem() throws java.io.IOException {
+        Integer id = 1;
+        String comment = "Teste comment";
+        
+        org.springframework.security.core.Authentication auth = mock(org.springframework.security.core.Authentication.class);
+        when(auth.getName()).thenReturn("test@user.com");
+        org.springframework.security.core.context.SecurityContextHolder.getContext().setAuthentication(auth);
+
+        when(recruitmentProcessRepository.findById(id)).thenReturn(Optional.of(process));
+        
+        recruitmentProcessService.addAdditionalInfo(id, comment, null);
+
+        verify(recruitmentProcessItemRepository).save(any());
+    }
+
 }

@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface DhoDocumentRepository extends JpaRepository<DhoDocument, Integer> {
     List<DhoDocument> findByCandidateId(Integer candidateId);
+    List<DhoDocument> findByRecruitmentProcessItemId(Integer recruitmentProcessItemId);
 }
