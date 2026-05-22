@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -41,7 +43,7 @@ public class OpportunityWorkflowService {
 
         opportunity.setOpportunityStatus(approvedStatus);
         opportunity.setDeadlineSlaDays(30);
-        opportunity.setOpenOpportunityDate(dto.opportunityDate());
+        opportunity.setOpenOpportunityDate(LocalDateTime.now());
         
         return opportunityMapper.convertToDTO(opportunityRepository.save(opportunity), false);
     }

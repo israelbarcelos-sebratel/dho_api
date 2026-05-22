@@ -88,7 +88,7 @@ public class RecruitmentFlowIntegrationTest {
         Integer oppId = createPendingOpportunity();
         
         String justification = "A".repeat(50);
-        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(LocalDateTime.now().plusDays(1), justification);
+        OpportunityApprovalDTO dto = new OpportunityApprovalDTO(null, justification);
 
         mockMvc.perform(post("/api/opportunities/" + oppId + "/reprove")
                 .contentType(MediaType.APPLICATION_JSON)
