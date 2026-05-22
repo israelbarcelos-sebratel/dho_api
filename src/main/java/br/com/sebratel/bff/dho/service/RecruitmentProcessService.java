@@ -109,6 +109,7 @@ public class RecruitmentProcessService {
     public RecruitmentIndicatorsDTO getIndicators() { return queryService.getIndicators(); }
     public List<RecruitmentProcessStageResponseDTO> getProcessStages(Integer id) { return queryService.getProcessStages(id); }
     public List<br.com.sebratel.bff.dho.dto.RecruitmentProcessItemResponseDTO> getAdditionalInfo(Integer id) { return queryService.getAdditionalInfo(id); }
+    public RecruitmentProcessDetailResponseDTO getProcessDetails(Integer id) { return queryService.getProcessDetails(id); }
 
     @Transactional
     public void addAdditionalInfo(Integer id, String comment, MultipartFile[] files) throws IOException {

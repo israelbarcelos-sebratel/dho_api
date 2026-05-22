@@ -4,9 +4,11 @@ import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessLog;
 import br.com.sebratel.bff.dho.domain.entity.auxiliary.DhoProcessStage;
+import br.com.sebratel.bff.dho.domain.entity.talentpool.TalentPool;
 import br.com.sebratel.bff.dho.domain.repository.OpportunityRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessLogRepository;
 import br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessRepository;
+import br.com.sebratel.bff.dho.domain.repository.TalentPoolRepository;
 import br.com.sebratel.bff.dho.dto.*;
 import br.com.sebratel.bff.dho.mapper.RecruitmentProcessMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +32,23 @@ public class RecruitmentProcessQueryService {
     private final OpportunityRepository opportunityRepository;
     private final RecruitmentProcessLogRepository logRepository;
     private final RecruitmentProcessMapper recruitmentProcessMapper;
+    private final TalentPoolRepository talentPoolRepository;
+
     private final br.com.sebratel.bff.dho.domain.repository.RecruitmentProcessItemRepository recruitmentProcessItemRepository;
     private final br.com.sebratel.bff.dho.domain.repository.DhoDocumentRepository documentRepository;
     private final DocumentService documentService;
+
+    public RecruitmentProcessDetailResponseDTO getProcessDetails(Integer id) {
+        RecruitmentProcess process = recruitmentProcessRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Processo não encontrado"));
+
+        Integer talentPoolId = Optional.ofNullable(process.getCandidate())
+                .flatMap(candidate -> talentPoolRepository.findByPersonId(candidate.getId()))
+                .map(TalentPool::getId)
+                .orElse(null);
+
+        return recruitmentProcessMapper.mapToDetailResponseDTO(process, talentPoolId);
+    }
 
     public List<RecruitmentProcessHistoryDTO> getFinalizedProcesses() {
         List<String> finalizedStatuses = List.of("Contratado", "Reprovado", "Desistência");

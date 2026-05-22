@@ -14,6 +14,7 @@ import br.com.sebratel.bff.dho.dto.RecruitmentProcessRequestDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessStatusDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessStageResponseDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessDetailResponseDTO;
 
 
 
@@ -180,6 +181,14 @@ public class RecruitmentProcessController {
         recruitmentProcessService.updateStatus(id, dto);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_job_tracking.name())")
+    @Operation(summary = "Obter detalhes do processo", description = "Retorna informações detalhadas de um processo seletivo específico.")
+    public ResponseEntity<RecruitmentProcessDetailResponseDTO> getById(@PathVariable @Parameter(description = "ID do processo de recrutamento") Integer id) {
+        return ResponseEntity.ok(recruitmentProcessService.getProcessDetails(id));
+    }
+
 
     @GetMapping("/history")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).view_job_tracking.name())")

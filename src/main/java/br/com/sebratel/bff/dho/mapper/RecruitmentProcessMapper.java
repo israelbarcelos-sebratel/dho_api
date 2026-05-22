@@ -1,8 +1,9 @@
 package br.com.sebratel.bff.dho.mapper;
 
-import br.com.sebratel.bff.dho.domain.entity.Opportunity;
 import br.com.sebratel.bff.dho.domain.entity.People;
 import br.com.sebratel.bff.dho.domain.entity.RecruitmentProcess;
+import br.com.sebratel.bff.dho.dto.CandidateDetailDTO;
+import br.com.sebratel.bff.dho.dto.RecruitmentProcessDetailResponseDTO;
 import br.com.sebratel.bff.dho.dto.RecruitmentProcessResponseDTO;
 import org.springframework.stereotype.Component;
 
@@ -30,4 +31,24 @@ public class RecruitmentProcessMapper {
                 .endDate(process.getEndDate())
                 .build();
     }
+
+    public RecruitmentProcessDetailResponseDTO mapToDetailResponseDTO(RecruitmentProcess process, Integer talentPoolId) {
+        return RecruitmentProcessDetailResponseDTO.builder()
+                .id(process.getId())
+                .positionName(Optional.ofNullable(process.getOpportunity())
+                        .map(opp -> Optional.ofNullable(opp.getPosition()).map(pos -> pos.getName()).orElse(null))
+                        .orElse(null))
+                .processStatusName(Optional.ofNullable(process.getProcessStatus()).map(status -> status.getName()).orElse("Pendente"))
+                .processStageName(Optional.ofNullable(process.getProcessStage()).map(stage -> stage.getName()).orElse("Não iniciado"))
+                .opportunityId(Optional.ofNullable(process.getOpportunity()).map(opp -> opp.getId()).orElse(null))
+                .createdAt(process.getStartDate())
+                .candidate(CandidateDetailDTO.builder()
+                        .id(Optional.ofNullable(process.getCandidate()).map(People::getId).orElse(null))
+                        .talentPoolId(talentPoolId)
+                        .name(Optional.ofNullable(process.getCandidate()).map(People::getName).orElse(null))
+                        .email(Optional.ofNullable(process.getCandidate()).map(People::getEmail).orElse(null))
+                        .build())
+                .build();
+    }
+
 }
