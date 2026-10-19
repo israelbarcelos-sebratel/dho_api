@@ -11,6 +11,8 @@ O gestor deve poder iniciar o pedido de uma nova vaga para o DHO, o DHO deve val
 - [x] **RQ02:** Ver o andamento das vagas.
 - [ ] **RQ03:** Ver detalhes do processo de admissão.
 - [ ] **RQ04:** Fluxo de Decisão Final (Aprovar/Recusar candidatos).
+- [x] **RQ22:** Limite de contratações por vaga (número de pessoas a contratar).
+
 - [ ] **RQ22:** Limite de contratações por vaga.
 - [ ] **RQ21:** Ver o perfil do usuário.
 
@@ -51,3 +53,10 @@ O endpoint `GET /requisitions/{id}/candidates` permite que o gestor visualize os
     - O usuário deve ser o solicitante (`requester`) da vaga OU possuir permissão `view_all_requests`/`ROLE_ADMIN`.
     - A vaga deve estar com o status "Aprovada".
 - **Retorno**: Lista de `CandidateResponseDTO`.
+
+### 3.3. Motivos de Oportunidade
+O endpoint `GET /api/opportunity-motives` permite consultar os motivos disponíveis para abertura de uma vaga.
+
+- **Retorno**: Lista de objetos `DhoOpportunityMotive` contendo `id`, `name` e `description`.
+- **Acesso**: Requer usuário autenticado.
+

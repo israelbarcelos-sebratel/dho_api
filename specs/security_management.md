@@ -5,7 +5,7 @@ Este documento descreve os endpoints e regras de negócio para o gerenciamento d
 ## 1. Regras de Acesso
 - Todos os endpoints descritos aqui são restritos a usuários com a role `ADMIN`.
 - A autenticação é baseada em JWT (Google OAuth2).
-- **Regra de Unicidade**: Cada usuário (`People`) pode possuir **apenas um papel** (`Role`) atribuído por vez.
+- **Múltiplos Papéis**: Um usuário (`People`) pode possuir múltiplos papéis (`Role`) simultaneamente.
 
 ## 2. Endpoints de Permissões (Permissions)
 
@@ -60,9 +60,9 @@ Este documento descreve os endpoints e regras de negócio para o gerenciamento d
 - **PUT** `/api/admin/people/{peopleId}/roles`
 - **Body**:
 ```json
-[1] // ID da role (apenas um ID é permitido devido à regra de negócio)
+[1, 2, 3] // IDs das roles
 ```
-- **Regra**: Caso a pessoa já possua um papel, ele será substituído pelo novo papel informado.
+- **Regra**: Os papéis atuais da pessoa serão substituídos pela nova lista de papéis informada.
 
 
 ## 5. Endpoints de Solicitação de Papéis (Role Requests)
@@ -97,3 +97,15 @@ Este documento descreve os endpoints e regras de negócio para o gerenciamento d
 ### 6.1. Listar Papéis Disponíveis
 - **GET** `/api/roles`
 - **Descrição**: Retorna a lista de todos os papéis disponíveis no sistema. Acessível por qualquer usuário autenticado.
+
+## 7. Configuração de CORS
+
+O sistema utiliza uma configuração centralizada de CORS para permitir requisições de origens confiáveis.
+
+### 7.1. Variáveis de Ambiente
+- `ALLOWED_ORIGINS`: Lista separada por vírgulas das origens permitidas (ex: `http://localhost:5173,https://meu-dominio.com`). Se não definida, o padrão é `*` para ambientes que não sejam de produção.
+
+### 7.2. Comportamento por Perfil
+- **Desenvolvimento/Staging (não `prod`)**: Permite todas as origens (`*`) por padrão para facilitar o desenvolvimento.
+- **Produção (`prod`)**: Restringe as origens para aquelas definidas na variável `ALLOWED_ORIGINS`. Requer que `allowCredentials` seja `true`.
+

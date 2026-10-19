@@ -1,6 +1,8 @@
 package br.com.sebratel.bff.dho.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -45,16 +47,11 @@ public record OpportunityRequestDTO(
     Integer replacedPersonId,
     
     @Schema(description = "ID da base de origem", example = "1")
+    @NotNull(message = "A base de origem é obrigatória")
     Integer baseOriginId,
     
     @Schema(description = "ID do status inicial", example = "1")
     Integer opportunityStatusId,
-    
-    @Schema(description = "ID da etapa inicial do processo", example = "1")
-    Integer processStageId,
-    
-    @Schema(description = "ID do status inicial do processo", example = "1")
-    Integer processStatusId,
     
     @Schema(description = "Prazo SLA em dias", example = "15")
     Integer deadlineSlaDays,
@@ -66,6 +63,9 @@ public record OpportunityRequestDTO(
     Integer responsibleRecruiterId,
     
     @Schema(description = "Observações adicionais", example = "Vaga urgente para projeto X")
-    String observations
+    String observations,
+
+    @Schema(description = "Número de pessoas a serem contratadas", example = "1")
+    Integer numberOfVacancies
 ) {
 }

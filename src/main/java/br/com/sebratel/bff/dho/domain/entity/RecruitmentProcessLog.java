@@ -47,4 +47,10 @@ public class RecruitmentProcessLog {
 
     @Column(name = "error_message", length = 2000)
     private String errorMessage;
+
+    @Column(name = "details", length = 2000)
+    private String details;
+
+    @Column(name = "executed_by")
+    private String executedBy;
 }

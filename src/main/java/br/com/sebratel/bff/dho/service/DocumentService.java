@@ -42,11 +42,15 @@ public class DocumentService {
     private String uploadDir;
 
     public List<DocumentResponseDTO> uploadDocuments(Integer candidateId, Integer documentTypeId, MultipartFile[] files) throws IOException {
+        return uploadDocuments(candidateId, documentTypeId, files, null, null);
+    }
+
+    public List<DocumentResponseDTO> uploadDocuments(Integer candidateId, Integer documentTypeId, MultipartFile[] files, String customFileName, br.com.sebratel.bff.dho.domain.entity.RecruitmentProcessItem recruitmentProcessItem) throws IOException {
         People candidate = peopleRepository.findById(candidateId)
                 .orElseThrow(() -> new RuntimeException("Candidato não encontrado"));
 
-        DhoDocumentType documentType = documentTypeRepository.findById(documentTypeId)
-                .orElseThrow(() -> new RuntimeException("Tipo de documento não encontrado"));
+        DhoDocumentType documentType = documentTypeId != null ? documentTypeRepository.findById(documentTypeId)
+                .orElseThrow(() -> new RuntimeException("Tipo de documento não encontrado")) : null;
 
         Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
         if (!Files.exists(uploadPath)) {
@@ -60,7 +64,7 @@ public class DocumentService {
                 fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
             }
             
-            String fileName = UUID.randomUUID().toString() + fileExtension;
+            String fileName = (customFileName != null ? customFileName + "_" + UUID.randomUUID().toString() : UUID.randomUUID().toString()) + fileExtension;
             Path targetLocation = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
@@ -71,6 +75,7 @@ public class DocumentService {
                     .candidate(candidate)
                     .documentType(documentType)
                     .uploadDate(LocalDateTime.now())
+                    .recruitmentProcessItem(recruitmentProcessItem)
                     .build();
 
             documentRepository.save(document);
@@ -112,7 +117,7 @@ public class DocumentService {
         documentRepository.delete(document);
     }
 
-    private DocumentResponseDTO mapToDTO(DhoDocument document) {
+    public DocumentResponseDTO mapToDTO(DhoDocument document) {
         return DocumentResponseDTO.builder()
                 .id(document.getId())
                 .fileName(document.getFileName())

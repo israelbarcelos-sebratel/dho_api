@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/suggestions")
+@RequestMapping("/api/suggestions")
 @RequiredArgsConstructor
 @Tag(name = "Sugestões", description = "Endpoints para o sistema de sugestões e votação")
 public class SuggestionController {
@@ -77,10 +77,11 @@ public class SuggestionController {
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Criar nova sugestão")
-    public SuggestionResponseDTO create(@RequestBody @Valid SuggestionRequestDTO dto) {
+    public SuggestionResponseDTO create(@RequestBody @Valid SuggestionRequestDTO dto, Authentication authentication) {
         logSecurityContext("create", "POST /suggestions");
-        log.info("[SuggestionController] [create] - Action: Criando nova sugestão para o email: {}", dto.email());
-        SuggestionResponseDTO response = suggestionService.create(dto);
+        String email = authentication.getName();
+        log.info("[SuggestionController] [create] - Action: Criando nova sugestão para o email: {}", email);
+        SuggestionResponseDTO response = suggestionService.create(dto, email);
         log.info("[SuggestionController] [create] - Action: Sugestão criada com sucesso. ID: {}", response.id());
         return response;
     }
@@ -88,10 +89,11 @@ public class SuggestionController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @Operation(summary = "Atualizar sugestão existente")
-    public SuggestionResponseDTO update(@PathVariable Long id, @RequestBody @Valid SuggestionRequestDTO dto) {
+    public SuggestionResponseDTO update(@PathVariable Long id, @RequestBody @Valid SuggestionRequestDTO dto, Authentication authentication) {
         logSecurityContext("update", "PUT /suggestions/" + id);
-        log.info("[SuggestionController] [update] - Action: Atualizando sugestão com ID: {}", id);
-        SuggestionResponseDTO response = suggestionService.update(id, dto);
+        String email = authentication.getName();
+        log.info("[SuggestionController] [update] - Action: Atualizando sugestão com ID: {} para o email: {}", id, email);
+        SuggestionResponseDTO response = suggestionService.update(id, dto, email);
         log.info("[SuggestionController] [update] - Action: Sugestão com ID: {} atualizada com sucesso", id);
         return response;
     }
@@ -111,10 +113,11 @@ public class SuggestionController {
     @PreAuthorize("hasAuthority(T(br.com.sebratel.bff.dho.domain.enums.Permission).suggestions.name())")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Votar em uma sugestão")
-    public void vote(@PathVariable Long id, @RequestBody @Valid VoteRequestDTO dto) {
+    public void vote(@PathVariable Long id, @RequestBody @Valid VoteRequestDTO dto, Authentication authentication) {
         logSecurityContext("vote", "POST /suggestions/" + id + "/vote");
-        log.info("[SuggestionController] [vote] - Action: Registrando voto para a sugestão ID: {} | Email: {} | Voto: {}", id, dto.email(), dto.vote());
-        suggestionService.vote(id, dto);
+        String email = authentication.getName();
+        log.info("[SuggestionController] [vote] - Action: Registrando voto para a sugestão ID: {} | Email: {} | Voto: {}", id, email, dto.vote());
+        suggestionService.vote(id, dto, email);
         log.info("[SuggestionController] [vote] - Action: Voto registrado com sucesso para a sugestão ID: {}", id);
     }
 }

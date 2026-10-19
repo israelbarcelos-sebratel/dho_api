@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public record InterviewDecisionDTO(
     @NotBlank(message = "O motivo é obrigatório")
-    @Size(min = 200, message = "deve ter no mínimo 200 caracteres")
+    @Size(min = 50, message = "deve ter no mínimo 50 caracteres")
     String reason
 ) {
 }

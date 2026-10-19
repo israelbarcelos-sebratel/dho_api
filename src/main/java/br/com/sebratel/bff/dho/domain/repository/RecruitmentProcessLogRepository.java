@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface RecruitmentProcessLogRepository extends JpaRepository<RecruitmentProcessLog, Integer> {
+    List<RecruitmentProcessLog> findByActionNameInAndStatusAndStartTimeAfter(java.util.Collection<String> actionNames, String status, LocalDateTime startTime);
+
     List<RecruitmentProcessLog> findByActionNameAndStatusAndStartTimeAfter(String actionName, String status, LocalDateTime startTime);
 
     List<RecruitmentProcessLog> findByRecruitmentProcessIdOrderByStartTimeDesc(Integer processId);

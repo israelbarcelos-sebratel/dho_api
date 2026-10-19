@@ -55,12 +55,13 @@ public class Opportunity {
     private People replacedPerson;
 
     @ManyToOne
-    @JoinColumn(name = "base_origin_id")
+    @JoinColumn(name = "base_origin_id", nullable = false)
     private DhoBaseOrigin baseOrigin;
 
     @ManyToOne
     @JoinColumn(name = "opportunity_status_id")
     private DhoOpportunityStatus opportunityStatus;
+
     @Column(name = "deadline_sla_days")
     private Integer deadlineSlaDays;
 
@@ -92,4 +93,7 @@ public class Opportunity {
 
     @Column(name = "soft_skills", length = 2000)
     private String softSkills;
+
+    @Column(name = "number_of_vacancies")
+    private Integer numberOfVacancies;
 }

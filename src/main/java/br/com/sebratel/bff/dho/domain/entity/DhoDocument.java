@@ -46,4 +46,9 @@ public class DhoDocument {
 
     @Column(name = "upload_date")
     private LocalDateTime uploadDate;
+
+    @ManyToOne
+    @JoinColumn(name = "recruitment_process_item_id")
+    private RecruitmentProcessItem recruitmentProcessItem;
+
 }

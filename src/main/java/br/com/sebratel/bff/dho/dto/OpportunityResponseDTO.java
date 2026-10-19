@@ -20,8 +20,6 @@ public class OpportunityResponseDTO {
     private String opportunityMotiveName;
     private String baseOriginName;
     private String opportunityStatusName;
-    private String processStageName;
-    private String processStatusName;
     private Integer deadlineSlaDays;
     private LocalDateTime acceptDate;
     private String responsibleRecruiterName;
@@ -31,6 +29,7 @@ public class OpportunityResponseDTO {
     private String workSchedule;
     private String hardSkills;
     private String softSkills;
+    private Integer numberOfVacancies;
 
     // Frontend compatibility fields
     private String title;

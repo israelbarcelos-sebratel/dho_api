@@ -40,6 +40,15 @@ public class RequisitionControllerIntegrationTest {
     @Autowired
     private EntityManager entityManager;
 
+    private DhoBaseOrigin createBaseOrigin() {
+        DhoBaseOrigin baseOrigin = DhoBaseOrigin.builder()
+                .name("Default Origin")
+                .description("Default Origin Description")
+                .build();
+        entityManager.persist(baseOrigin);
+        return baseOrigin;
+    }
+
     @Test
     @Transactional
     void shouldReturnRequisitionsForManager() throws Exception {
@@ -64,19 +73,22 @@ public class RequisitionControllerIntegrationTest {
         DhoOpportunityStatus status = DhoOpportunityStatus.builder().name("Pendente").build();
         entityManager.persist(status);
 
+        DhoBaseOrigin baseOrigin = createBaseOrigin();
+
         Opportunity opp = Opportunity.builder()
                 .position(position)
                 .team(team)
                 .department(dept)
                 .opportunityMotive(motive)
-                .opportunityStatus(status)
+                .opportunityStatus(status).baseOrigin(createBaseOrigin())
+                .baseOrigin(baseOrigin)
                 .openOpportunityDate(LocalDateTime.now())
                 .workSchedule("Remoto")
                 .requester(requester)
                 .build();
         opportunityRepository.save(opp);
 
-        mockMvc.perform(post("/requisitions")
+        mockMvc.perform(post("/api/requisitions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")
                 .with(jwt().jwt(builder -> builder
@@ -105,18 +117,22 @@ public class RequisitionControllerIntegrationTest {
         DhoOpportunityStatus status = DhoOpportunityStatus.builder().name("Pendente").build();
         entityManager.persist(status);
 
+        DhoBaseOrigin baseOrigin = createBaseOrigin();
+
         opportunityRepository.save(Opportunity.builder()
                 .position(position).team(team).department(dept).opportunityMotive(motive)
-                .opportunityStatus(status).openOpportunityDate(LocalDateTime.now())
+                .opportunityStatus(status).baseOrigin(createBaseOrigin()).openOpportunityDate(LocalDateTime.now())
+                .baseOrigin(baseOrigin)
                 .requester(requester1).build());
 
         opportunityRepository.save(Opportunity.builder()
                 .position(position).team(team).department(dept).opportunityMotive(motive)
-                .opportunityStatus(status).openOpportunityDate(LocalDateTime.now())
+                .opportunityStatus(status).baseOrigin(createBaseOrigin()).openOpportunityDate(LocalDateTime.now())
+                .baseOrigin(baseOrigin)
                 .requester(admin).build());
 
         // Admin requesting ONLY THEIR OWN (default)
-        mockMvc.perform(post("/requisitions")
+        mockMvc.perform(post("/api/requisitions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")
                 .with(jwt().jwt(builder -> builder
@@ -127,7 +143,7 @@ public class RequisitionControllerIntegrationTest {
                 .andExpect(jsonPath("$.length()").value(1));
 
         // Admin requesting ALL
-        mockMvc.perform(post("/requisitions")
+        mockMvc.perform(post("/api/requisitions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"showAllRequisitions\": true}")
                 .with(jwt().jwt(builder -> builder
@@ -157,11 +173,12 @@ public class RequisitionControllerIntegrationTest {
 
         opportunityRepository.save(Opportunity.builder()
                 .position(position).team(team).department(dept).opportunityMotive(motive)
-                .opportunityStatus(status).openOpportunityDate(LocalDateTime.now())
+                .opportunityStatus(status).baseOrigin(createBaseOrigin()).openOpportunityDate(LocalDateTime.now())
+                .baseOrigin(createBaseOrigin())
                 .requester(requester1).build());
 
         // User 2 requesting ALL (should fail and return only their own, which is 0)
-        mockMvc.perform(post("/requisitions")
+        mockMvc.perform(post("/api/requisitions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"showAllRequisitions\": true}")
                 .with(jwt().jwt(builder -> builder
@@ -181,7 +198,7 @@ public class RequisitionControllerIntegrationTest {
         entityManager.persist(approvedStatus);
 
         Opportunity opp = Opportunity.builder()
-                .opportunityStatus(approvedStatus)
+                .opportunityStatus(approvedStatus).baseOrigin(createBaseOrigin())
                 .requester(requester)
                 .openOpportunityDate(LocalDateTime.now())
                 .build();
@@ -200,7 +217,7 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         entityManager.persist(rp);
 
-        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+        mockMvc.perform(get("/api/requisitions/" + opp.getId() + "/candidates")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "manager@test.com")
                         .subject("manager@test.com"))))
@@ -220,7 +237,7 @@ public class RequisitionControllerIntegrationTest {
         entityManager.persist(approvedStatus);
 
         Opportunity opp = Opportunity.builder()
-                .opportunityStatus(approvedStatus)
+                .opportunityStatus(approvedStatus).baseOrigin(createBaseOrigin())
                 .requester(requester)
                 .openOpportunityDate(LocalDateTime.now())
                 .build();
@@ -239,7 +256,7 @@ public class RequisitionControllerIntegrationTest {
                 .build();
         entityManager.persist(rp);
 
-        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+        mockMvc.perform(get("/api/requisitions/" + opp.getId() + "/candidates")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "admin@test.com")
                         .subject("admin@test.com"))
@@ -257,13 +274,13 @@ public class RequisitionControllerIntegrationTest {
         entityManager.persist(approvedStatus);
 
         Opportunity opp = Opportunity.builder()
-                .opportunityStatus(approvedStatus)
+                .opportunityStatus(approvedStatus).baseOrigin(createBaseOrigin())
                 .requester(requester)
                 .openOpportunityDate(LocalDateTime.now())
                 .build();
         opp = opportunityRepository.save(opp);
 
-        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+        mockMvc.perform(get("/api/requisitions/" + opp.getId() + "/candidates")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "other@test.com")
                         .subject("other@test.com"))))
@@ -279,13 +296,13 @@ public class RequisitionControllerIntegrationTest {
         entityManager.persist(pendingStatus);
 
         Opportunity opp = Opportunity.builder()
-                .opportunityStatus(pendingStatus)
+                .opportunityStatus(pendingStatus).baseOrigin(createBaseOrigin())
                 .requester(requester)
                 .openOpportunityDate(LocalDateTime.now())
                 .build();
         opp = opportunityRepository.save(opp);
 
-        mockMvc.perform(get("/requisitions/" + opp.getId() + "/candidates")
+        mockMvc.perform(get("/api/requisitions/" + opp.getId() + "/candidates")
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "manager@test.com")
                         .subject("manager@test.com"))))
@@ -299,12 +316,18 @@ public class RequisitionControllerIntegrationTest {
         entityManager.persist(approvedStatus);
 
         Opportunity opp = Opportunity.builder()
-                .opportunityStatus(approvedStatus)
+                .opportunityStatus(approvedStatus).baseOrigin(createBaseOrigin())
                 .openOpportunityDate(LocalDateTime.now())
                 .build();
         opp = opportunityRepository.save(opp);
 
-        mockMvc.perform(post("/opportunities/" + opp.getId() + "/approve")
+        String reason = "A".repeat(200);
+        String body = String.format("{\"opportunityDate\": \"%s\", \"reason\": \"%s\"}", 
+            LocalDateTime.now().plusDays(1), reason);
+
+        mockMvc.perform(post("/api/opportunities/" + opp.getId() + "/approve")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body)
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("approve_contract_process"))))
                 .andExpect(status().isBadRequest());
     }
@@ -318,7 +341,7 @@ public class RequisitionControllerIntegrationTest {
         People candidate = peopleRepository.save(People.builder().name("John Doe").email("john@doe.com").build());
         Opportunity opp = opportunityRepository.save(Opportunity.builder()
                 .openOpportunityDate(LocalDateTime.now())
-                .opportunityStatus(approvedStatus)
+                .opportunityStatus(approvedStatus).baseOrigin(createBaseOrigin())
                 .build());
 
         // First link
@@ -328,7 +351,7 @@ public class RequisitionControllerIntegrationTest {
                 .build());
 
         // Second link attempt via API
-        mockMvc.perform(post("/recruitment-processes")
+        mockMvc.perform(post("/api/recruitment-processes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"candidateId\": " + candidate.getId() + ", \"opportunityId\": " + opp.getId() + "}")
                 .with(jwt().authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("initiate_contract_process"))))
@@ -344,11 +367,11 @@ public class RequisitionControllerIntegrationTest {
 
         Opportunity opp = opportunityRepository.save(Opportunity.builder()
                 .requester(requester)
-                .opportunityStatus(status)
+                .opportunityStatus(status).baseOrigin(createBaseOrigin())
                 .openOpportunityDate(LocalDateTime.now())
                 .build());
 
-        mockMvc.perform(get("/requisitions/" + opp.getId())
+        mockMvc.perform(get("/api/requisitions/" + opp.getId())
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "owner@test.com")
                         .subject("owner@test.com"))))
@@ -365,11 +388,11 @@ public class RequisitionControllerIntegrationTest {
 
         Opportunity opp = opportunityRepository.save(Opportunity.builder()
                 .requester(requester)
-                .opportunityStatus(status)
+                .opportunityStatus(status).baseOrigin(createBaseOrigin())
                 .openOpportunityDate(LocalDateTime.now())
                 .build());
 
-        mockMvc.perform(get("/requisitions/" + opp.getId())
+        mockMvc.perform(get("/api/requisitions/" + opp.getId())
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "admin@test.com")
                         .subject("admin@test.com"))
@@ -387,11 +410,11 @@ public class RequisitionControllerIntegrationTest {
 
         Opportunity opp = opportunityRepository.save(Opportunity.builder()
                 .requester(requester)
-                .opportunityStatus(status)
+                .opportunityStatus(status).baseOrigin(createBaseOrigin())
                 .openOpportunityDate(LocalDateTime.now())
                 .build());
 
-        mockMvc.perform(get("/requisitions/" + opp.getId())
+        mockMvc.perform(get("/api/requisitions/" + opp.getId())
                 .with(jwt().jwt(builder -> builder
                         .claim("email", "other@test.com")
                         .subject("other@test.com"))))

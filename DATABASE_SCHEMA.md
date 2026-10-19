@@ -38,8 +38,16 @@ Represents individuals involved in the recruitment and organizational process (c
 | `id_resignation_type` | INT (FK) | Links to `resignation_type` |
 | `id_education` | INT (FK) | Links to `education` |
 | `id_situation` | INT (FK) | Links to `situation` |
- | \n | ### 1.1. `people_roles` (Join Table)\n | Links individuals to their roles.\n | \n | | Field | Type | Description |\n | |-------|------|-------------|\n | | `people_id` | INT (PK, FK) | Links to `people` |\n | | `role_id` | INT (FK) | Links to `role` |\n
 | `id_recruitment_source` | INT (FK) | Links to `recruitment_source` |
+
+### 1.1. `people_roles` (Join Table)
+Links individuals to their roles (Many-to-Many). 
+*Note: A person can have multiple roles, and a role (e.g., ADMIN) is shared by multiple people.*
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `people_id` | INT (PK, FK) | Links to `people` |
+| `role_id` | INT (PK, FK) | Links to `roles` |
 
 ---
 
@@ -64,6 +72,10 @@ Represents job openings and the recruitment lifecycle.
 | `accept_date` | DATETIME | When the offer was accepted |
 | `responsible_recruiter_id` | INT (FK) | The **recruiter** (links to `people`) |
 | `observations` | VARCHAR | Specific opportunity notes |
+| `number_of_vacancies` | INT | Number of people to be hired |
+| `work_schedule` | VARCHAR | Work schedule description |
+| `hard_skills` | VARCHAR | Technical skills required |
+| `soft_skills` | VARCHAR | Behavioral skills required |
 
 
 ---
@@ -82,12 +94,25 @@ Tracks the individual recruitment process of a candidate for a specific opportun
 | `situation_id` | INT (FK) | Links to `situation` |
 
 
+### 3.1 `recruitment_process_items`
+Stores additional comments and items related to a recruitment process.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | INT (PK) | Unique identifier |
+| `recruitment_process_id` | INT (FK) | Links to `recruitment_process` |
+| `comment` | VARCHAR(2000) | Recruiter comment |
+| `created_at` | DATETIME | Creation timestamp |
+| `created_by` | VARCHAR | User who created the item |
+
+
 ### 4. `documents`
 Stores documents uploaded for candidates.
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | INT (PK) | Unique identifier (Identity) |
+| `recruitment_process_item_id` | INT (FK) | Links to `recruitment_process_items` |
 | `file_name` | VARCHAR | Original file name |
 | `file_type` | VARCHAR | MIME type of the file |
 | `file_path` | VARCHAR | Physical path where the file is stored |

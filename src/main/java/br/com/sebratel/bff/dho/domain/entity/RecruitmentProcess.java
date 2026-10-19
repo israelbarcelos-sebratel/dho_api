@@ -58,4 +58,10 @@ public class RecruitmentProcess {
 
     @Column(name = "interview_report", length = 1000)
     private String interviewReport;
+
+    @Column(name = "start_date")
+    private java.time.LocalDateTime startDate;
+
+    @Column(name = "end_date")
+    private java.time.LocalDateTime endDate;
 }
